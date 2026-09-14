@@ -44,6 +44,18 @@ export default defineConfig(async () => {
   const { cloudflare } = await import("@cloudflare/vite-plugin");
 
   return {
+    // Keep the side-effect-only browser entry separate from dynamically
+    // imported navigation modules. Otherwise Rolldown can merge them and
+    // drop the helper exports used by Link, breaking production navigation.
+    environments: {
+      client: {
+        build: {
+          rolldownOptions: {
+            preserveEntrySignatures: "strict" as const,
+          },
+        },
+      },
+    },
     server: isCodexSeatbeltSandbox
       ? { watch: { useFsEvents: false, usePolling: true } }
       : undefined,

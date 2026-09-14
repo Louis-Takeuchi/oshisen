@@ -1,5 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { readFile, readdir } from "node:fs/promises";
+import path from "node:path";
 const { default: worker } = await import("../dist/server/index.js");
 async function render(path) {
   return worker.fetch(
@@ -60,4 +62,38 @@ test("unknown candidate is a genuine 404, not another candidate", async () => {
   assert.equal(response.status, 404);
   const html = await response.text();
   assert.match(html, /ページが見つかりません/);
+});
+
+test("production navigation does not import the side-effect-only browser bootstrap", async () => {
+  const clientRoot = new URL("../dist/client/", import.meta.url);
+  const manifest = JSON.parse(
+    await readFile(
+      new URL("vinext-client-entry-manifest.json", clientRoot),
+      "utf8",
+    ),
+  );
+  const chunkDirectory = path.posix.dirname(manifest.appBrowserEntry);
+  const files = await readdir(new URL(`${chunkDirectory}/`, clientRoot));
+  let dynamicImports = 0;
+  for (const filename of files.filter((name) => name.endsWith(".js"))) {
+    const source = await readFile(
+      new URL(`${chunkDirectory}/${filename}`, clientRoot),
+      "utf8",
+    );
+    for (const match of source.matchAll(
+      /\bimport\(\s*(["'`])([^"'`]+)\1\s*\)/g,
+    )) {
+      if (!match[2].startsWith(".")) continue;
+      dynamicImports++;
+      const target = path.posix.normalize(
+        path.posix.join(chunkDirectory, match[2]),
+      );
+      assert.notEqual(
+        target,
+        manifest.appBrowserEntry,
+        `${filename} dynamically imports the bootstrap instead of a runtime module; helper exports may be lost`,
+      );
+    }
+  }
+  assert.ok(dynamicImports > 0, "validate real production dynamic imports");
 });
