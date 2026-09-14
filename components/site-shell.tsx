@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useConsideration } from "./use-consideration";
 import { ConsiderationBar } from "./consideration-bar";
+import { OfficialContacts } from "./official-contacts";
 export function SiteShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const compact = pathname === "/questions";
@@ -141,6 +142,9 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
             <Link onClick={closeMenu} href="/about#team">
               運営メンバー →
             </Link>
+            <Link onClick={closeMenu} href="/about#contact">
+              公式SNS・お問い合わせ →
+            </Link>
             <Link onClick={closeMenu} href="/sources">
               情報源・公平性 →
             </Link>
@@ -171,11 +175,13 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
                 <Link href="/saved">気になる候補</Link>
                 <Link href="/about">オシセンについて</Link>
                 <Link href="/about#team">運営メンバー</Link>
+                <Link href="/about#contact">お問い合わせ</Link>
                 <Link href="/method">マッチングの仕組み</Link>
                 <Link href="/sources">情報源・公平性</Link>
                 <Link href="/privacy">プライバシー</Link>
               </nav>
             </div>
+            <OfficialContacts compact />
             <div className="footer-bottom">
               <p>2026 茨城県議会議員選挙 / Phase 0 プロトタイプ</p>
               <p>特定の候補者への投票を推奨・依頼するものではありません。</p>

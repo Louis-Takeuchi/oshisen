@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { TeamSection } from "../../components/team-section";
+import { OfficialContacts } from "../../components/official-contacts";
+import { contactEmail, contactMailto } from "../../lib/site-contact";
 import { teamMembers } from "../../lib/team";
 import styles from "./about.module.css";
 
@@ -36,6 +38,9 @@ export default function AboutPage() {
         </a>
         <a href="#operations">
           運営情報 <span aria-hidden="true">↓</span>
+        </a>
+        <a href="#contact">
+          公式SNS・お問い合わせ <span aria-hidden="true">↓</span>
         </a>
       </nav>
 
@@ -137,13 +142,37 @@ export default function AboutPage() {
           <div>
             <dt>問い合わせ・訂正窓口</dt>
             <dd>
-              準備中。現在、このサイトに送信フォームや受付先はありません。
+              <a href={contactMailto} className="text-link">
+                {contactEmail}
+              </a>
+              <span className={styles.operationRoles}>
+                メールでお問い合わせを受け付けています。
+              </span>
             </dd>
           </div>
         </dl>
         <p>
           運営メンバーの紹介と、候補者の掲載・評価は分けて扱います。
           運営者の性格や好みを、政策一致度や候補者の表示順に反映することはありません。
+        </p>
+      </section>
+
+      <section
+        id="contact"
+        className={styles.contactSection}
+        aria-labelledby="contact-title"
+      >
+        <p className="eyebrow">KEEP IN TOUCH / つながる</p>
+        <h2 id="contact-title">オシセンと、つながろう。</h2>
+        <p className={styles.contactIntro}>
+          公式Instagram・Xはこちらから。
+          <br />
+          お問い合わせや掲載内容の訂正のご連絡は、メールで受け付けています。
+        </p>
+        <OfficialContacts />
+        <p className={styles.contactNote}>
+          訂正のご連絡には、対象ページのURLと該当箇所を添えてください。
+          このサイトからメールを自動送信したり、診断回答や結果を添付したりすることはありません。
         </p>
       </section>
     </main>

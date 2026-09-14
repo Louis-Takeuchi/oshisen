@@ -279,3 +279,42 @@ test("Vercel selects the Next.js build instead of the Sites build", async () => 
   assert.equal(config.buildCommand, "npm run build:vercel");
   assert.equal(config.installCommand, "npm ci");
 });
+
+test("official links open safely and contact details remain usable without email integration", async () => {
+  for (const path of ["/", "/about", "/privacy", "/method", "/sources"]) {
+    const html = await (await fetch(`${origin}${path}`)).text();
+    const anchors = [...html.matchAll(/<a\b[^>]*>/g)].map(([tag]) => tag);
+    for (const href of [
+      "https://www.instagram.com/oshisen.official/",
+      "https://x.com/OshisenOfficial",
+    ]) {
+      const links = anchors.filter((tag) => tag.includes(`href="${href}"`));
+      assert.ok(links.length > 0, `${path}: ${href}`);
+      for (const link of links) {
+        assert.match(link, /target="_blank"/);
+        assert.match(link, /rel="noopener noreferrer"/);
+      }
+    }
+    assert.ok(
+      anchors.some((tag) =>
+        tag.includes('href="mailto:oshisen0914@gmail.com"'),
+      ),
+      path,
+    );
+    assert.ok(html.includes('href="/about#contact"'), path);
+    assert.doesNotMatch(html, /[?&]stkn=/, path);
+    assert.doesNotMatch(
+      html,
+      /受付先はありません|受付先は設置していません/,
+      path,
+    );
+    assert.doesNotMatch(
+      html,
+      /<iframe|instagram\.com\/embed|platform\.twitter\.com/,
+      path,
+    );
+  }
+  const about = await (await fetch(`${origin}/about`)).text();
+  assert.match(about, /id="contact"/);
+  assert.match(about, /アドレスをコピー/);
+});

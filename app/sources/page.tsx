@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { contactEmail, contactMailto } from "../../lib/site-contact";
 
 export const metadata: Metadata = {
   title: "情報源・公平性",
@@ -58,6 +59,14 @@ export default function SourcesPage() {
             運営者から提供された写真と担当情報を掲載しています。候補者のデモ情報とは別です。
             人となりの質問は本人の回答を掲載する形式とし、未回答の内容を推測で補いません。
           </dd>
+          <dt>オシセンの公式SNS・問い合わせ先</dt>
+          <dd>
+            公式Instagram・Xと問い合わせ用メールアドレスは、運営者から案内されたものを掲載しています。
+            候補者のSNSや政策の出典とは区別しています。
+            <Link href="/about#contact" className="text-link">
+              公式SNS・お問い合わせを見る <span aria-hidden="true">→</span>
+            </Link>
+          </dd>
         </dl>
       </section>
 
@@ -108,15 +117,21 @@ export default function SourcesPage() {
         <p>
           掲載対象の確定基準、本人確認と回答依頼の方法、政策の読み取り基準、
           更新頻度と確認体制は準備中です。
-          運営メンバーは代表のRyo（大屋涼）と共同代表のLouis（竹内琉瑛）です。法人・団体としての正式な運営主体と、問い合わせ・訂正窓口の案内は準備中です。
+          運営メンバーは代表のRyo（大屋涼）と共同代表のLouis（竹内琉瑛）です。法人・団体としての正式な運営主体の案内は準備中です。
         </p>
         <p>
           本番では、情報ごとの出典と確認日を表示し、訂正した内容と日付を記録する方針です。
-          窓口の準備ができ次第、訂正依頼の方法を掲載します。
-          現在、このサイトから問い合わせや訂正依頼を送信することはできません。
         </p>
-        <Link href="/about#team" className="text-link">
-          運営メンバーと担当を見る <span aria-hidden="true">→</span>
+        <p>
+          掲載内容へのお問い合わせ・訂正依頼は、{" "}
+          <a href={contactMailto} className="text-link">
+            {contactEmail}
+          </a>
+          へお送りください。該当ページのURLと訂正してほしい内容、確認に使える公開資料のURLがあればお知らせください。
+          診断回答・投票先など、お問い合わせに不要な情報は記載しないでください。
+        </p>
+        <Link href="/about#contact" className="text-link">
+          公式SNS・お問い合わせを見る <span aria-hidden="true">→</span>
         </Link>
       </section>
     </main>

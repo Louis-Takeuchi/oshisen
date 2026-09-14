@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { PrivacyControls } from "../../components/privacy-controls";
 import { VisitorAnalyticsControls } from "../../components/visitor-analytics-controls";
+import { contactEmail, contactMailto } from "../../lib/site-contact";
 
 export const metadata: Metadata = {
   title: "プライバシーとデータの扱い",
@@ -131,6 +132,10 @@ export default function PrivacyPage() {
           現在、候補者ごとの外部リンクは未確認のため有効にしていません。
         </p>
         <p>
+          オシセンの公式Instagram・Xは、運営者が案内したアカウントへの通常のリンクです。
+          投稿の埋め込みやSNSの計測機能は追加していません。リンクを開いた後は、それぞれのサービスのデータの扱いが適用されます。
+        </p>
+        <p>
           サイトの配信にはVercelを利用しています。ページを表示する通信では、アクセス先URLやIPアドレスなどが配信基盤に渡ります。
           訪問集計のURL加工や停止設定は、サイトの配信に必要な通信や配信基盤側のアクセスログを停止・削除するものではありません。
           集計データや配信ログの保存期間は利用プラン・基盤側の設定によるため、このページで一律の期間を保証するものではありません。
@@ -145,11 +150,21 @@ export default function PrivacyPage() {
         </p>
         <p>
           運営メンバーは、代表のRyo（大屋涼）と共同代表のLouis（竹内琉瑛）です。
-          法人・団体としての正式な運営主体、個人情報の管理責任者、問い合わせ窓口の案内は準備中です。
-          現在、このサイトに問い合わせフォームや受付先はありません。
+          法人・団体としての正式な運営主体、個人情報の管理責任者の案内は準備中です。
+          プライバシーやデータの扱いに関するお問い合わせは、以下のメールアドレスにお送りください。
         </p>
-        <Link href="/about#team" className="text-link">
-          運営メンバーと担当を見る <span aria-hidden="true">→</span>
+        <p>
+          <a href={contactMailto} className="text-link">
+            {contactEmail}
+          </a>
+        </p>
+        <p>
+          メールへのリンクは、お使いのメールアプリを開きます。このサイト内に送信フォームはなく、リンクを押すだけでは送信されません。
+          ご自身で送信したメールは、送信元アドレスや本文などを含む通常のメールとして受信し、お問い合わせへの返信・内容の確認のために扱います。
+          診断回答・一致度・保存した候補などをサイトから自動で添付することはありません。お問い合わせに不要な個人情報や診断結果は記載しないでください。
+        </p>
+        <Link href="/about#contact" className="text-link">
+          公式SNS・お問い合わせを見る <span aria-hidden="true">→</span>
         </Link>
       </section>
     </main>

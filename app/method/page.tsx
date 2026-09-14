@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { contactEmail, contactMailto } from "../../lib/site-contact";
 
 export const metadata: Metadata = {
   title: "マッチングの仕組み",
@@ -137,11 +138,18 @@ export default function MethodPage() {
         </p>
         <p>
           運営は、企画・取材・営業を担当する代表のRyo（大屋涼）と、開発・デザイン・研究などを担当する共同代表のLouis（竹内琉瑛）が行っています。
-          法人・団体としての正式な運営主体、編集・訂正の確認体制、問い合わせ・訂正窓口の案内は準備中です。
-          現在、訂正依頼を送信できる受付先は設置していません。
+          法人・団体としての正式な運営主体、編集・訂正の確認体制の案内は準備中です。
         </p>
-        <Link href="/about#team" className="text-link">
-          運営メンバーと担当を見る <span aria-hidden="true">→</span>
+        <p>
+          計算方法へのご質問や掲載内容の訂正依頼は、{" "}
+          <a href={contactMailto} className="text-link">
+            {contactEmail}
+          </a>
+          へお送りください。該当ページのURLと、確認・訂正してほしい内容をお知らせください。
+          診断回答や結果、お問い合わせに不要な個人情報の送付は必要ありません。
+        </p>
+        <Link href="/about#contact" className="text-link">
+          公式SNS・お問い合わせを見る <span aria-hidden="true">→</span>
         </Link>
       </section>
     </main>

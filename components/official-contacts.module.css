@@ -1,0 +1,128 @@
+.contacts {
+  display: grid;
+  gap: 28px;
+  margin-top: 26px;
+}
+
+.label {
+  margin: 0 0 12px;
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.socialLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.socialLinks a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex: 1 1 210px;
+  min-width: 0;
+  padding: 16px 20px;
+  border: 2px solid var(--ink);
+  border-radius: 16px;
+  color: var(--ink);
+  background: white;
+  box-shadow: 3px 3px 0 var(--yellow);
+}
+
+.socialLinks a[data-channel="instagram"] {
+  background: var(--pink-soft);
+}
+
+.socialLinks a:hover {
+  text-decoration: none;
+  border-color: var(--blue);
+  background: var(--yellow-soft);
+}
+
+.socialLinks strong {
+  display: block;
+  color: var(--blue);
+  font-size: 18px;
+}
+
+.handle {
+  display: block;
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+.email {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 18px;
+}
+
+.emailLink {
+  padding-block: 8px;
+  color: var(--blue);
+  font-size: 18px;
+  font-weight: 750;
+  text-decoration: underline;
+  overflow-wrap: anywhere;
+}
+
+.copyButton {
+  min-height: 44px;
+  padding: 8px 16px;
+  border: 1px solid var(--ink);
+  border-radius: 999px;
+  background: white;
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.copyButton:hover:not(:disabled) {
+  background: var(--yellow-soft);
+}
+
+.copyStatus {
+  flex-basis: 100%;
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.9;
+}
+
+.compact {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 36px;
+  margin-top: 30px;
+  padding-block: 25px 28px;
+  border-top: 1px dashed var(--ink);
+}
+
+.compact .socialLinks a {
+  flex-basis: 160px;
+  padding: 10px 14px;
+}
+
+.compact .socialLinks strong {
+  font-size: 15px;
+}
+
+.compact .emailLink {
+  font-size: 16px;
+}
+
+@media (max-width: 760px) {
+  .compact {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+  }
+
+  .emailLink {
+    font-size: 16px;
+  }
+}

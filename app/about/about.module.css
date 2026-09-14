@@ -36,6 +36,34 @@ main.page {
   font-size: 14px;
 }
 
+.contactSection {
+  margin-top: 48px;
+  padding: clamp(22px, 4vw, 36px);
+  border: 2px solid var(--ink);
+  border-radius: 24px;
+  background: var(--blue-soft);
+  box-shadow: 6px 6px 0 var(--yellow);
+  scroll-margin-top: 30px;
+}
+
+.contactSection h2 {
+  color: var(--blue);
+  font-size: clamp(25px, 3.5vw, 34px);
+}
+
+.contactIntro {
+  margin-top: 18px;
+  font-size: 16px;
+  line-height: 1.95;
+}
+
+.contactNote {
+  margin-top: 24px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.9;
+}
+
 @media (max-width: 420px) {
   .jumpLinks {
     display: grid;

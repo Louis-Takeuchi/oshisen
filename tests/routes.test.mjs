@@ -156,3 +156,26 @@ test("production navigation does not import the side-effect-only browser bootstr
   }
   assert.ok(dynamicImports > 0, "validate real production dynamic imports");
 });
+
+test("official social and contact links render on Sites with no obsolete closed-contact notice", async () => {
+  for (const path of ["/", "/about", "/privacy", "/method", "/sources"]) {
+    const html = await (await render(path)).text();
+    for (const href of [
+      "https://www.instagram.com/oshisen.official/",
+      "https://x.com/OshisenOfficial",
+      "mailto:oshisen0914@gmail.com",
+    ]) {
+      assert.ok(html.includes(`href="${href}"`), `${path}: ${href}`);
+    }
+    assert.doesNotMatch(html, /[?&]stkn=/, path);
+    assert.doesNotMatch(
+      html,
+      /受付先はありません|受付先は設置していません|問い合わせ・訂正窓口の案内は準備中/,
+      path,
+    );
+  }
+  const about = await (await render("/about")).text();
+  assert.match(about, /id="contact"/);
+  assert.match(about, /アドレスをコピー/);
+  assert.match(about, /メールアプリが開かない場合/);
+});
