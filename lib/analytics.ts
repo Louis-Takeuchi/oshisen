@@ -6,6 +6,8 @@ export const analyticsEvents = [
   "diagnosis_answer",
   "diagnosis_complete",
   "candidate_view",
+  "candidate_save",
+  "candidate_unsave",
   "policy_detail_view",
   "humanity_view",
   "youtube_click",
@@ -32,6 +34,7 @@ const CONSENT_KEY = "oshisen.analytics.consent.v1";
 const EVENTS_KEY = "oshisen.analytics.events.v1";
 const VARIANT_KEY = "oshisen.analytics.variant.v1";
 const MAX_EVENTS = 500;
+let consentRevokedInMemory = false;
 const candidateIds = new Set([
   "sato-misaki",
   "takahashi-ken",
@@ -71,6 +74,7 @@ function isVariant(value: unknown): value is ExperimentVariant {
 }
 
 export function getAnalyticsConsent(): boolean {
+  if (consentRevokedInMemory) return false;
   return read(CONSENT_KEY) === "true";
 }
 
@@ -100,6 +104,7 @@ export function setAnalyticsConsent(consent: boolean): boolean {
     const variant = getVariant();
     storage.setItem(CONSENT_KEY, "true");
     storage.setItem(VARIANT_KEY, variant);
+    consentRevokedInMemory = false;
     return true;
   } catch {
     eraseAnalytics();
@@ -190,14 +195,18 @@ export function exportAnalytics(): string {
 }
 
 /** Deletes only this module's three keys; diagnosis answers are not stored here. */
-export function eraseAnalytics(): void {
+export function eraseAnalytics(): boolean {
+  consentRevokedInMemory = true;
   const storage = getStorage();
-  if (!storage) return;
+  if (!storage) return false;
+  let erased = true;
   for (const key of [CONSENT_KEY, EVENTS_KEY, VARIANT_KEY]) {
     try {
       storage.removeItem(key);
     } catch {
+      erased = false;
       // A browser can deny storage access; recording then remains unavailable.
     }
   }
+  return erased;
 }

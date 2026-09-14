@@ -53,7 +53,7 @@ function events(): AnalyticsEvent[] {
   return JSON.parse(exportAnalytics()).events;
 }
 
-test("all ten required event types can be recorded only after consent", () => {
+test("all supported event types including candidate saves require consent", () => {
   withBrowser(({ stored }) => {
     for (const event of analyticsEvents) assert.equal(trackEvent(event), false);
     assert.equal(stored.size, 0);
@@ -196,5 +196,50 @@ test("storage failures return a truthful failure without crashing the interactio
     assert.equal(getAnalyticsConsent(), false);
     assert.equal(trackEvent("diagnosis_start"), false);
     assert.deepEqual(events(), []);
+  });
+});
+
+test("failed deletion revokes consent in memory until a successful explicit opt-in", () => {
+  withBrowser(({ stored, storage }) => {
+    stored.set("oshisen:diagnosis:v1", "unrelated diagnosis state");
+    stored.set("unrelated.preference", "preserve");
+    assert.equal(setAnalyticsConsent(true), true);
+    assert.equal(trackEvent("diagnosis_start"), true);
+    assert.equal(events().length, 1);
+    const persisted = [...stored];
+    const removeItem = storage.removeItem;
+    storage.removeItem = () => {
+      throw new Error("Storage deletion is blocked");
+    };
+    try {
+      assert.equal(eraseAnalytics(), false);
+      assert.deepEqual([...stored], persisted);
+      assert.equal(getAnalyticsConsent(), false);
+      assert.equal(trackEvent("candidate_view"), false);
+      assert.deepEqual(events(), []);
+      assert.deepEqual(
+        [...stored],
+        persisted,
+        "revoked recording must not append events even when stale consent remains readable",
+      );
+
+      assert.equal(setAnalyticsConsent(true), true);
+      assert.equal(getAnalyticsConsent(), true);
+      assert.equal(trackEvent("diagnosis_complete"), true);
+      assert.equal(events().at(-1)?.event, "diagnosis_complete");
+      assert.equal(stored.get("oshisen:diagnosis:v1"), "unrelated diagnosis state");
+      assert.equal(stored.get("unrelated.preference"), "preserve");
+
+      storage.removeItem = removeItem;
+      assert.equal(eraseAnalytics(), true);
+      assert.equal(getAnalyticsConsent(), false);
+      assert.deepEqual([...stored], [
+        ["oshisen:diagnosis:v1", "unrelated diagnosis state"],
+        ["unrelated.preference", "preserve"],
+      ]);
+    } finally {
+      storage.removeItem = removeItem;
+      eraseAnalytics();
+    }
   });
 });

@@ -1,12 +1,14 @@
 import Link from "next/link";
+import Image from "next/image";
+import styles from "./home-pop.module.css";
 
 export default function Home() {
   return (
-    <main id="main">
+    <main id="main" className={styles.home}>
       <section className="container home-hero">
         <div className="hero-copy">
           <p className="eyebrow">
-            <span className="blue-dot" />
+            <span className="blue-dot" aria-hidden="true" />
             2026 茨城県議会議員選挙
           </p>
           <h1>
@@ -33,6 +35,21 @@ export default function Home() {
           </p>
         </div>
         <aside className="hero-editorial" aria-label="オシセンで知ること">
+          <div className={styles.logoStage}>
+            <span className={styles.spark} aria-hidden="true">
+              ✦
+            </span>
+            <Image
+              src="/brand-logo.png"
+              alt="オシセン！"
+              width={900}
+              height={300}
+              unoptimized
+              priority
+              className={styles.heroLogo}
+            />
+            <span className={styles.logoDot} aria-hidden="true" />
+          </div>
           <div className="editorial-top">
             <span>政治家との出会い方を、変える。</span>
             <span>01 — 03</span>
@@ -112,6 +129,32 @@ export default function Home() {
             </div>
           </li>
         </ol>
+      </section>
+      <section className="container home-explore">
+        <div className="section-heading">
+          <p className="eyebrow">見つけたあとに、できること。</p>
+          <h2>比べて、残して、考える。</h2>
+        </div>
+        <div className="explore-grid">
+          <Link href="/compare">
+            <span className="small-index">01</span>
+            <h3>2人の政策を並べる</h3>
+            <p>同じ回答と、特に違うテーマを確かめる。</p>
+            <span aria-hidden="true">→</span>
+          </Link>
+          <Link href="/issues">
+            <span className="small-index">02</span>
+            <h3>気になる争点から</h3>
+            <p>公共交通、教育、医療。テーマを入口に。</p>
+            <span aria-hidden="true">→</span>
+          </Link>
+          <Link href="/saved">
+            <span className="small-index">03</span>
+            <h3>あとで、もう一度</h3>
+            <p>気になる候補を、このブラウザに保存する。</p>
+            <span aria-hidden="true">→</span>
+          </Link>
+        </div>
       </section>
       <section className="concept-section">
         <div className="container concept-grid">

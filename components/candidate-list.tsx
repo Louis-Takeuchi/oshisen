@@ -30,7 +30,9 @@ export function CandidateList() {
         </p>
       </div>
       <div className="list-tools">
-        <p className="caption">仮名の五十音順 / {filtered.length}名</p>
+        <p className="caption" role="status">
+          仮名の五十音順 / {filtered.length}名
+        </p>
         <label className="search-field">
           <span className="sr-only">候補者名を検索</span>
           <input
@@ -42,7 +44,12 @@ export function CandidateList() {
           <span aria-hidden="true">⌕</span>
         </label>
       </div>
-      <div aria-live="polite">
+      <div className="exploration-links" aria-label="別の探し方">
+        <Link href="/issues">争点から見る →</Link>
+        <Link href="/compare">2人の政策を比較する →</Link>
+        <Link href="/saved">気になる候補を見る →</Link>
+      </div>
+      <div>
         {filtered.map((candidate) => (
           <CandidateRow
             key={candidate.id}

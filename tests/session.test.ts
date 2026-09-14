@@ -166,3 +166,42 @@ test("fully blocked storage retains session progress in memory", () => {
     assert.deepEqual(readDiagnosis(), emptyDiagnosis());
   });
 });
+
+test("failed deletion clears memory without restoring stale saved answers or touching unrelated keys", () => {
+  withSession(({ stored, storage, notifications }) => {
+    const saved: DiagnosisState = {
+      answers: { transport: 4, education: 1 },
+      index: 2,
+      complete: false,
+    };
+    stored.set("unrelated.preference", "preserve");
+    writeDiagnosis(saved);
+    assert.deepEqual(readDiagnosis(), saved);
+    const persisted = stored.get(diagnosisKey);
+    const removeItem = storage.removeItem;
+    storage.removeItem = () => {
+      throw new Error("Storage deletion is blocked");
+    };
+    try {
+      notifications.length = 0;
+      assert.equal(clearDiagnosis(), false);
+      assert.equal(stored.get(diagnosisKey), persisted);
+      assert.deepEqual(readDiagnosis(), emptyDiagnosis());
+      assert.deepEqual(readDiagnosis(), emptyDiagnosis());
+      assert.deepEqual(notifications, ["oshisen:diagnosis-change"]);
+      assert.equal(stored.get("unrelated.preference"), "preserve");
+
+      storage.removeItem = removeItem;
+      assert.deepEqual(
+        readDiagnosis(),
+        emptyDiagnosis(),
+        "recovering storage access must not revive the previously cleared answers",
+      );
+      assert.equal(clearDiagnosis(), true);
+      assert.deepEqual(readDiagnosis(), emptyDiagnosis());
+      assert.deepEqual([...stored], [["unrelated.preference", "preserve"]]);
+    } finally {
+      storage.removeItem = removeItem;
+    }
+  });
+});

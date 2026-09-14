@@ -8,9 +8,24 @@ import {
 } from "../lib/analytics";
 import { clearDiagnosis } from "./session";
 import { useConsent, notifySettingsChange } from "./use-local-settings";
+import { useConsideration } from "./use-consideration";
 export function PrivacyControls() {
   const consent = useConsent();
   const [message, setMessage] = useState("");
+  const [confirming, setConfirming] = useState(false);
+  const { clearAll } = useConsideration();
+  function eraseAll() {
+    const analyticsCleared = eraseAnalytics();
+    notifySettingsChange();
+    const diagnosisCleared = clearDiagnosis();
+    const considerationCleared = clearAll();
+    setConfirming(false);
+    setMessage(
+      analyticsCleared && diagnosisCleared && considerationCleared.ok
+        ? "気になる候補・このタブの回答・比較・重視テーマ・操作記録を削除し、記録への同意も取り消しました。"
+        : "画面内のデータを解除し操作記録を停止しましたが、保存領域の削除を確認できません。ブラウザのサイトデータ設定から削除してください。",
+    );
+  }
   function toggle(value: boolean) {
     setAnalyticsConsent(value);
     notifySettingsChange();
@@ -51,17 +66,28 @@ export function PrivacyControls() {
         </button>
         <button
           className="button secondary"
-          onClick={() => {
-            setAnalyticsConsent(false);
-            eraseAnalytics();
-            notifySettingsChange();
-            clearDiagnosis();
-            setMessage("このタブの回答と操作記録を削除しました。");
-          }}
+          onClick={() => setConfirming(true)}
         >
-          回答と操作記録を削除
+          保存したデータをすべて削除
         </button>
       </div>
+      {confirming && (
+        <div className="delete-confirmation">
+          <p>
+            気になる候補と、このタブの回答・比較・重視テーマ・操作記録を削除します。この操作は元に戻せません。
+          </p>
+          <button type="button" className="button secondary" onClick={eraseAll}>
+            削除する
+          </button>
+          <button
+            type="button"
+            className="quiet-link"
+            onClick={() => setConfirming(false)}
+          >
+            キャンセル
+          </button>
+        </div>
+      )}
       <p role="status">{message}</p>
     </div>
   );

@@ -1,0 +1,252 @@
+.actions {
+  margin-top: 18px;
+  width: 100%;
+}
+.actionButtons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.actionButtons button {
+  border: 2px solid var(--ink);
+  border-radius: 16px;
+  box-shadow: 2px 2px 0 var(--ink);
+  padding: 10px 14px;
+  min-height: 44px;
+  font-size: 13px;
+  line-height: 1.6;
+  background: var(--white);
+  text-align: left;
+  font-weight: 650;
+}
+.actionButtons button[aria-pressed="true"] {
+  border-color: var(--blue);
+  color: var(--blue);
+  background: var(--yellow);
+  box-shadow: 2px 2px 0 var(--blue);
+}
+.actionButtons button:hover:not(:disabled) {
+  background: var(--yellow-soft);
+}
+.actionButtons button:focus-visible,
+.selectedNames button:focus-visible,
+.themeChoices label:has(input:focus-visible) {
+  outline: 3px solid var(--blue);
+  outline-offset: 5px;
+}
+.actionMessage {
+  font-size: 12px;
+  line-height: 1.7;
+  margin-top: 6px;
+  color: var(--muted);
+}
+.actionMessage:empty {
+  display: none;
+}
+.saveNote {
+  color: var(--muted);
+  margin-top: 6px;
+  font-size: 11px;
+  line-height: 1.6;
+}
+.compareBar {
+  position: sticky;
+  bottom: 0;
+  z-index: 20;
+  background: var(--yellow);
+  border-top: 2px solid var(--ink);
+  box-shadow: 0 -5px 0 var(--blue);
+}
+.compareBar > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding-block: 16px;
+}
+.barSelection {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 24px;
+  font-size: 13px;
+}
+.selectedNames {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.selectedNames button {
+  min-height: 44px;
+  padding: 8px 12px;
+  background: var(--white);
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  box-shadow: 2px 2px 0 var(--ink);
+  font-weight: 650;
+}
+.selectedNames button:hover {
+  background: var(--pink-soft);
+}
+.barLinks {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-shrink: 0;
+  font-size: 12px;
+}
+.priorityPicker {
+  margin-block: 30px;
+  padding: 28px;
+  border: 2px solid var(--ink);
+  border-radius: 24px;
+  background: var(--pink-soft);
+  box-shadow: var(--shadow-pop);
+}
+.priorityPicker h2 {
+  font-size: 26px;
+  margin-bottom: 12px;
+  color: var(--blue);
+}
+.priorityPicker p {
+  font-size: 14px;
+}
+.priorityPicker fieldset {
+  border: 0;
+  padding: 0;
+  margin: 20px 0 12px;
+}
+.priorityPicker legend {
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+.priorityPicker legend span {
+  margin-left: 16px;
+  padding: 3px 10px;
+  border: 1px solid var(--ink);
+  border-radius: 999px;
+  background: var(--yellow);
+  font-weight: 700;
+}
+.themeChoices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.themeChoices label {
+  padding: 9px 12px;
+  min-height: 44px;
+  border: 2px solid var(--ink);
+  border-radius: 16px;
+  background: var(--white);
+  box-shadow: 2px 2px 0 var(--ink);
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.themeChoices label:has(input:checked) {
+  border-color: var(--blue);
+  color: var(--blue);
+  background: var(--yellow);
+  box-shadow: 2px 2px 0 var(--blue);
+}
+.themeChoices input {
+  accent-color: var(--blue);
+  width: 18px;
+  height: 18px;
+}
+.prioritySummary {
+  margin-top: 16px;
+  font-size: 13px;
+  max-width: 420px;
+  padding: 12px 14px;
+  border: 2px solid var(--ink);
+  border-radius: 16px;
+  background: var(--blue-soft);
+}
+.prioritySummary p {
+  color: var(--muted);
+}
+.prioritySummary small {
+  margin-left: 8px;
+}
+.prioritySummary ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 6px;
+}
+.prioritySummary li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding-block: 2px;
+  border-bottom: 1px solid var(--line);
+}
+.prioritySummary a {
+  text-decoration: underline;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  color: var(--blue);
+}
+.prioritySummary li span {
+  flex-shrink: 0;
+  font-weight: 650;
+}
+.savedTools {
+  margin-top: 30px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.clearSaved {
+  margin-top: 28px;
+  padding: 20px;
+  background: var(--paper);
+  border: 2px dashed var(--ink);
+  border-radius: 20px;
+}
+.clearSaved p {
+  margin-bottom: 12px;
+}
+.clearSaved button + button {
+  margin-left: 20px;
+}
+@media (max-width: 760px) {
+  .compareBar > div {
+    gap: 10px;
+    padding-block: 10px;
+    align-items: start;
+  }
+  .barSelection {
+    gap: 4px;
+    flex: 1;
+    min-width: 0;
+    font-size: 11px;
+  }
+  .selectedNames {
+    gap: 4px;
+  }
+  .selectedNames button {
+    padding: 5px 8px;
+    min-height: 44px;
+    font-size: 12px;
+  }
+  .barLinks {
+    flex-direction: column;
+    gap: 5px;
+  }
+  .barLinks a {
+    padding-inline: 12px;
+  }
+  .priorityPicker {
+    padding: 18px;
+  }
+  .priorityPicker h2 {
+    font-size: 22px;
+  }
+}

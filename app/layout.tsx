@@ -3,10 +3,11 @@ import { headers } from "next/headers";
 import { SiteShell } from "../components/site-shell";
 import { resolveSiteOrigin } from "../lib/site-origin";
 import "./globals.css";
+import "./pop-theme.css";
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#f7f6f2",
+  themeColor: "#fffdf7",
   colorScheme: "light",
 };
 export async function generateMetadata(): Promise<Metadata> {
@@ -17,17 +18,21 @@ export async function generateMetadata(): Promise<Metadata> {
     icons: {
       icon: [
         {
-          url: "/favicon.ico",
+          url: "/favicon.ico?v=logo-2",
           sizes: "16x16 32x32 48x48",
           type: "image/x-icon",
         },
-        { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+        { url: "/icon-192.png?v=logo-2", sizes: "192x192", type: "image/png" },
       ],
       apple: [
-        { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+        {
+          url: "/apple-touch-icon.png?v=logo-2",
+          sizes: "180x180",
+          type: "image/png",
+        },
       ],
     },
-    manifest: "/site.webmanifest",
+    manifest: "/site.webmanifest?v=logo-2",
     appleWebApp: { title: "オシセン" },
     formatDetection: { telephone: false },
     title: {
@@ -45,9 +50,9 @@ export async function generateMetadata(): Promise<Metadata> {
       description: "まずは政策から。気になったら、その人自身まで。",
       images: [
         {
-          url: new URL("/og.png", origin).href,
-          width: 1731,
-          height: 909,
+          url: new URL("/og.png?v=logo-2", origin).href,
+          width: 1733,
+          height: 907,
           alt: "オシセン｜政治家の気にピ、つくってみない？",
         },
       ],
@@ -56,7 +61,7 @@ export async function generateMetadata(): Promise<Metadata> {
       card: "summary_large_image",
       title: "政治家の気にピ、つくってみない？",
       description: "まずは政策から。気になったら、その人自身まで。",
-      images: [new URL("/og.png", origin).href],
+      images: [new URL("/og.png?v=logo-2", origin).href],
     },
   };
 }

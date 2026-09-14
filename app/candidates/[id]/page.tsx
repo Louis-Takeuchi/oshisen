@@ -26,9 +26,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       locale: "ja_JP",
       images: [
         {
-          url: `${origin}/og.png`,
-          width: 1731,
-          height: 909,
+          url: `${origin}/og.png?v=logo-2`,
+          width: 1733,
+          height: 907,
           alt: "オシセン プロトタイプ（候補者写真は未掲載）",
         },
       ],
@@ -37,7 +37,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       card: "summary_large_image",
       title,
       description,
-      images: [`${origin}/og.png`],
+      images: [`${origin}/og.png?v=logo-2`],
     },
   };
 }

@@ -1,0 +1,312 @@
+.themeNav {
+  margin-top: 44px;
+}
+
+.themeNav h2 {
+  font-size: 20px;
+  margin-bottom: 18px;
+}
+
+.themeList {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  list-style: none;
+  padding: 0;
+}
+
+.themeLink {
+  min-height: 64px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 15px;
+  border: 2px solid var(--ink);
+  border-radius: 18px;
+  box-shadow: 3px 3px 0 var(--ink);
+  background: var(--white);
+  font-size: 14px;
+  font-weight: 650;
+}
+
+.themeLink:hover {
+  text-decoration: none;
+  background: var(--yellow-soft);
+}
+
+.themeLink[aria-current="page"] {
+  background: var(--blue);
+  box-shadow: 3px 3px 0 var(--yellow);
+  color: var(--white);
+}
+
+.themeLink:focus-visible,
+.draftDetails summary:focus-visible {
+  outline: 3px solid var(--blue);
+  outline-offset: 5px;
+}
+
+.themeNumber {
+  font-family: Helvetica, Arial, sans-serif;
+  color: var(--ink);
+  font-size: 11px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  background: var(--yellow);
+  border: 1px solid var(--ink);
+  border-radius: 50%;
+}
+
+.selectedLabel {
+  font-size: 10px;
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+.invalidNotice {
+  border: 2px solid var(--ink);
+  border-radius: 16px;
+  background: var(--yellow-soft);
+  padding: 16px 20px;
+  margin-top: 28px;
+  font-size: 14px;
+}
+
+.question {
+  margin-top: 48px;
+  padding: 30px;
+  border: 2px solid var(--ink);
+  border-radius: 24px;
+  background: var(--blue-soft);
+  box-shadow: var(--shadow-pop);
+}
+
+.question > p:first-child {
+  margin-bottom: 16px;
+}
+
+.question h2 {
+  max-width: 880px;
+  font-size: 28px;
+  line-height: 1.75;
+  color: var(--blue);
+}
+
+.context {
+  max-width: 850px;
+  font-size: 15px;
+  margin-top: 20px;
+}
+
+.draftDetails {
+  margin-top: 20px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.draftDetails summary {
+  width: fit-content;
+  min-height: 44px;
+  cursor: pointer;
+  padding: 8px 14px;
+  border: 2px solid var(--ink);
+  border-radius: 16px;
+  background: var(--white);
+  color: var(--ink);
+}
+
+.draftDetails p {
+  max-width: 860px;
+  margin-top: 10px;
+}
+
+.groupRule {
+  margin-block: 34px 14px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.groups {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+  align-items: start;
+}
+
+.group {
+  border: 2px solid var(--ink);
+  border-radius: 24px;
+  padding: 18px;
+  background: var(--paper);
+  min-width: 0;
+}
+
+.groupHeading {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  padding-top: 0;
+}
+
+.groupHeading h3 {
+  font-size: 20px;
+  color: var(--blue);
+}
+
+.count {
+  font-size: 13px;
+  white-space: nowrap;
+  padding: 3px 10px;
+  border: 1px solid var(--ink);
+  border-radius: 999px;
+  background: var(--yellow);
+  font-weight: 650;
+}
+
+.groupDescription {
+  font-size: 11px;
+  color: var(--muted);
+  min-height: 44px;
+  margin-top: 5px;
+}
+
+.candidateList {
+  list-style: none;
+  padding: 0;
+}
+
+.candidate {
+  border: 2px solid var(--ink);
+  border-radius: 18px;
+  box-shadow: 3px 3px 0 var(--ink);
+  background: var(--white);
+  padding: 20px;
+  margin-top: 12px;
+}
+
+.candidate h4 {
+  font-size: 25px;
+  line-height: 1.5;
+  margin: 5px 0 16px;
+}
+
+.candidate h4 a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--blue);
+}
+
+.answer {
+  font-size: 14px;
+  font-weight: 650;
+  padding: 12px;
+  background: var(--yellow-soft);
+  border-radius: 14px;
+}
+
+.answer span {
+  display: block;
+  font-size: 11px;
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.policyLink {
+  margin-block: 15px 18px;
+  font-size: 13px;
+}
+
+.emptyGroup {
+  padding: 20px 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.unknownGroup {
+  grid-column: 1 / -1;
+  margin-top: 12px;
+  border-style: dashed;
+}
+
+.unknownGroup .groupDescription {
+  min-height: auto;
+}
+
+.unknownGroup .candidateList {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+
+@media (max-width: 1100px) {
+  .themeList {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .groupHeading h3 {
+    font-size: 17px;
+  }
+
+  .candidate {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 760px) {
+  .themeNav {
+    margin-top: 32px;
+  }
+
+  .themeLink {
+    padding: 11px;
+    gap: 6px;
+    font-size: 12px;
+    flex-wrap: wrap;
+    min-height: 62px;
+  }
+
+  .themeNumber {
+    font-size: 10px;
+  }
+
+  .selectedLabel {
+    font-size: 9px;
+  }
+
+  .question {
+    margin-top: 34px;
+    padding: 24px 20px;
+  }
+
+  .question h2 {
+    font-size: 23px;
+  }
+
+  .groups,
+  .unknownGroup .candidateList {
+    grid-template-columns: 1fr;
+  }
+
+  .groupHeading h3 {
+    font-size: 22px;
+  }
+
+  .groupDescription {
+    min-height: auto;
+  }
+
+  .candidate {
+    padding: 20px;
+  }
+
+  .unknownGroup .candidateList {
+    gap: 0;
+  }
+}

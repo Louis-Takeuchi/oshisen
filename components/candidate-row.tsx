@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { type Candidate } from "../lib/data";
 import type { calculateMatch } from "../lib/matching";
+import { CandidateActions } from "./candidate-actions";
+import { PriorityThemeSummary } from "./priority-themes";
 export function Portrait({
   name,
   large = false,
@@ -50,6 +52,8 @@ export function CandidateRow({
             )}
           </div>
         )}
+        <PriorityThemeSummary candidate={candidate} />
+        <CandidateActions candidate={candidate} />
       </div>
       <div className="candidate-row-end">
         {match && (

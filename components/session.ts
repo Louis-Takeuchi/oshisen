@@ -51,13 +51,17 @@ export function writeDiagnosis(state: DiagnosisState) {
   window.dispatchEvent(new Event("oshisen:diagnosis-change"));
 }
 export function clearDiagnosis() {
-  memoryState = null;
+  memoryState = emptyDiagnosis();
+  let cleared = false;
   try {
     sessionStorage.removeItem(key);
+    cleared = true;
+    memoryState = null;
   } catch {
     /* Storage may be unavailable. */
   }
   window.dispatchEvent(new Event("oshisen:diagnosis-change"));
+  return cleared;
 }
 export function useDiagnosis() {
   const [state, setState] = useState<DiagnosisState>(emptyDiagnosis);

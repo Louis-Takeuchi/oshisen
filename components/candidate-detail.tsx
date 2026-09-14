@@ -14,6 +14,9 @@ import { candidateResources, isSafeResourceUrl } from "../lib/resources";
 import { ExternalResourceLink } from "./external-resource-link";
 import { Portrait } from "./candidate-row";
 import { useDiagnosis } from "./session";
+import { CandidateActions } from "./candidate-actions";
+import { PriorityThemeSummary } from "./priority-themes";
+import { PolicyEvidence } from "./policy-evidence";
 function responseLabel(value: number | null | undefined) {
   return answerOptions.find((o) => o.value === value)?.label || "回答なし";
 }
@@ -89,6 +92,11 @@ export function CandidateDetail({ candidate }: { candidate: Candidate }) {
             <a href="#policy">政策を見る ↓</a>
             {humanity && <a href="#humanity">人となりを見る ↓</a>}
           </nav>
+          <CandidateActions candidate={candidate} />
+          <PriorityThemeSummary
+            candidate={candidate}
+            onNavigate={() => setDifferences(false)}
+          />
         </div>
         {diagnosed && (
           <div className="match-display hero-match">
@@ -163,7 +171,7 @@ export function CandidateDetail({ candidate }: { candidate: Candidate }) {
             const distance =
               yours == null || theirs == null ? null : Math.abs(yours - theirs);
             return (
-              <article className="policy-row" key={q.id}>
+              <article className="policy-row" key={q.id} id={`policy-${q.id}`}>
                 <div className="policy-question">
                   <span className="theme-label">{q.theme}</span>
                   <h3>{q.text}</h3>
@@ -171,6 +179,16 @@ export function CandidateDetail({ candidate }: { candidate: Candidate }) {
                     <summary>この質問について</summary>
                     <p>{q.context}</p>
                   </details>
+                  <Link
+                    className="inline-link policy-theme-link"
+                    href={`/issues?theme=${q.id}`}
+                  >
+                    この争点で全候補者を見る →
+                  </Link>
+                  <PolicyEvidence
+                    candidateId={candidate.id}
+                    questionId={q.id}
+                  />
                 </div>
                 <div className="comparison-answers">
                   <div>

@@ -65,6 +65,10 @@ test("all application routes render on the Vercel Next.js runtime", async () => 
     "/questions",
     "/results",
     "/candidates",
+    "/compare",
+    "/saved",
+    "/issues",
+    "/issues?theme=education",
     "/candidates/sato-misaki",
     "/candidates/takahashi-ken",
     "/candidates/tanaka-aya",
@@ -85,34 +89,76 @@ test("all application routes render on the Vercel Next.js runtime", async () => 
     const html = await response.text();
     assert.match(html, /lang="ja"/, path);
     assert.match(html, /id="main"/, path);
-    assert.match(html, /rel="icon"[^>]*href="\/favicon.ico"/, path);
-    assert.match(html, /rel="apple-touch-icon"/, path);
-    assert.match(html, /name="theme-color" content="#f7f6f2"/, path);
-    assert.ok(html.includes(`${origin}/og.png`), path);
+    assert.match(html, /rel="icon"[^>]*href="\/favicon\.ico\?v=logo-2"/, path);
+    assert.match(html, /rel="icon"[^>]*href="\/icon-192\.png\?v=logo-2"/, path);
+    assert.match(
+      html,
+      /rel="apple-touch-icon"[^>]*href="\/apple-touch-icon\.png\?v=logo-2"/,
+      path,
+    );
+    assert.match(
+      html,
+      /rel="manifest"[^>]*href="\/site\.webmanifest\?v=logo-2"/,
+      path,
+    );
+    assert.doesNotMatch(
+      html,
+      /rel="(?:icon|apple-touch-icon)"[^>]*href="\/(?:favicon\.ico|icon-192\.png|apple-touch-icon\.png)"/,
+      path,
+    );
+    assert.match(html, /name="theme-color" content="#fffdf7"/, path);
+    assert.ok(html.includes(`${origin}/og.png?v=logo-2`), path);
+    assert.match(html, /property="og:image:width" content="1733"/, path);
+    assert.match(html, /property="og:image:height" content="907"/, path);
+    assert.match(html, /src="\/brand-logo\.png"/, path);
     assert.doesNotMatch(html, /vinext|Starter Project|codex-preview/, path);
   }
 });
 
-test("favicon, home screen icons, manifest and social card are served", async () => {
+test("full brand logo, favicon, home screen icons, manifest and social card are served", async () => {
   for (const path of [
     "/favicon.ico",
+    "/favicon.ico?v=logo-2",
     "/apple-touch-icon.png",
+    "/apple-touch-icon.png?v=logo-2",
     "/icon-192.png",
+    "/icon-192.png?v=logo-2",
     "/icon-512.png",
+    "/icon-512.png?v=logo-2",
+    "/brand-logo.png",
     "/og.png",
+    "/og.png?v=logo-2",
   ]) {
     const response = await fetch(`${origin}${path}`);
     assert.equal(response.status, 200, path);
     const data = Buffer.from(await response.arrayBuffer());
-    if (path.endsWith(".ico")) {
+    if (new URL(path, origin).pathname.endsWith(".ico")) {
       assert.equal(data.readUInt16LE(2), 1);
       assert.equal(data.readUInt16LE(4), 3);
-    } else assert.equal(data.subarray(1, 4).toString(), "PNG", path);
+    } else {
+      assert.equal(data.subarray(1, 4).toString(), "PNG", path);
+      if (path.startsWith("/og.png")) {
+        assert.equal(data.readUInt32BE(16), 1733);
+        assert.equal(data.readUInt32BE(20), 907);
+      }
+    }
     assert.match(response.headers.get("content-type"), /image\//, path);
   }
-  const manifest = await (await fetch(`${origin}/site.webmanifest`)).json();
+  const manifestResponse = await fetch(`${origin}/site.webmanifest?v=logo-2`);
+  assert.equal(manifestResponse.status, 200);
+  const manifest = await manifestResponse.json();
   assert.equal(manifest.short_name, "オシセン");
-  assert.equal(manifest.icons.length, 2);
+  assert.equal(manifest.theme_color, "#fffdf7");
+  assert.equal(manifest.background_color, "#fffdf7");
+  assert.deepEqual(
+    manifest.icons.map(({ src }) => src),
+    ["/icon-192.png?v=logo-2", "/icon-512.png?v=logo-2"],
+  );
+  assert.deepEqual(
+    manifest,
+    await (await fetch(`${origin}/site.webmanifest`)).json(),
+    "versioned manifest requests serve the current manifest without changing its identity",
+  );
   const robots = await (await fetch(`${origin}/robots.txt`)).text();
   assert.match(robots, /Disallow: \//);
 });
@@ -122,6 +168,9 @@ test("client navigation receives React payloads and loadable JavaScript", async 
     "/diagnosis",
     "/questions",
     "/results",
+    "/compare",
+    "/saved",
+    "/issues?theme=healthcare",
     "/candidates/sato-misaki",
   ]) {
     const response = await fetch(`${origin}${path}`, { headers: { RSC: "1" } });
@@ -145,6 +194,29 @@ test("client navigation receives React payloads and loadable JavaScript", async 
     assert.equal(response.status, 200, script);
     assert.match(response.headers.get("content-type"), /javascript/);
   }
+});
+
+test("issue selection, comparison entry points and source notices survive production rendering", async () => {
+  const issue = await (await fetch(`${origin}/issues?theme=healthcare`)).text();
+  assert.match(issue, /地域医療/);
+  assert.match(issue, /#policy-healthcare/);
+  assert.match(issue, /サンプル回答/);
+  const invalid = await (await fetch(`${origin}/issues?theme=unknown`)).text();
+  assert.match(invalid, /指定されたテーマが見つからない/);
+  const duplicate = await (
+    await fetch(`${origin}/issues?theme=education&theme=healthcare`)
+  ).text();
+  assert.match(duplicate, /指定されたテーマが見つからない/);
+  const candidate = await (
+    await fetch(`${origin}/candidates/sato-misaki`)
+  ).text();
+  assert.match(candidate, /id="policy-transport"/);
+  assert.match(candidate, /この政策の情報源・本人の説明/);
+  assert.match(candidate, /一次情報は未掲載/);
+  assert.doesNotMatch(candidate, /<iframe/);
+  const home = await (await fetch(origin)).text();
+  for (const path of ["/compare", "/saved", "/issues"])
+    assert.ok(home.includes(`href="${path}"`));
 });
 
 test("unknown candidate and missing page have real 404 responses", async () => {

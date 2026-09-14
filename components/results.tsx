@@ -5,6 +5,7 @@ import { calculateMatch } from "../lib/matching";
 import { useVariant } from "./use-local-settings";
 import { useDiagnosis } from "./session";
 import { CandidateRow } from "./candidate-row";
+import { PriorityThemePicker } from "./priority-themes";
 export function Results() {
   const { state, ready } = useDiagnosis();
   const humanity = useVariant() !== "policy";
@@ -70,6 +71,12 @@ export function Results() {
           一致度の計算方法 ↗
         </Link>
       </div>
+      <div className="exploration-links" aria-label="候補者を考えるための機能">
+        <Link href="/compare">2人の政策を比較する →</Link>
+        <Link href="/saved">気になる候補を見る →</Link>
+        <Link href="/issues">争点から見る →</Link>
+      </div>
+      <PriorityThemePicker />
       {count === 0 && (
         <div className="empty-notice">
           <h2>一致度を計算できませんでした。</h2>

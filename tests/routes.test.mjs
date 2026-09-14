@@ -35,6 +35,10 @@ test("all required pages server-render and individual candidates have distinct m
     "/questions",
     "/results",
     "/candidates",
+    "/compare",
+    "/saved",
+    "/issues",
+    "/issues?theme=education",
     "/about",
     "/method",
     "/sources",
@@ -56,6 +60,23 @@ test("all required pages server-render and individual candidates have distinct m
       assert.doesNotMatch(html, /<iframe/);
     }
   }
+});
+
+test("issue deep links and candidate policy sources are rendered transparently", async () => {
+  const issue = await (await render("/issues?theme=education")).text();
+  assert.match(issue, /県立高校/);
+  assert.match(issue, /サンプル回答/);
+  assert.match(issue, /#policy-education/);
+  const invalid = await (await render("/issues?theme=unknown")).text();
+  assert.match(invalid, /指定されたテーマが見つからない/);
+  const candidate = await (await render("/candidates/sato-misaki")).text();
+  assert.match(candidate, /id="policy-transport"/);
+  assert.match(candidate, /この政策の情報源・本人の説明/);
+  assert.match(candidate, /一次情報は未掲載/);
+  assert.doesNotMatch(candidate, /<iframe/);
+  const home = await (await render("/")).text();
+  for (const path of ["/compare", "/saved", "/issues"])
+    assert.ok(home.includes(`href="${path}"`));
 });
 test("unknown candidate is a genuine 404, not another candidate", async () => {
   const response = await render("/candidates/not-a-candidate");

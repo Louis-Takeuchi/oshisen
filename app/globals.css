@@ -254,10 +254,6 @@ img {
 .logo:hover {
   text-decoration: none;
 }
-.logo-period {
-  color: var(--blue);
-  margin-left: 5px;
-}
 .desktop-nav {
   display: flex;
   align-items: center;
@@ -1990,5 +1986,94 @@ input[type="checkbox"] {
   *::after {
     animation: none !important;
     transition: none !important;
+  }
+}
+.saved-count {
+  display: inline-block;
+  min-width: 21px;
+  text-align: center;
+  margin-left: 3px;
+  font-size: 12px;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 99px;
+}
+.exploration-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 24px;
+  margin-block: 20px 28px;
+  font-size: 14px;
+}
+.exploration-links a {
+  text-decoration: underline;
+  text-underline-offset: 5px;
+}
+.policy-theme-link {
+  display: inline-block;
+  margin-top: 10px;
+  font-size: 12px;
+}
+.home-explore {
+  padding-block: 20px 90px;
+}
+.explore-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-block: 1px solid var(--ink);
+}
+.explore-grid > a {
+  padding: 26px;
+  position: relative;
+}
+.explore-grid > a + a {
+  border-left: 1px solid var(--line);
+}
+.explore-grid h3 {
+  font-size: 22px;
+  margin: 16px 0 8px;
+}
+.explore-grid p {
+  font-size: 13px;
+  margin-bottom: 16px;
+  color: var(--muted);
+}
+.explore-grid > a:hover {
+  background: var(--white);
+  text-decoration: none;
+}
+.policy-row:target {
+  outline: 2px solid var(--blue);
+  outline-offset: 6px;
+}
+.delete-confirmation {
+  border: 1px solid var(--line);
+  padding: 20px;
+  margin-top: 20px;
+}
+.delete-confirmation p {
+  margin-bottom: 14px;
+}
+.delete-confirmation button + button {
+  margin-left: 18px;
+}
+@media (min-width: 901px) {
+  .desktop-nav {
+    gap: 20px;
+  }
+}
+@media (max-width: 900px) {
+  .explore-grid {
+    grid-template-columns: 1fr;
+  }
+  .explore-grid > a + a {
+    border-left: 0;
+    border-top: 1px solid var(--line);
+  }
+  .explore-grid > a {
+    padding: 22px 6px;
+  }
+  .home-explore {
+    padding-bottom: 54px;
   }
 }
