@@ -1,17 +1,35 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { headers } from "next/headers";
 import { SiteShell } from "../components/site-shell";
+import { resolveSiteOrigin } from "../lib/site-origin";
 import "./globals.css";
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#f7f6f2",
+  colorScheme: "light",
+};
 export async function generateMetadata(): Promise<Metadata> {
-  const requestHeaders = await headers();
-  const host = requestHeaders.get("host") || "localhost:3000";
-  const protocol =
-    host.startsWith("localhost") || host.startsWith("127.0.0.1")
-      ? "http"
-      : "https";
-  const origin = new URL(`${protocol}://${host}`);
+  const origin = resolveSiteOrigin(await headers(), process.env.SITE_URL);
   return {
     metadataBase: origin,
+    applicationName: "オシセン",
+    icons: {
+      icon: [
+        {
+          url: "/favicon.ico",
+          sizes: "16x16 32x32 48x48",
+          type: "image/x-icon",
+        },
+        { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+      ],
+      apple: [
+        { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+      ],
+    },
+    manifest: "/site.webmanifest",
+    appleWebApp: { title: "オシセン" },
+    formatDetection: { telephone: false },
     title: {
       default: "オシセン｜政策で出会い、人柄で興味を深める",
       template: "%s｜オシセン",

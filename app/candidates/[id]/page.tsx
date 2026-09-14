@@ -3,18 +3,16 @@ import { headers } from "next/headers";
 import { notFound } from "next/navigation";
 import { candidates } from "../../../lib/data";
 import { CandidateDetail } from "../../../components/candidate-detail";
+import { resolveSiteOrigin } from "../../../lib/site-origin";
 type Props = { params: Promise<{ id: string }> };
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
   const candidate = candidates.find((c) => c.id === id);
   if (!candidate) return { title: "候補者が見つかりません" };
-  const requestHeaders = await headers();
-  const host = requestHeaders.get("host") || "localhost:3000";
-  const protocol =
-    host.startsWith("localhost") || host.startsWith("127.0.0.1")
-      ? "http"
-      : "https";
-  const origin = `${protocol}://${host}`;
+  const origin = resolveSiteOrigin(
+    await headers(),
+    process.env.SITE_URL,
+  ).origin;
   const title = `${candidate.name}（仮名）｜オシセン`;
   const description = `${candidate.name}の候補者詳細サンプル。政策比較、人となり、経歴、インタビュー、一次情報への導線を確認できます。実在候補者の情報ではありません。`;
   return {
