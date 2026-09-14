@@ -1,7 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import { headers } from "next/headers";
 import { SiteShell } from "../components/site-shell";
+import { VisitorAnalytics } from "../components/visitor-analytics";
 import { resolveSiteOrigin } from "../lib/site-origin";
+import { isVisitorAnalyticsDeployment } from "../lib/visitor-analytics";
 import "./globals.css";
 import "./pop-theme.css";
 export const viewport: Viewport = {
@@ -15,6 +17,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     metadataBase: origin,
     applicationName: "オシセン",
+    referrer: "origin",
     icons: {
       icon: [
         {
@@ -75,6 +78,12 @@ export default function RootLayout({
     <html lang="ja">
       <body>
         <SiteShell>{children}</SiteShell>
+        <VisitorAnalytics
+          enabled={isVisitorAnalyticsDeployment(
+            process.env.NODE_ENV,
+            process.env.VERCEL_ENV,
+          )}
+        />
       </body>
     </html>
   );

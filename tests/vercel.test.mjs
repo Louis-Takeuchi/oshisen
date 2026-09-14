@@ -85,9 +85,11 @@ test("all application routes render on the Vercel Next.js runtime", async () => 
     assert.match(response.headers.get("content-type"), /text\/html/);
     assert.equal(response.headers.get("x-powered-by"), null);
     assert.equal(response.headers.get("x-content-type-options"), "nosniff");
+    assert.equal(response.headers.get("referrer-policy"), "origin");
     assert.equal(response.headers.get("x-robots-tag"), "noindex, nofollow");
     const html = await response.text();
     assert.match(html, /lang="ja"/, path);
+    assert.match(html, /name="referrer" content="origin"/, path);
     assert.match(html, /id="main"/, path);
     assert.match(html, /rel="icon"[^>]*href="\/favicon\.ico\?v=logo-2"/, path);
     assert.match(html, /rel="icon"[^>]*href="\/icon-192\.png\?v=logo-2"/, path);

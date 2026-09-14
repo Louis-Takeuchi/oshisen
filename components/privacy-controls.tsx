@@ -68,13 +68,14 @@ export function PrivacyControls() {
           className="button secondary"
           onClick={() => setConfirming(true)}
         >
-          保存したデータをすべて削除
+          回答・候補・操作記録を削除
         </button>
       </div>
       {confirming && (
         <div className="delete-confirmation">
           <p>
             気になる候補と、このタブの回答・比較・重視テーマ・操作記録を削除します。この操作は元に戻せません。
+            訪問計測の設定は維持し、Vercelで集計済みのデータは削除しません。
           </p>
           <button type="button" className="button secondary" onClick={eraseAll}>
             削除する
