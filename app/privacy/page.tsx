@@ -144,11 +144,12 @@ export default function PrivacyPage() {
           削除の手順、管理責任者を事前に定め、このページを更新します。
         </p>
         <p>
-          運営主体・個人情報の管理責任者は未確定、問い合わせ窓口は準備中です。
+          運営メンバーは、代表のRyo（大屋涼）と共同代表のLouis（竹内琉瑛）です。
+          法人・団体としての正式な運営主体、個人情報の管理責任者、問い合わせ窓口の案内は準備中です。
           現在、このサイトに問い合わせフォームや受付先はありません。
         </p>
-        <Link href="/about" className="text-link">
-          オシセンについて <span aria-hidden="true">→</span>
+        <Link href="/about#team" className="text-link">
+          運営メンバーと担当を見る <span aria-hidden="true">→</span>
         </Link>
       </section>
     </main>

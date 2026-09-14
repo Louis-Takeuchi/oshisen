@@ -136,12 +136,12 @@ export default function MethodPage() {
           更新頻度、確認体制、対応手順は未確定です。
         </p>
         <p>
-          運営主体・責任者は未確定、問い合わせ・訂正窓口は準備中です。
-          正式公開までに、このページと「オシセンについて」で案内します。
+          運営は、企画・取材・営業を担当する代表のRyo（大屋涼）と、開発・デザイン・研究などを担当する共同代表のLouis（竹内琉瑛）が行っています。
+          法人・団体としての正式な運営主体、編集・訂正の確認体制、問い合わせ・訂正窓口の案内は準備中です。
           現在、訂正依頼を送信できる受付先は設置していません。
         </p>
-        <Link href="/about" className="text-link">
-          オシセンについて <span aria-hidden="true">→</span>
+        <Link href="/about#team" className="text-link">
+          運営メンバーと担当を見る <span aria-hidden="true">→</span>
         </Link>
       </section>
     </main>

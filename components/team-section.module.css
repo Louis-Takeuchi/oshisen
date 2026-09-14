@@ -1,0 +1,440 @@
+.team {
+  margin-block: 58px 64px;
+  padding: clamp(22px, 4vw, 42px);
+  border: 2px solid var(--ink);
+  border-radius: 30px;
+  background: var(--blue-soft);
+  box-shadow: 8px 8px 0 var(--yellow);
+  scroll-margin-top: 30px;
+}
+
+.sectionHeading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.eyebrow {
+  margin: 0 0 14px;
+  color: var(--blue);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+
+.team h2 {
+  color: var(--blue);
+  font-size: clamp(26px, 3.8vw, 40px);
+  line-height: 1.55;
+}
+
+.sectionHeading h2 span {
+  background: linear-gradient(transparent 68%, var(--yellow) 68%);
+}
+
+.sticker {
+  flex-shrink: 0;
+  padding: 11px 16px;
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  background: white;
+  box-shadow: 3px 4px 0 var(--pink);
+  font-size: 14px;
+  font-weight: 800;
+  transform: rotate(8deg);
+}
+
+.intro {
+  margin-top: 20px;
+  max-width: 760px;
+  font-size: 16px;
+  line-height: 1.95;
+}
+
+.members {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch;
+  gap: 24px;
+  margin-top: 30px;
+}
+
+.member {
+  min-width: 0;
+  overflow: hidden;
+  border: 2px solid var(--ink);
+  border-radius: 22px;
+  background: white;
+  box-shadow: 4px 4px 0 var(--ink);
+  scroll-margin-top: 32px;
+}
+
+.portrait {
+  position: relative;
+  margin: 0;
+  padding: 9px 9px 0;
+  background: var(--yellow);
+}
+
+.member[data-member="takeuchi"] .portrait {
+  background: var(--pink-soft);
+}
+
+.photo {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 12px 12px 0 0;
+}
+
+.role {
+  position: absolute;
+  top: 22px;
+  left: 21px;
+  padding: 4px 16px;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  background: var(--yellow);
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 800;
+  box-shadow: 2px 2px 0 var(--ink);
+  transform: rotate(-5deg);
+}
+
+.member[data-member="takeuchi"] .role {
+  background: var(--pink-soft);
+  transform: rotate(4deg);
+}
+
+.memberBody {
+  padding: 24px;
+}
+
+.nameRow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px 16px;
+}
+
+.nameRow h3 {
+  color: var(--ink);
+  font-size: 44px;
+  letter-spacing: 0.02em;
+}
+
+.fullName {
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: 14px;
+  letter-spacing: 0.08em;
+}
+
+.selfDescription {
+  margin-top: 20px;
+  padding: 14px 16px;
+  border-left: 4px solid var(--blue);
+  border-radius: 0 12px 12px 0;
+  background: var(--blue-soft);
+}
+
+.selfDescription > span {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.selfDescription > p {
+  margin-top: 4px;
+  color: var(--blue);
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1.7;
+}
+
+.photoLink {
+  color: var(--muted);
+  padding-block: 10px;
+  font-size: 12px;
+  text-decoration: underline;
+}
+
+.headline {
+  margin-top: 22px;
+  color: var(--blue);
+  font-size: 17px;
+  font-weight: 800;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  list-style: none;
+  margin: 18px 0;
+  padding: 0;
+}
+
+.tags li {
+  padding: 3px 11px;
+  border: 1px solid var(--ink);
+  border-radius: 7px;
+  background: var(--yellow-soft);
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.member[data-member="takeuchi"] .tags li {
+  background: var(--pink-soft);
+}
+
+.responsibilities {
+  margin: 0;
+  font-size: 13px;
+}
+
+.responsibilities > div {
+  display: grid;
+  grid-template-columns: 70px minmax(0, 1fr);
+  gap: 10px;
+  padding-block: 11px;
+  border-top: 1px dashed var(--line);
+}
+
+.responsibilities dt {
+  font-weight: 750;
+}
+
+.responsibilities dd {
+  margin: 0;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+
+.memberLink {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  min-height: 48px;
+  padding: 8px 14px;
+  margin-top: 18px;
+  border: 2px solid var(--blue);
+  border-radius: 12px;
+  color: var(--blue);
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.memberLink:hover {
+  text-decoration: none;
+  background: var(--yellow-soft);
+}
+
+.factNote {
+  margin-top: 21px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.9;
+}
+
+.humanity {
+  margin-top: 40px;
+  padding-top: 34px;
+  border-top: 2px dashed var(--ink);
+  scroll-margin-top: 32px;
+}
+
+.humanity h2 {
+  font-size: clamp(24px, 3vw, 31px);
+}
+
+.answerNotice {
+  display: grid;
+  gap: 7px;
+  margin-top: 22px;
+  padding: 18px 20px;
+  border: 1px solid var(--ink);
+  border-radius: 14px;
+  background: var(--yellow-soft);
+  font-size: 13px;
+  line-height: 1.85;
+}
+
+.answerNotice > span {
+  font-weight: 800;
+  font-size: 14px;
+}
+
+.questionList {
+  display: grid;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.question {
+  min-width: 0;
+  border: 1px solid var(--ink);
+  border-radius: 16px;
+  background: white;
+  overflow: hidden;
+}
+
+.question h3 {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 16px 20px;
+  font-size: 17px;
+  line-height: 1.8;
+}
+
+.questionNumber {
+  flex-shrink: 0;
+  color: var(--blue);
+  font-size: 13px;
+  letter-spacing: 0;
+}
+
+.answers {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 0;
+  border-top: 1px dashed var(--line);
+}
+
+.answers > div {
+  min-width: 0;
+  padding: 16px 20px;
+  background: var(--yellow-soft);
+}
+
+.answers > div[data-member="takeuchi"] {
+  border-left: 1px dashed var(--line);
+  background: var(--pink-soft);
+}
+
+.answers dt {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+  font-weight: 750;
+  font-size: 14px;
+}
+
+.answers dt a {
+  text-decoration: underline;
+}
+
+.answers dd {
+  margin: 6px 0 0;
+}
+
+.answerSource {
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.answerText {
+  font-size: 15px;
+  white-space: pre-wrap;
+  color: var(--ink);
+}
+
+.pending {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.answerText,
+.pending {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+}
+
+.moreQuestions {
+  margin-top: 24px;
+}
+
+.moreQuestions > summary {
+  padding: 16px 20px;
+  border: 2px solid var(--ink);
+  border-radius: 14px;
+  background: white;
+  color: var(--blue);
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.moreQuestions > summary:hover {
+  background: var(--yellow-soft);
+}
+
+.moreLabel {
+  display: block;
+  margin: 3px 0 0 20px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+@media (max-width: 760px) {
+  .team {
+    padding: 22px 18px;
+    margin-block: 40px 48px;
+    border-radius: 22px;
+    box-shadow: 5px 5px 0 var(--yellow);
+  }
+
+  .sectionHeading {
+    display: block;
+  }
+
+  .sticker {
+    display: inline-block;
+    margin-top: 18px;
+    padding: 5px 14px;
+    border-radius: 999px;
+    transform: rotate(-3deg);
+  }
+
+  .members {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+  }
+
+  .memberBody {
+    padding: 20px;
+  }
+
+  .nameRow h3 {
+    font-size: 38px;
+  }
+
+  .question h3 {
+    padding: 14px;
+    font-size: 16px;
+    gap: 9px;
+  }
+
+  .answers {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .answers > div {
+    padding: 14px 18px;
+  }
+
+  .answers > div[data-member="takeuchi"] {
+    border-top: 1px dashed var(--line);
+    border-left: 0;
+  }
+}

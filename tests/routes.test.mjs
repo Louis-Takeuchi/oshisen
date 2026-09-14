@@ -85,6 +85,44 @@ test("unknown candidate is a genuine 404, not another candidate", async () => {
   assert.match(html, /ページが見つかりません/);
 });
 
+test("operator profiles and self-reported Q&A render on Sites without client-side state", async () => {
+  const html = await (await render("/about")).text();
+  for (const id of [
+    "team",
+    "team-qa",
+    "team-oya",
+    "team-takeuchi",
+    "our-idea",
+    "operations",
+  ]) {
+    assert.ok(html.includes(`id="${id}"`), id);
+  }
+  for (const text of [
+    "Ryo",
+    "Louis",
+    "大屋涼",
+    "竹内琉瑛",
+    "クレイジーネゴシエーター",
+    "政策提言立案",
+    "サッカー観戦、ランニング",
+    "見習い科学哲学者",
+    "本と論文を読む",
+    "認知科学、AI開発、日本古代史探究",
+  ]) {
+    assert.ok(html.includes(text), text);
+  }
+  for (const member of ["oya", "takeuchi"]) {
+    assert.ok(html.includes(`src="/team/${member}.jpg"`));
+    assert.ok(html.includes(`href="/team/${member}.jpg"`));
+  }
+  assert.match(html, /<details\b/);
+  assert.match(html, /もう少し深く、聞いてみる/);
+  assert.match(html, /本人の回答を準備中/);
+  assert.doesNotMatch(html, /運営主体・責任者<\/dt>\s*<dd>未確定/);
+  const home = await (await render("/")).text();
+  assert.match(home, /href="\/about#team"/);
+});
+
 test("production navigation does not import the side-effect-only browser bootstrap", async () => {
   const clientRoot = new URL("../dist/client/", import.meta.url);
   const manifest = JSON.parse(

@@ -231,6 +231,46 @@ test("unknown candidate and missing page have real 404 responses", async () => {
   }
 });
 
+test("operator profiles, self-reported answers and the supplied portraits are served", async () => {
+  const html = await (await fetch(`${origin}/about`)).text();
+  for (const text of [
+    "Ryo",
+    "Louis",
+    "大屋涼",
+    "竹内琉瑛",
+    "クレイジーネゴシエーター",
+    "見習い科学哲学者",
+    "政策提言立案",
+    "本と論文を読む",
+    "サッカー観戦、ランニング",
+    "認知科学、AI開発、日本古代史探究",
+  ]) {
+    assert.ok(html.includes(text), text);
+  }
+  for (const member of ["oya", "takeuchi"]) {
+    assert.ok(html.includes(`id="team-${member}"`));
+    assert.ok(html.includes(`src="/team/${member}.jpg"`));
+    const response = await fetch(`${origin}/team/${member}.jpg`);
+    assert.equal(response.status, 200);
+    assert.match(response.headers.get("content-type"), /image\/jpeg/);
+    const bytes = Buffer.from(await response.arrayBuffer());
+    assert.deepEqual(
+      bytes,
+      await readFile(new URL(`../public/team/${member}.jpg`, import.meta.url)),
+    );
+  }
+  assert.match(html, /id="team-qa"/);
+  assert.match(html, /<details\b/);
+  assert.match(html, /本人の回答を準備中/);
+  for (const path of ["/privacy", "/method", "/sources"]) {
+    const page = await (await fetch(`${origin}${path}`)).text();
+    assert.ok(page.includes("大屋涼"), path);
+    assert.ok(page.includes("竹内琉瑛"), path);
+    assert.ok(page.includes('href="/about#team"'), path);
+    assert.doesNotMatch(page, /運営主体・責任者は未確定/, path);
+  }
+});
+
 test("Vercel selects the Next.js build instead of the Sites build", async () => {
   const config = JSON.parse(
     await readFile(new URL("../vercel.json", import.meta.url), "utf8"),

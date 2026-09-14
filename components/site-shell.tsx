@@ -138,6 +138,9 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
             <Link onClick={closeMenu} href="/about">
               オシセンについて →
             </Link>
+            <Link onClick={closeMenu} href="/about#team">
+              運営メンバー →
+            </Link>
             <Link onClick={closeMenu} href="/sources">
               情報源・公平性 →
             </Link>
@@ -167,6 +170,7 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
                 <Link href="/compare">候補者を比較する</Link>
                 <Link href="/saved">気になる候補</Link>
                 <Link href="/about">オシセンについて</Link>
+                <Link href="/about#team">運営メンバー</Link>
                 <Link href="/method">マッチングの仕組み</Link>
                 <Link href="/sources">情報源・公平性</Link>
                 <Link href="/privacy">プライバシー</Link>

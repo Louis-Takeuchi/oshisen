@@ -1,15 +1,18 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { TeamSection } from "../../components/team-section";
+import { teamMembers } from "../../lib/team";
+import styles from "./about.module.css";
 
 export const metadata: Metadata = {
   title: "オシセンについて",
   description:
-    "政治家との出会い方を、変える。政策を入口に、候補者本人のことばと一次情報へつなぐオシセンの考え方。",
+    "代表のRyo（大屋涼）と共同代表のLouis（竹内琉瑛）。オシセンをつくる2人の担当と人となりを、写真と本人のことばで紹介します。",
 };
 
 export default function AboutPage() {
   return (
-    <main id="main" className="container document-page">
+    <main id="main" className={`container document-page ${styles.page}`}>
       <p className="eyebrow">オシセンについて</p>
       <h1>
         政治家との出会い方を、
@@ -21,7 +24,24 @@ export default function AboutPage() {
         オシセンは、候補者を知るきっかけをつくるサービスです。
       </p>
 
-      <section className="document-section">
+      <nav className={styles.jumpLinks} aria-label="このページの目次">
+        <a href="#team">
+          つくっている2人 <span aria-hidden="true">↓</span>
+        </a>
+        <a href="#team-qa">
+          人となりのQ&A <span aria-hidden="true">↓</span>
+        </a>
+        <a href="#our-idea">
+          オシセンの考え方 <span aria-hidden="true">↓</span>
+        </a>
+        <a href="#operations">
+          運営情報 <span aria-hidden="true">↓</span>
+        </a>
+      </nav>
+
+      <TeamSection />
+
+      <section className="document-section" id="our-idea">
         <h2>
           「今回、誰が気になる？」が、
           <br />
@@ -66,7 +86,8 @@ export default function AboutPage() {
         <p>
           現在は画面と操作を確かめるプロトタイプです。実在する候補者の情報は掲載していません。
           同意した場合の行動記録も、お使いのブラウザ内で動作を確認するためのものです。
-          利用者全体を集計する調査や、効果を実証した研究は実施していません。
+          サイト改善のための訪問数の集計と、この仮説の効果を検証する研究は別のものです。
+          効果を実証した研究結果は、まだありません。
         </p>
         <Link href="/privacy" className="text-link">
           データの扱いを読む <span aria-hidden="true">→</span>
@@ -88,16 +109,42 @@ export default function AboutPage() {
         </Link>
       </section>
 
-      <section className="document-section">
+      <section className="document-section" id="operations">
         <h2>運営について</h2>
         <dl>
-          <dt>プロジェクト</dt>
-          <dd>オシセン / Phase 0</dd>
-          <dt>運営主体・責任者</dt>
-          <dd>未確定。公開前に明記します。</dd>
-          <dt>問い合わせ・訂正窓口</dt>
-          <dd>準備中。現在、このサイトに送信フォームや受付先はありません。</dd>
+          <div>
+            <dt>プロジェクト</dt>
+            <dd>オシセン / Phase 0</dd>
+          </div>
+          {teamMembers.map((member) => (
+            <div key={member.id}>
+              <dt>{member.role}</dt>
+              <dd>
+                <a href={`#team-${member.id}`} className="text-link">
+                  {member.name}（{member.fullName}）
+                </a>
+                <span className={styles.operationRoles}>
+                  担当：
+                  {member.responsibilities.map(({ label }) => label).join("・")}
+                </span>
+              </dd>
+            </div>
+          ))}
+          <div>
+            <dt>法人・団体の情報</dt>
+            <dd>法人・団体としての名称等は未掲載です。</dd>
+          </div>
+          <div>
+            <dt>問い合わせ・訂正窓口</dt>
+            <dd>
+              準備中。現在、このサイトに送信フォームや受付先はありません。
+            </dd>
+          </div>
         </dl>
+        <p>
+          運営メンバーの紹介と、候補者の掲載・評価は分けて扱います。
+          運営者の性格や好みを、政策一致度や候補者の表示順に反映することはありません。
+        </p>
       </section>
     </main>
   );
