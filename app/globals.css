@@ -2077,3 +2077,120 @@ input[type="checkbox"] {
     padding-bottom: 54px;
   }
 }
+
+/* Question-level policy and information-needs flows. */
+.answer-review {
+  padding: 2rem 0;
+  border-bottom: 1px solid var(--line, #d9deeb);
+  scroll-margin-top: 6rem;
+}
+.answer-review h2 {
+  font-size: clamp(1.2rem, 2.3vw, 1.65rem);
+  line-height: 1.7;
+  max-width: 48rem;
+}
+.answer-review h3 {
+  margin-top: 1.2rem;
+}
+.your-answer,
+.answer-counts {
+  font-weight: 700;
+  margin: 1.4rem 0;
+}
+.policy-help {
+  margin: 1.2rem 0;
+  overflow-wrap: anywhere;
+}
+.policy-help h3 {
+  margin: 1.3rem 0 0.45rem;
+  font-size: 1rem;
+}
+.policy-help dt {
+  font-weight: 700;
+}
+.policy-help dd {
+  margin: 0.3rem 0 1rem;
+}
+.policy-help ul {
+  padding-left: 1.4rem;
+}
+.policy-help .caption {
+  margin-top: 1.2rem;
+}
+.undecided-reason {
+  display: grid;
+  gap: 0.75rem;
+  margin: 1.2rem 0;
+}
+.undecided-reason select {
+  font: inherit;
+  padding: 0.8rem;
+  border: 1px solid #9aa6c0;
+  background: white;
+  border-radius: 0.5rem;
+}
+.policy-filter {
+  display: flex;
+  gap: 0.7rem;
+  align-items: center;
+  margin: 2rem 0;
+}
+.per-question-comparison {
+  padding: 1.3rem 0;
+  overflow-wrap: anywhere;
+}
+.per-question-comparison dl {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+.per-question-comparison dt {
+  font-size: 0.85rem;
+}
+.per-question-comparison dd {
+  font-weight: 700;
+  margin: 0.5rem 0;
+}
+.comparison-label {
+  display: inline-block;
+  padding: 0.4rem 0.7rem;
+  background: #fff7b5;
+  font-weight: 700;
+}
+.comparison-columns,
+.comparison-selection {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2rem;
+}
+.information-types {
+  padding: 2rem 0;
+}
+.information-types fieldset {
+  display: flex;
+  gap: 0.75rem 1.5rem;
+  flex-wrap: wrap;
+  margin: 1.5rem 0;
+  padding: 0;
+  border: 0;
+}
+.information-types label {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+  padding: 0.7rem 0;
+}
+.needs-links article {
+  padding: 1.3rem 0;
+  border-bottom: 1px solid #d9deeb;
+}
+.needs-links h3 {
+  margin-bottom: 0.4rem;
+}
+@media (max-width: 680px) {
+  .comparison-columns,
+  .comparison-selection {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}

@@ -1,11 +1,12 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { answerOptions, questions, type AnswerMap } from "../lib/data.ts";
+import { answerOptions, questions } from "../lib/data.ts";
+import { candidates, type AnswerMap } from "./fixtures/legacy-data.ts";
 import {
   answerLabel,
   comparisonRows,
   selectComparisonCandidates,
-} from "../lib/comparison.ts";
+} from "./helpers/legacy-comparison.ts";
 
 test("comparison preserves published question order and both sides of the scale", () => {
   const rows = comparisonRows(
@@ -60,23 +61,24 @@ test("invalid answers and unknown question ids never become valid policy positio
 
 test("candidate columns use canonical kana order, de-duplicate, and cap at two", () => {
   assert.deepEqual(
-    selectComparisonCandidates(["takahashi-ken", "sato-misaki"]).map(
-      (c) => c.id,
-    ),
+    selectComparisonCandidates(
+      ["takahashi-ken", "sato-misaki"],
+      candidates,
+    ).map((c) => c.id),
     ["sato-misaki", "takahashi-ken"],
   );
   assert.deepEqual(
-    selectComparisonCandidates(["unknown", "tanaka-aya", "tanaka-aya"]).map(
-      (c) => c.id,
-    ),
+    selectComparisonCandidates(
+      ["unknown", "tanaka-aya", "tanaka-aya"],
+      candidates,
+    ).map((c) => c.id),
     ["tanaka-aya"],
   );
   assert.deepEqual(
-    selectComparisonCandidates([
-      "yamada-taro",
-      "takahashi-ken",
-      "sato-misaki",
-    ]).map((c) => c.id),
+    selectComparisonCandidates(
+      ["yamada-taro", "takahashi-ken", "sato-misaki"],
+      candidates,
+    ).map((c) => c.id),
     ["sato-misaki", "takahashi-ken"],
   );
   assert.deepEqual(selectComparisonCandidates([]), []);

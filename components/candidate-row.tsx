@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { type Candidate } from "../lib/data";
-import type { calculateMatch } from "../lib/matching";
 import { CandidateActions } from "./candidate-actions";
 import { PriorityThemeSummary } from "./priority-themes";
 export function Portrait({
@@ -21,55 +20,25 @@ export function Portrait({
         <br />
         未掲載
       </span>
-      <small>仮名・デモ</small>
     </div>
   );
 }
-export function CandidateRow({
-  candidate,
-  match,
-}: {
-  candidate: Candidate;
-  match?: ReturnType<typeof calculateMatch>;
-}) {
+export function CandidateRow({ candidate }: { candidate: Candidate }) {
   return (
     <article className="candidate-row">
       <Portrait name={candidate.name} />
       <div className="candidate-summary">
-        <p className="caption">候補者サンプル / 仮名</p>
+        <p className="caption">{candidate.district ?? "選挙区は確認中"}</p>
         <h2>
           <Link href={`/candidates/${candidate.id}`}>{candidate.name}</Link>
         </h2>
-        <p className="candidate-meta">所属・年齢・現新別：未登録</p>
-        {match && match.score !== null && (
-          <div className="theme-tags" aria-label="近かったテーマ">
-            {match.closeThemes.length ? (
-              match.closeThemes
-                .slice(0, 3)
-                .map((theme) => <span key={theme}>{theme}</span>)
-            ) : (
-              <span className="plain-tag">近かったテーマなし</span>
-            )}
-          </div>
-        )}
+        <p className="candidate-meta">{candidate.party ?? "所属は未掲載"}</p>
         <PriorityThemeSummary candidate={candidate} />
         <CandidateActions candidate={candidate} />
       </div>
       <div className="candidate-row-end">
-        {match && (
-          <div className="match-display">
-            <span>
-              政策一致度 <small>デモ</small>
-            </span>
-            <strong>
-              {match.score === null ? "—" : match.score}
-              <em>{match.score !== null ? "%" : ""}</em>
-            </strong>
-            <small>{match.comparedCount}問を比較した参考値</small>
-          </div>
-        )}
         <Link className="text-link" href={`/candidates/${candidate.id}`}>
-          この候補者を見る <span aria-hidden="true">→</span>
+          この人を知る →
         </Link>
       </div>
     </article>

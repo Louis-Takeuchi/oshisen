@@ -1,13 +1,12 @@
+/** Historical distance-based comparison retained only for regression tests. */
 import {
   answerOptions,
-  candidates,
   questions,
-  type AnswerMap,
-  type AnswerValue,
   type Candidate,
   type Question,
-} from "./data.ts";
-import { isAnswerValue } from "./matching.ts";
+} from "../../lib/data.ts";
+import type { AnswerMap, AnswerValue } from "../fixtures/legacy-data.ts";
+import { isAnswerValue } from "./legacy-matching.ts";
 
 export interface PolicyComparisonRow {
   readonly question: Question;
@@ -43,8 +42,10 @@ export function comparisonRows(
 /** Unknown ids and duplicates cannot create a column; columns use kana order. */
 export function selectComparisonCandidates(
   ids: readonly string[],
+  entries: readonly Candidate[] = [],
 ): readonly Candidate[] {
-  return candidates
+  return [...entries]
+    .sort((a, b) => a.kana.localeCompare(b.kana, "ja"))
     .filter((candidate) => ids.includes(candidate.id))
     .slice(0, 2);
 }

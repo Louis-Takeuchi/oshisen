@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { projectLabel } from "../lib/project";
 import styles from "./home-pop.module.css";
 
 export default function Home() {
@@ -9,29 +10,29 @@ export default function Home() {
         <div className="hero-copy">
           <p className="eyebrow">
             <span className="blue-dot" aria-hidden="true" />
-            2026 茨城県議会議員選挙
+            {projectLabel}
           </p>
           <h1>
             政治家の<span className="marked">気にピ</span>、<br />
             つくってみない？
           </h1>
           <p className="hero-description">
-            いくつかの質問に答えると、
+            政策の回答を、一問ずつ。
             <br />
-            あなたと政策の近い候補者が見つかります。
+            その理由や経験は、本人のことばから。
           </p>
           <div className="hero-actions">
             <Link href="/diagnosis" className="button primary">
-              診断をはじめる <span aria-hidden="true">→</span>
+              政策の質問を試す <span aria-hidden="true">→</span>
             </Link>
-            <Link className="text-link" href="/candidates">
-              候補者から見る <span aria-hidden="true">↗</span>
+            <Link className="text-link" href="/stories">
+              本人の話から見る <span aria-hidden="true">↗</span>
             </Link>
           </div>
           <p className="hero-note">
-            まずは政策から。
+            答えが同じでも、理由は違うかも。
             <br />
-            気になったら、その人自身まで。
+            気になったら、元の発言まで。
           </p>
         </div>
         <aside className="hero-editorial" aria-label="オシセンで知ること">
@@ -58,7 +59,7 @@ export default function Home() {
             <span className="small-index">01</span>
             <div>
               <h2>どんな政策？</h2>
-              <p>暮らしのことから、考えてみる。</p>
+              <p>ひとつの質問を、同じ条件で。</p>
             </div>
             <span className="editorial-arrow" aria-hidden="true">
               ↗
@@ -67,8 +68,8 @@ export default function Home() {
           <div className="editorial-line">
             <span className="small-index">02</span>
             <div>
-              <h2>どんな人？</h2>
-              <p>言葉や経験から、その人を知る。</p>
+              <h2>どうして、そう考えた？</h2>
+              <p>経験や判断の理由を、本人のことばで。</p>
             </div>
             <span className="editorial-arrow" aria-hidden="true">
               ↗
@@ -85,7 +86,7 @@ export default function Home() {
             </span>
           </div>
           <div className="editorial-bottom">
-            <span>政策で出会い、人柄で興味を深める。</span>
+            <span>回答から、理由へ。理由から、元の発言へ。</span>
             <span className="wordmark-small">オシセン</span>
           </div>
         </aside>
@@ -93,28 +94,28 @@ export default function Home() {
       <div className="container prototype-strip">
         <span className="outline-label">プロトタイプ</span>
         <p>
-          操作を体験するためのデモです。候補者は仮名、診断結果は確認用データです。
+          つくば市選挙区での実証に向けて準備中です。候補者情報は未掲載、Podcast取材はこれからです。
         </p>
         <Link href="/sources">掲載情報について ↗</Link>
       </div>
       <section className="container how-section">
         <div className="section-heading">
           <p className="eyebrow">オシセンの使い方</p>
-          <h2>まずは、あなたの考えから。</h2>
+          <h2>答えだけで、終わらない。</h2>
         </div>
         <ol className="steps">
           <li>
             <span>01</span>
             <div>
               <h3>質問に答える</h3>
-              <p>「どちらかといえば」で大丈夫。</p>
+              <p>「今は判断できない」でも大丈夫。</p>
             </div>
           </li>
           <li>
             <span>02</span>
             <div>
-              <h3>近い候補者を知る</h3>
-              <p>同じ考えも、違う考えも。</p>
+              <h3>一問ずつ、見比べる</h3>
+              <p>同じ回答も、違う回答も、そのまま。</p>
             </div>
           </li>
           <li>
@@ -125,33 +126,33 @@ export default function Home() {
                 <br />
                 もう少し見る
               </h3>
-              <p>政策の先に、その人の言葉。</p>
+              <p>経験、選択、理由。元の発言へ。</p>
             </div>
           </li>
         </ol>
       </section>
       <section className="container home-explore">
         <div className="section-heading">
-          <p className="eyebrow">見つけたあとに、できること。</p>
-          <h2>比べて、残して、考える。</h2>
+          <p className="eyebrow">気になるところから。</p>
+          <h2>入口は、ひとつじゃない。</h2>
         </div>
         <div className="explore-grid">
-          <Link href="/compare">
+          <Link href="/stories">
             <span className="small-index">01</span>
-            <h3>2人の政策を並べる</h3>
-            <p>同じ回答と、特に違うテーマを確かめる。</p>
+            <h3>本人の話から</h3>
+            <p>経験や判断の理由を知るための、共通の質問。</p>
+            <span aria-hidden="true">→</span>
+          </Link>
+          <Link href="/interests">
+            <span className="small-index">02</span>
+            <h3>知りたいことから</h3>
+            <p>テーマや情報の種類を選んで、入口を探す。</p>
             <span aria-hidden="true">→</span>
           </Link>
           <Link href="/issues">
-            <span className="small-index">02</span>
-            <h3>気になる争点から</h3>
-            <p>公共交通、教育、医療。テーマを入口に。</p>
-            <span aria-hidden="true">→</span>
-          </Link>
-          <Link href="/saved">
             <span className="small-index">03</span>
-            <h3>あとで、もう一度</h3>
-            <p>気になる候補を、このブラウザに保存する。</p>
+            <h3>政策の問いから</h3>
+            <p>公共交通、教育、医療。まずは問いを読む。</p>
             <span aria-hidden="true">→</span>
           </Link>
         </div>
@@ -186,41 +187,41 @@ export default function Home() {
               政策の見え方が少し変わるかもしれません。
             </p>
             <p>
-              オシセンでは、まず政策との一致度を示した上で、
+              オシセンでは、政策の回答を一問ずつ見比べます。
               <br className="desktop-only" />
-              候補者本人について知るための情報も掲載します。
+              そして、経験や判断の理由を元の発言につなぎます。
             </p>
           </div>
         </div>
       </section>
       <section className="container candidate-entrance">
         <div>
-          <p className="eyebrow">候補者から、知ってみる</p>
+          <p className="eyebrow">本人の話から、知ってみる</p>
           <h2>
             「この人、誰だろう」
             <br />
             からでも。
           </h2>
-          <p>診断を受けなくても、候補者のページを見られます。</p>
+          <p>質問への回答なしでも見られます。いまは取材前の準備中です。</p>
         </div>
-        <Link href="/candidates" className="entrance-link">
-          全候補者を見る <span aria-hidden="true">↗</span>
+        <Link href="/stories" className="entrance-link">
+          本人の話から見る <span aria-hidden="true">↗</span>
         </Link>
       </section>
       <section className="container trust-row">
         <p>
-          考えが近いことと、
+          知るための材料を、
           <br />
-          <strong>投票先を決めることは、別のこと。</strong>
+          <strong>自分で確かめられるように。</strong>
         </p>
         <div>
           <p>
-            政策一致度は、候補者の優劣を示すものではありません。
+            候補者の総合点や、人柄の点数はつけません。
             <br />
             オシセンは、特定の候補者への投票を推奨・依頼しません。
           </p>
           <Link href="/method" className="text-link">
-            マッチングの仕組み →
+            回答と情報の見方 →
           </Link>
         </div>
       </section>

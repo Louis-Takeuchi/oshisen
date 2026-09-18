@@ -17,7 +17,7 @@ export function useVariant() {
   return useSyncExternalStore(
     subscribe,
     getVariant,
-    () => "policy-humanity" as const,
+    () => "standard" as const,
   );
 }
 export function useConsent() {

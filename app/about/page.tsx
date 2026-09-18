@@ -4,6 +4,7 @@ import { TeamSection } from "../../components/team-section";
 import { OfficialContacts } from "../../components/official-contacts";
 import { contactEmail, contactMailto } from "../../lib/site-contact";
 import { teamMembers } from "../../lib/team";
+import { projectLabel } from "../../lib/project";
 import styles from "./about.module.css";
 
 export const metadata: Metadata = {
@@ -22,7 +23,7 @@ export default function AboutPage() {
         変える。
       </h1>
       <p className="lead">
-        政策で出会い、人柄で興味を深め、一次情報へ。
+        政策の回答から、経験や判断の理由へ。そして、元の発言へ。
         オシセンは、候補者を知るきっかけをつくるサービスです。
       </p>
 
@@ -58,8 +59,9 @@ export default function AboutPage() {
           そんな情報を知ることで、政策の見え方が少し変わるかもしれません。
         </p>
         <p>
-          まず、自分と政策の近い候補者を知る。気になったら、その人自身まで。
-          本人の長い話を聞いたり、公式サイトや選挙公報を読んだりする入口をつくります。
+          同じ政策の回答でも、理由まで同じとは限りません。
+          どんな場面で、何を選び、なぜそう考えたのか。
+          本人の話を、前後の文脈まで確かめられる入口をつくります。
         </p>
       </section>
 
@@ -67,35 +69,33 @@ export default function AboutPage() {
         <h2>政策から、もう一歩先へ。</h2>
         <ol>
           <li>質問に答えて、政策について自分の考えを整理する。</li>
-          <li>近かった論点も、違った論点も確かめる。</li>
-          <li>候補者の経験や判断のしかたを、本人のことばで知る。</li>
-          <li>インタビューや公式情報へ進み、自分で考える材料を増やす。</li>
+          <li>候補者の回答と、一問ずつ見比べる。</li>
+          <li>経験、選択、判断の理由、その判断の条件を知る。</li>
+          <li>元の発言や一次資料へ進み、文脈を確かめる。</li>
         </ol>
         <p>
-          人柄は、政策についてさらに調べるきっかけです。
-          人柄の回答で相性を採点したり、政策一致度を変えたりすることはありません。
-          診断を受けずに、候補者を見ることもできます。
+          政策の回答と、本人が語った経験は、それぞれ別の情報として扱います。
+          人柄の点数や候補者の総合点はつけません。
+          質問に答えずに「本人の話から見る」入口も使えます。
         </p>
-        <Link href="/candidates" className="text-link">
-          候補者を見る <span aria-hidden="true">→</span>
+        <Link href="/stories" className="text-link">
+          本人の話から見る <span aria-hidden="true">→</span>
         </Link>
       </section>
 
       <section className="document-section">
         <h2>Phase 0で、確かめたいこと。</h2>
         <p>
-          政策に加えて候補者の経験や考え方を知ると、もう少し調べてみたくなるのか。
-          2026年
-          茨城県議会議員選挙を対象とする実証プロジェクトとして、この仮説を検討しています。
+          同じ取材内容でも、共通の項目で整理すると、発言とその根拠をつかみやすくなるのか。
+          {projectLabel}を対象に、この問いを確かめる準備を進めています。
         </p>
         <p>
-          現在は画面と操作を確かめるプロトタイプです。実在する候補者の情報は掲載していません。
-          同意した場合の行動記録も、お使いのブラウザ内で動作を確認するためのものです。
-          サイト改善のための訪問数の集計と、この仮説の効果を検証する研究は別のものです。
-          効果を実証した研究結果は、まだありません。
+          現在は質問や画面を確かめるプロトタイプです。候補者情報は未掲載で、Podcast取材もこれからです。
+          研究参加の募集や本番の研究データ収集は、まだ始めていません。効果を示す研究結果もありません。
+          訪問数の集計と、研究のための計測は分けて扱います。
         </p>
-        <Link href="/privacy" className="text-link">
-          データの扱いを読む <span aria-hidden="true">→</span>
+        <Link href="/research" className="text-link">
+          研究の準備を見る <span aria-hidden="true">→</span>
         </Link>
       </section>
 
@@ -103,7 +103,8 @@ export default function AboutPage() {
         <h2>投票先を決めるのは、あなたです。</h2>
         <p>
           オシセンは、特定の候補者への投票を推奨・依頼するサービスではありません。
-          政策一致度は、限られた質問への回答の近さであり、候補者の優劣を示すものではありません。
+          一問への回答が同じでも、人物全体が似ているとは限りません。
+          どの情報をどう受け止めるかは、利用者自身が判断します。
         </p>
         <p>
           本番の掲載では、候補者本人の回答や一次情報を確認し、出典と確認日を示す方針です。
@@ -153,7 +154,7 @@ export default function AboutPage() {
         </dl>
         <p>
           運営メンバーの紹介と、候補者の掲載・評価は分けて扱います。
-          運営者の性格や好みを、政策一致度や候補者の表示順に反映することはありません。
+          運営者の性格や好みを、回答の照合や候補者の表示順に反映することはありません。
         </p>
       </section>
 

@@ -4,10 +4,7 @@ const changeEvent = "oshisen:visitor-analytics-change";
 const stoppedInMemory = new WeakSet<Window>();
 
 export type VisitorAnalyticsStatus =
-  | "enabled"
-  | "disabled"
-  | "browser-disabled"
-  | "unavailable";
+  "enabled" | "disabled" | "browser-disabled" | "unavailable";
 
 const publicPaths = new Set([
   "/",
@@ -22,6 +19,9 @@ const publicPaths = new Set([
   "/method",
   "/sources",
   "/privacy",
+  "/interests",
+  "/stories",
+  "/policy-register",
 ]);
 
 export function isVisitorAnalyticsDeployment(
@@ -130,11 +130,8 @@ export function beforeSendVisitorAnalytics(event: {
   if (!canSendVisitorAnalytics() || event.type !== "pageview") return null;
   try {
     const url = new URL(event.url);
-    if (
-      url.origin !== window.location.origin ||
-      url.username ||
-      url.password
-    ) return null;
+    if (url.origin !== window.location.origin || url.username || url.password)
+      return null;
     const path = visitorAnalyticsPath(url.pathname);
     if (!path) return null;
     // Construct a fresh object so no extra event fields can be forwarded.

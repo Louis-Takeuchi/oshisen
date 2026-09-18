@@ -5,7 +5,7 @@ import { getIssueQuestion, resolveIssueTheme } from "../../lib/issues";
 export const metadata: Metadata = {
   title: "争点から見る",
   description:
-    "公共交通、教育、子育てなど、気になるテーマから候補者の考え方を見比べる体験用デモ。実在の候補者・政策・本人の回答を示すものではありません。",
+    "公共交通、教育、子育てなど、気になるテーマから政策の問いを考えます。設問は確認中の草案で、候補者の本人回答は未掲載です。",
 };
 
 export default async function Page({

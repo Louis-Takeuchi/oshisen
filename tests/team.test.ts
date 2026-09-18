@@ -86,5 +86,9 @@ test("operators are separate from electoral candidate and policy-matching data",
       false,
     );
   }
-  assert.equal(candidates.length, 4, "the candidate roster is unchanged");
+  assert.equal(
+    candidates.length,
+    0,
+    "candidate publication awaits real verified records",
+  );
 });

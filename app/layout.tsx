@@ -39,18 +39,18 @@ export async function generateMetadata(): Promise<Metadata> {
     appleWebApp: { title: "オシセン" },
     formatDetection: { telephone: false },
     title: {
-      default: "オシセン｜政策で出会い、人柄で興味を深める",
+      default: "オシセン｜政策の回答から、本人のことばへ",
       template: "%s｜オシセン",
     },
     description:
-      "いくつかの質問に答えると、あなたと政策の近い候補者を知れる。2026 茨城県議会議員選挙を想定した、オシセンのプロトタイプ。",
+      "政策の回答を一問ずつ見比べ、経験や判断の理由を元の発言から知る。2026 茨城県議会議員選挙・つくば市選挙区での実証に向けた、オシセンのプロトタイプ。",
     robots: { index: false, follow: false },
     openGraph: {
       type: "website",
       locale: "ja_JP",
       siteName: "オシセン",
       title: "政治家の気にピ、つくってみない？",
-      description: "まずは政策から。気になったら、その人自身まで。",
+      description: "政策の回答から、理由へ。気になったら、元の発言まで。",
       images: [
         {
           url: new URL("/og.png?v=logo-2", origin).href,
@@ -63,7 +63,7 @@ export async function generateMetadata(): Promise<Metadata> {
     twitter: {
       card: "summary_large_image",
       title: "政治家の気にピ、つくってみない？",
-      description: "まずは政策から。気になったら、その人自身まで。",
+      description: "政策の回答から、理由へ。気になったら、元の発言まで。",
       images: [new URL("/og.png?v=logo-2", origin).href],
     },
   };

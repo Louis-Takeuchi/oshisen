@@ -1,12 +1,12 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
+import { questions } from "../lib/data.ts";
 import {
   candidates,
   demoAnswerFixtures,
-  questions,
   type AnswerMap,
-} from "../lib/data.ts";
-import { calculateMatch } from "../lib/matching.ts";
+} from "./fixtures/legacy-data.ts";
+import { calculateMatch } from "./helpers/legacy-matching.ts";
 import {
   eraseAnalytics,
   exportAnalytics,
@@ -101,7 +101,7 @@ test("every candidate is fictional with unknown facts; fixtures remain separate"
   }
 });
 
-test("local analytics require consent, strip answer data, respect variants and erase", () => {
+test("local analytics require consent, strip answer data and unpublished IDs, ignore legacy variants and erase", () => {
   const stored = new Map<string, string>();
   const sessionStorage = {
     getItem: (key: string) => stored.get(key) ?? null,
@@ -116,23 +116,23 @@ test("local analytics require consent, strip answer data, respect variants and e
   });
   try {
     assert.equal(getAnalyticsConsent(), false);
-    assert.equal(getVariant(), "policy-humanity");
+    assert.equal(getVariant(), "standard");
     assert.equal(trackEvent("diagnosis_start"), false);
     assert.equal(stored.size, 0);
 
     browser.location.search = "?variant=policy";
-    assert.equal(getVariant(), "policy");
+    assert.equal(getVariant(), "standard");
     assert.equal(
       stored.size,
       0,
-      "an explicit preview must not create storage without consent",
+      "a legacy query parameter cannot create an experiment assignment or storage",
     );
     assert.equal(setAnalyticsConsent(true), true);
     browser.location.search = "";
     assert.equal(
       getVariant(),
-      "policy",
-      "consenting tab remembers its chosen variant",
+      "standard",
+      "ordinary browsing remains outside the research conditions",
     );
 
     assert.equal(
@@ -146,15 +146,16 @@ test("local analytics require consent, strip answer data, respect variants and e
       true,
     );
     const data = JSON.parse(exportAnalytics());
+    assert.equal(data.schemaVersion, 2);
     assert.equal(data.events.length, 1);
     assert.deepEqual(Object.keys(data.events[0]).sort(), [
-      "candidateId",
       "event",
       "questionId",
       "timestamp",
       "variant",
     ]);
-    assert.equal(data.events[0].variant, "policy");
+    assert.equal(data.events[0].variant, "standard");
+    assert.equal(data.events[0].candidateId, undefined);
     assert.equal(data.containsPolicyAnswers, false);
 
     stored.set("unrelated.key", "preserve");
@@ -172,7 +173,7 @@ test("local analytics require consent, strip answer data, respect variants and e
 
 test("unavailable browser storage does not interrupt the diagnosis", () => {
   assert.equal(getAnalyticsConsent(), false);
-  assert.equal(getVariant(), "policy-humanity");
+  assert.equal(getVariant(), "standard");
   assert.equal(setAnalyticsConsent(true), false);
   assert.equal(
     trackEvent("candidate_view", { candidateId: "sato-misaki" }),

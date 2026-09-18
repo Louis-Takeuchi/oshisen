@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { candidates, questions } from "../lib/data.ts";
+import { candidates as publishedCandidates, questions } from "../lib/data.ts";
+import { candidates } from "./fixtures/legacy-data.ts";
 import {
   MAX_VIDEO_START_SECONDS,
   buildYouTubeTimestampUrl,
@@ -30,12 +31,14 @@ const verified: VerifiedPolicyEvidence = {
   checkedOn: "2000-03-01",
 };
 
-test("all current candidate/question pairs lack real evidence", () => {
+test("no candidates or evidence are registered in the public data", () => {
+  assert.deepEqual(publishedCandidates, []);
+  assert.deepEqual(policyEvidence, {});
   for (const candidate of candidates) {
     for (const question of questions) {
       assert.equal(getPolicyEvidence(candidate.id, question.id), null);
     }
-    assert.deepEqual(policyEvidence[candidate.id], {});
+    assert.equal(policyEvidence[candidate.id], undefined);
   }
 });
 

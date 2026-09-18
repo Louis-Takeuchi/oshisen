@@ -68,50 +68,20 @@ test("all supported event types including candidate saves require consent", () =
   });
 });
 
-test("a consenting experiment assignment survives navigation and conflicting URLs", () => {
+test("normal browsing ignores legacy experiment URLs and never assigns a study arm", () => {
   withBrowser(({ location, stored }) => {
-    location.search = "?variant=policy";
-    assert.equal(getVariant(), "policy");
-    assert.equal(
-      stored.size,
-      0,
-      "query-only previews do not store without consent",
-    );
+    stored.set("oshisen.analytics.consent.v1", "true");
+    stored.set("oshisen.analytics.variant.v1", "policy");
+    assert.equal(getAnalyticsConsent(), false);
+    for (const variant of ["policy", "policy-humanity", "B", "C"]) {
+      location.search = `?variant=${variant}`;
+      assert.equal(getVariant(), "standard");
+    }
     setAnalyticsConsent(true);
     trackEvent("diagnosis_start");
-    location.search = "";
-    assert.equal(getVariant(), "policy");
-    location.search = "?variant=policy-humanity";
-    assert.equal(
-      getVariant(),
-      "policy",
-      "a later URL cannot contaminate the assignment",
-    );
-    setAnalyticsConsent(true);
-    trackEvent("candidate_view");
-    assert.deepEqual(
-      events().map((item) => item.variant),
-      ["policy", "policy"],
-    );
+    assert.equal(events()[0].variant, "standard");
     eraseAnalytics();
-    assert.equal(getVariant(), "policy-humanity");
-    setAnalyticsConsent(true);
-    trackEvent("diagnosis_start");
-    assert.equal(
-      events()[0].variant,
-      "policy-humanity",
-      "erasing permits a new assignment",
-    );
-  });
-});
-
-test("consenting without an explicit variant remains in the default group", () => {
-  withBrowser(({ location }) => {
-    location.search = "?variant=unexpected";
-    setAnalyticsConsent(true);
-    assert.equal(getVariant(), "policy-humanity");
-    location.search = "?variant=policy";
-    assert.equal(getVariant(), "policy-humanity");
+    assert.equal(stored.size, 0);
   });
 });
 
@@ -137,26 +107,26 @@ test("no answer, score, URL or free-text field is accepted even at runtime", () 
 test("malformed and tampered stored events are sanitized when exported", () => {
   withBrowser(({ stored }) => {
     setAnalyticsConsent(true);
-    stored.set("oshisen.analytics.events.v1", "broken-json");
+    stored.set("oshisen.analytics.events.v2", "broken-json");
     assert.deepEqual(events(), []);
     stored.set(
-      "oshisen.analytics.events.v1",
+      "oshisen.analytics.events.v2",
       JSON.stringify([
         null,
         {
           event: "diagnosis_start",
           timestamp: "not-a-date",
-          variant: "policy",
+          variant: "standard",
         },
         {
           event: "unknown",
           timestamp: "2026-01-01T00:00:00.000Z",
-          variant: "policy",
+          variant: "standard",
         },
         {
           event: "diagnosis_answer",
           timestamp: "2026-01-01T00:00:00.000Z",
-          variant: "policy",
+          variant: "standard",
           questionId: "transport",
           answer: 4,
           score: 100,
@@ -227,16 +197,22 @@ test("failed deletion revokes consent in memory until a successful explicit opt-
       assert.equal(getAnalyticsConsent(), true);
       assert.equal(trackEvent("diagnosis_complete"), true);
       assert.equal(events().at(-1)?.event, "diagnosis_complete");
-      assert.equal(stored.get("oshisen:diagnosis:v1"), "unrelated diagnosis state");
+      assert.equal(
+        stored.get("oshisen:diagnosis:v1"),
+        "unrelated diagnosis state",
+      );
       assert.equal(stored.get("unrelated.preference"), "preserve");
 
       storage.removeItem = removeItem;
       assert.equal(eraseAnalytics(), true);
       assert.equal(getAnalyticsConsent(), false);
-      assert.deepEqual([...stored], [
-        ["oshisen:diagnosis:v1", "unrelated diagnosis state"],
-        ["unrelated.preference", "preserve"],
-      ]);
+      assert.deepEqual(
+        [...stored],
+        [
+          ["oshisen:diagnosis:v1", "unrelated diagnosis state"],
+          ["unrelated.preference", "preserve"],
+        ],
+      );
     } finally {
       storage.removeItem = removeItem;
       eraseAnalytics();

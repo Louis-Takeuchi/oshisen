@@ -1,10 +1,15 @@
 "use client";
+import { candidates, questions } from "./data.ts";
 
 /** Opt-in, tab-local prototype event recording. This module makes no requests. */
 export const analyticsEvents = [
   "diagnosis_start",
   "diagnosis_answer",
   "diagnosis_complete",
+  "diagnosis_skip",
+  "diagnosis_undecided",
+  "candidate_compare_add",
+  "candidate_compare_remove",
   "candidate_view",
   "candidate_save",
   "candidate_unsave",
@@ -17,7 +22,7 @@ export const analyticsEvents = [
 ] as const;
 
 export type AnalyticsEventName = (typeof analyticsEvents)[number];
-export type ExperimentVariant = "policy" | "policy-humanity";
+export type ExperimentVariant = "standard";
 
 export interface AnalyticsMetadata {
   readonly candidateId?: string;
@@ -30,27 +35,13 @@ export interface AnalyticsEvent extends AnalyticsMetadata {
   readonly variant: ExperimentVariant;
 }
 
-const CONSENT_KEY = "oshisen.analytics.consent.v1";
-const EVENTS_KEY = "oshisen.analytics.events.v1";
-const VARIANT_KEY = "oshisen.analytics.variant.v1";
+const CONSENT_KEY = "oshisen.analytics.consent.v2";
+const EVENTS_KEY = "oshisen.analytics.events.v2";
+const VARIANT_KEY = "oshisen.analytics.variant.v2";
 const MAX_EVENTS = 500;
 let consentRevokedInMemory = false;
-const candidateIds = new Set([
-  "sato-misaki",
-  "takahashi-ken",
-  "tanaka-aya",
-  "yamada-taro",
-]);
-const questionIds = new Set([
-  "transport",
-  "education",
-  "childcare",
-  "healthcare",
-  "disaster",
-  "environment",
-  "agriculture",
-  "administration",
-]);
+const candidateIds = new Set(candidates.map((c) => c.id));
+const questionIds = new Set(questions.map((q) => q.id));
 
 function getStorage(): Storage | null {
   if (typeof window === "undefined") return null;
@@ -70,7 +61,7 @@ function read(key: string): string | null {
 }
 
 function isVariant(value: unknown): value is ExperimentVariant {
-  return value === "policy" || value === "policy-humanity";
+  return value === "standard";
 }
 
 export function getAnalyticsConsent(): boolean {
@@ -78,18 +69,9 @@ export function getAnalyticsConsent(): boolean {
   return read(CONSENT_KEY) === "true";
 }
 
+/** Normal browsing is never assigned to the B/C research preparation. */
 export function getVariant(): ExperimentVariant {
-  // A consenting tab keeps its first assignment throughout the journey. A later
-  // page URL must not silently move the same session into the other experiment.
-  const savedVariant = getAnalyticsConsent() ? read(VARIANT_KEY) : null;
-  if (isVariant(savedVariant)) return savedVariant;
-  if (typeof window !== "undefined") {
-    const explicitVariant = new URLSearchParams(window.location.search).get(
-      "variant",
-    );
-    if (isVariant(explicitVariant)) return explicitVariant;
-  }
-  return "policy-humanity";
+  return "standard";
 }
 
 /** Revoking consent also removes the events and saved experiment assignment. */
@@ -184,7 +166,7 @@ export function trackEvent(
 export function exportAnalytics(): string {
   return JSON.stringify(
     {
-      schemaVersion: 1,
+      schemaVersion: 2,
       scope: "this-tab-only",
       containsPolicyAnswers: false,
       events: readEvents(),
@@ -200,7 +182,14 @@ export function eraseAnalytics(): boolean {
   const storage = getStorage();
   if (!storage) return false;
   let erased = true;
-  for (const key of [CONSENT_KEY, EVENTS_KEY, VARIANT_KEY]) {
+  for (const key of [
+    CONSENT_KEY,
+    EVENTS_KEY,
+    VARIANT_KEY,
+    "oshisen.analytics.consent.v1",
+    "oshisen.analytics.events.v1",
+    "oshisen.analytics.variant.v1",
+  ]) {
     try {
       storage.removeItem(key);
     } catch {

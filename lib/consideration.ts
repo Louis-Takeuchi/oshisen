@@ -25,7 +25,9 @@ export interface ConsiderationAction {
 }
 type StorageLike = Pick<Storage, "getItem" | "setItem" | "removeItem">;
 type StorageProvider = () => StorageLike | null;
-const candidateIds = candidates.map((candidate) => candidate.id);
+const publishedCandidateIds = [...candidates]
+  .sort((a, b) => a.kana.localeCompare(b.kana, "ja"))
+  .map((candidate) => candidate.id);
 const questionIds = questions.map((question) => question.id);
 export const emptyConsideration: ConsiderationState = Object.freeze({
   savedIds: [],
@@ -51,6 +53,7 @@ export function sanitizeSelection<T extends string>(
 export function createConsiderationStore(
   local: StorageProvider,
   session: StorageProvider,
+  candidateIds: readonly CandidateId[] = publishedCandidateIds,
 ) {
   let state = emptyConsideration;
   const subscribers = new Set<() => void>();
@@ -146,7 +149,7 @@ export function createConsiderationStore(
     if (!removing && ids.length >= limit)
       return {
         ok: false,
-        message: `${field === "compareIds" ? "比較する候補者は2人" : "重視するテーマは3つ"}までです。先に選択を1つ外してください。`,
+        message: `${field === "compareIds" ? "比較する候補者は2人" : "知りたいテーマは3つ"}までです。先に選択を1つ外してください。`,
       };
     const next = sanitizeSelection(
       removing ? ids.filter((value) => value !== id) : [...ids, id],

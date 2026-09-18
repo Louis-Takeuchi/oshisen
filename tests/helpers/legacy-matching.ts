@@ -1,4 +1,6 @@
-import { questions, type AnswerMap, type AnswerValue } from "./data.ts";
+/** Historical algorithm retained only for regression tests; never import into the app. */
+import { questions } from "../../lib/data.ts";
+import type { AnswerMap, AnswerValue } from "../fixtures/legacy-data.ts";
 
 export interface MatchResult {
   /** Null means there is no valid shared answer, not zero agreement. */

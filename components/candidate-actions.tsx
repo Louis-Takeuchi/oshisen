@@ -38,6 +38,13 @@ export function CandidateActions({ candidate }: { candidate: Candidate }) {
           onClick={() => {
             const result = toggleCompare(candidate.id);
             setMessage(result.message);
+            if (result.ok)
+              trackEvent(
+                comparing
+                  ? "candidate_compare_remove"
+                  : "candidate_compare_add",
+                { candidateId: candidate.id },
+              );
           }}
         >
           {comparing ? "✓ 比較する候補" : "＋ 比較に追加"}

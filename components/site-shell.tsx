@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { useConsideration } from "./use-consideration";
 import { ConsiderationBar } from "./consideration-bar";
 import { OfficialContacts } from "./official-contacts";
+import { projectLabel } from "../lib/project";
 export function SiteShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const compact = pathname === "/questions";
@@ -60,16 +61,16 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
                   候補者を見る
                 </Link>
                 <Link
-                  href="/issues"
-                  aria-current={pathname === "/issues" ? "page" : undefined}
+                  href="/stories"
+                  aria-current={pathname === "/stories" ? "page" : undefined}
                 >
-                  争点から見る
+                  本人の話
                 </Link>
                 <Link
-                  href="/compare"
-                  aria-current={pathname === "/compare" ? "page" : undefined}
+                  href="/interests"
+                  aria-current={pathname === "/interests" ? "page" : undefined}
                 >
-                  比較
+                  知りたいこと
                 </Link>
                 <Link
                   href="/saved"
@@ -85,7 +86,7 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
                   仕組み
                 </Link>
                 <Link href="/diagnosis" className="button primary small">
-                  診断する →
+                  政策の質問 →
                 </Link>
               </nav>
               <div className="mobile-navigation">
@@ -94,7 +95,7 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
                   href="/diagnosis"
                   onClick={closeMenu}
                 >
-                  診断する →
+                  政策の質問 →
                 </Link>
                 <button
                   ref={menuButton}
@@ -127,6 +128,12 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
             <Link onClick={closeMenu} href="/issues">
               争点から見る →
             </Link>
+            <Link onClick={closeMenu} href="/stories">
+              本人の話から見る →
+            </Link>
+            <Link onClick={closeMenu} href="/interests">
+              知りたいことから見る →
+            </Link>
             <Link onClick={closeMenu} href="/compare">
               2人の政策を比較する →
             </Link>
@@ -134,7 +141,10 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
               気になる候補 {savedIds.length}人 →
             </Link>
             <Link onClick={closeMenu} href="/method">
-              仕組み →
+              回答と情報の見方 →
+            </Link>
+            <Link onClick={closeMenu} href="/research">
+              研究の準備 →
             </Link>
             <Link onClick={closeMenu} href="/about">
               オシセンについて →
@@ -171,19 +181,23 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
               </div>
               <nav aria-label="フッターナビゲーション">
                 <Link href="/issues">争点から見る</Link>
+                <Link href="/stories">本人の話から見る</Link>
+                <Link href="/interests">知りたいことから見る</Link>
                 <Link href="/compare">候補者を比較する</Link>
                 <Link href="/saved">気になる候補</Link>
                 <Link href="/about">オシセンについて</Link>
                 <Link href="/about#team">運営メンバー</Link>
                 <Link href="/about#contact">お問い合わせ</Link>
-                <Link href="/method">マッチングの仕組み</Link>
+                <Link href="/method">回答と情報の見方</Link>
+                <Link href="/policy-register">質問台帳</Link>
+                <Link href="/research">研究の準備</Link>
                 <Link href="/sources">情報源・公平性</Link>
                 <Link href="/privacy">プライバシー</Link>
               </nav>
             </div>
             <OfficialContacts compact />
             <div className="footer-bottom">
-              <p>2026 茨城県議会議員選挙 / Phase 0 プロトタイプ</p>
+              <p>{projectLabel} / Phase 0 準備中</p>
               <p>特定の候補者への投票を推奨・依頼するものではありません。</p>
             </div>
           </div>

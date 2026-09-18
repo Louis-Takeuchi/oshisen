@@ -4,6 +4,8 @@ import { notFound } from "next/navigation";
 import { candidates } from "../../../lib/data";
 import { CandidateDetail } from "../../../components/candidate-detail";
 import { resolveSiteOrigin } from "../../../lib/site-origin";
+import { getPublicInterviewBlocks } from "../../../lib/interviews";
+import { publishedInterviewDocument } from "../../../lib/published-interviews";
 type Props = { params: Promise<{ id: string }> };
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
@@ -13,8 +15,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     await headers(),
     process.env.SITE_URL,
   ).origin;
-  const title = `${candidate.name}（仮名）｜オシセン`;
-  const description = `${candidate.name}の候補者詳細サンプル。政策比較、人となり、経歴、インタビュー、一次情報への導線を確認できます。実在候補者の情報ではありません。`;
+  const title = `${candidate.name}｜オシセン`;
+  const description = `${candidate.name}の政策への本人回答、経験や判断の理由、一次情報を確認します。`;
   return {
     title: { absolute: title },
     description,
@@ -45,5 +47,11 @@ export default async function Page({ params }: Props) {
   const { id } = await params;
   const candidate = candidates.find((c) => c.id === id);
   if (!candidate) notFound();
-  return <CandidateDetail candidate={candidate} />;
+  const interviewBlocks = getPublicInterviewBlocks(
+    publishedInterviewDocument,
+    candidate.id,
+  );
+  return (
+    <CandidateDetail candidate={candidate} interviewBlocks={interviewBlocks} />
+  );
 }

@@ -7,9 +7,21 @@ import {
   readDiagnosis,
   writeDiagnosis,
   type DiagnosisState,
+  diagnosisKey,
+  sanitizeDiagnosis,
 } from "../components/session.ts";
 
-const diagnosisKey = "oshisen:diagnosis:v1";
+import {
+  createPolicyAnswerRecord,
+  type UserPolicyAnswer,
+} from "../lib/policy.ts";
+const record = (id: string, value: number | null) =>
+  createPolicyAnswerRecord(
+    questions.find((q) => q.id === id)!,
+    value === null
+      ? { status: "skipped" }
+      : ({ status: "answered", value } as UserPolicyAnswer),
+  );
 
 function withSession(
   run: (session: {
@@ -77,9 +89,9 @@ test("restored answers are validated and incomplete data cannot claim completion
       diagnosisKey,
       JSON.stringify({
         answers: {
-          transport: 0,
-          education: 4,
-          childcare: null,
+          transport: record("transport", 0),
+          education: record("education", 4),
+          childcare: record("childcare", null),
           healthcare: 7,
           disaster: "3",
           unknown: 4,
@@ -89,7 +101,11 @@ test("restored answers are validated and incomplete data cannot claim completion
       }),
     );
     assert.deepEqual(readDiagnosis(), {
-      answers: { transport: 0, education: 4, childcare: null },
+      answers: {
+        transport: record("transport", 0),
+        education: record("education", 4),
+        childcare: record("childcare", null),
+      },
       index: 7,
       complete: false,
     });
@@ -99,7 +115,7 @@ test("restored answers are validated and incomplete data cannot claim completion
 test("explicit skips count toward completion but do not become neutral answers", () => {
   withSession(({ stored }) => {
     const answers = Object.fromEntries(
-      questions.map((question) => [question.id, null]),
+      questions.map((question) => [question.id, record(question.id, null)]),
     );
     stored.set(
       diagnosisKey,
@@ -112,7 +128,10 @@ test("explicit skips count toward completion but do not become neutral answers",
 test("answers and position persist on a successful write and clear together", () => {
   withSession(({ stored, notifications }) => {
     const next: DiagnosisState = {
-      answers: { transport: 4, education: null },
+      answers: {
+        transport: record("transport", 4),
+        education: record("education", null),
+      },
       index: 2,
       complete: false,
     };
@@ -129,12 +148,15 @@ test("answers and position persist on a successful write and clear together", ()
 test("a failed storage write keeps newest answers instead of restoring stale saved progress", () => {
   withSession(({ storage }) => {
     const before: DiagnosisState = {
-      answers: { transport: 0 },
+      answers: { transport: record("transport", 0) },
       index: 1,
       complete: false,
     };
     const after: DiagnosisState = {
-      answers: { transport: 4, education: 2 },
+      answers: {
+        transport: record("transport", 4),
+        education: record("education", 2),
+      },
       index: 2,
       complete: false,
     };
@@ -156,7 +178,7 @@ test("fully blocked storage retains session progress in memory", () => {
       throw new Error("Access denied");
     };
     const next: DiagnosisState = {
-      answers: { transport: 2 },
+      answers: { transport: record("transport", 2) },
       index: 1,
       complete: false,
     };
@@ -170,7 +192,10 @@ test("fully blocked storage retains session progress in memory", () => {
 test("failed deletion clears memory without restoring stale saved answers or touching unrelated keys", () => {
   withSession(({ stored, storage, notifications }) => {
     const saved: DiagnosisState = {
-      answers: { transport: 4, education: 1 },
+      answers: {
+        transport: record("transport", 4),
+        education: record("education", 1),
+      },
       index: 2,
       complete: false,
     };
@@ -204,4 +229,53 @@ test("failed deletion clears memory without restoring stale saved answers or tou
       storage.removeItem = removeItem;
     }
   });
+});
+
+test("old numeric records and stale question, scale or help versions cannot migrate", () => {
+  for (const version of ["questionVersion", "scaleVersion", "contextVersion"]) {
+    const stale = { ...record("transport", 2), [version]: "old" };
+    assert.deepEqual(
+      sanitizeDiagnosis({ answers: { transport: stale }, complete: true })
+        .answers,
+      {},
+    );
+  }
+  withSession(({ stored }) => {
+    stored.set(
+      "oshisen:diagnosis:v1",
+      JSON.stringify({ answers: { transport: 2 }, complete: true }),
+    );
+    assert.deepEqual(readDiagnosis(), emptyDiagnosis());
+    stored.set(diagnosisKey, JSON.stringify({ answers: { transport: 2 } }));
+    assert.deepEqual(readDiagnosis().answers, {});
+    clearDiagnosis();
+    assert.equal(stored.has("oshisen:diagnosis:v1"), false);
+  });
+});
+
+test("neutral, undecided, skipped and unanswered keep different meanings and strip free text", () => {
+  const answers = {
+    transport: record("transport", 2),
+    education: {
+      ...createPolicyAnswerRecord(questions[1], {
+        status: "undecided",
+        reason: "needs-information",
+      }),
+      privateNote: "secret",
+    },
+    childcare: record("childcare", null),
+  };
+  const state = sanitizeDiagnosis({ answers, complete: true });
+  assert.deepEqual(state.answers.transport.answer, {
+    status: "answered",
+    value: 2,
+  });
+  assert.deepEqual(state.answers.education.answer, {
+    status: "undecided",
+    reason: "needs-information",
+  });
+  assert.deepEqual(state.answers.childcare.answer, { status: "skipped" });
+  assert.equal(state.answers.healthcare, undefined);
+  assert.equal(state.complete, false);
+  assert.equal(JSON.stringify(state).includes("secret"), false);
 });

@@ -1,9 +1,4 @@
-import {
-  candidates,
-  questions,
-  type CandidateId,
-  type QuestionId,
-} from "./data.ts";
+import { questions, type CandidateId, type QuestionId } from "./data.ts";
 import { isSafeResourceUrl, type ResourceKind } from "./resources.ts";
 
 /** Calendar dates only; runtime validation also rejects impossible dates. */
@@ -83,16 +78,10 @@ export type PolicyEvidenceRegistry = Readonly<
  * Intentionally empty. A numerical fixture is never evidence, a candidate
  * answer, or permission to invent a source. Register verified material here.
  */
-export const policyEvidence: PolicyEvidenceRegistry = {
-  "sato-misaki": {},
-  "takahashi-ken": {},
-  "tanaka-aya": {},
-  "yamada-taro": {},
-};
+export const policyEvidence: PolicyEvidenceRegistry = {};
 
 export const MAX_VIDEO_START_SECONDS = 24 * 60 * 60;
 
-const knownCandidateIds = new Set(candidates.map(({ id }) => id));
 const knownQuestionIds = new Set(questions.map(({ id }) => id));
 const resourceKinds: readonly ResourceKind[] = [
   "youtube",
@@ -173,7 +162,6 @@ export function getPolicyEvidence(
   registry: PolicyEvidenceRegistry = policyEvidence,
 ): VerifiedPolicyEvidence | null {
   if (
-    !knownCandidateIds.has(candidateId as CandidateId) ||
     !knownQuestionIds.has(questionId as QuestionId) ||
     !Object.hasOwn(registry, candidateId)
   )

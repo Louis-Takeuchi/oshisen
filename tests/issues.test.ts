@@ -1,12 +1,12 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { candidates, demoAnswerFixtures, questions } from "../lib/data.ts";
+import { questions } from "../lib/data.ts";
+import { candidates, demoAnswerFixtures } from "./fixtures/legacy-data.ts";
+import { getIssueQuestion, resolveIssueTheme } from "../lib/issues.ts";
 import {
   classifyIssueAnswer,
-  getIssueQuestion,
   groupCandidatesByIssue,
-  resolveIssueTheme,
-} from "../lib/issues.ts";
+} from "./helpers/legacy-issues.ts";
 
 test("issue themes accept only a known scalar question identifier", () => {
   for (const question of questions) {

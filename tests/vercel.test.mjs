@@ -4,6 +4,8 @@ import { spawn } from "node:child_process";
 import { once } from "node:events";
 import { readFile } from "node:fs/promises";
 import { after, before, test } from "node:test";
+import { project, projectLabel } from "../lib/project.ts";
+import { candidates as candidateRegistry } from "../lib/data.ts";
 
 let server;
 let origin;
@@ -58,6 +60,23 @@ after(async () => {
   }
 });
 
+function assertNoCandidateFixturesOrScores(html, pathname) {
+  const content = html
+    .replace(/<script\b[^>]*>[\s\S]*?<\/script>/g, "")
+    .replace(/<style\b[^>]*>[\s\S]*?<\/style>/g, "")
+    .replace(/<[^>]+>/g, " ");
+  assert.doesNotMatch(
+    content,
+    /山田\s*太郎|佐藤\s*美咲|高橋\s*健|田中\s*彩/,
+    pathname,
+  );
+  assert.doesNotMatch(
+    content,
+    /一致度\s*[:：]?\s*\d|\d+\s*[%％]|近い候補者が見つかり/,
+    pathname,
+  );
+}
+
 test("all application routes render on the Vercel Next.js runtime", async () => {
   for (const path of [
     "/",
@@ -69,10 +88,10 @@ test("all application routes render on the Vercel Next.js runtime", async () => 
     "/saved",
     "/issues",
     "/issues?theme=education",
-    "/candidates/sato-misaki",
-    "/candidates/takahashi-ken",
-    "/candidates/tanaka-aya",
-    "/candidates/yamada-taro",
+    "/interests",
+    "/stories",
+    "/research",
+    "/policy-register",
     "/about",
     "/method",
     "/sources",
@@ -114,6 +133,9 @@ test("all application routes render on the Vercel Next.js runtime", async () => 
     assert.match(html, /property="og:image:height" content="907"/, path);
     assert.match(html, /src="\/brand-logo\.png"/, path);
     assert.doesNotMatch(html, /vinext|Starter Project|codex-preview/, path);
+    assertNoCandidateFixturesOrScores(html, path);
+    assert.doesNotMatch(html, /土浦市選挙区/, path);
+    if (path !== "/questions") assert.match(html, /つくば市選挙区/, path);
   }
 });
 
@@ -173,7 +195,11 @@ test("client navigation receives React payloads and loadable JavaScript", async 
     "/compare",
     "/saved",
     "/issues?theme=healthcare",
-    "/candidates/sato-misaki",
+    "/candidates",
+    "/interests",
+    "/stories",
+    "/research",
+    "/policy-register",
   ]) {
     const response = await fetch(`${origin}${path}`, { headers: { RSC: "1" } });
     assert.equal(response.status, 200, path);
@@ -198,36 +224,75 @@ test("client navigation receives React payloads and loadable JavaScript", async 
   }
 });
 
-test("issue selection, comparison entry points and source notices survive production rendering", async () => {
+test("draft issues and empty candidate registry survive production rendering", async () => {
+  assert.equal(project.electionYear, 2026);
+  assert.equal(project.district, "つくば市選挙区");
+  assert.equal(candidateRegistry.length, 0);
   const issue = await (await fetch(`${origin}/issues?theme=healthcare`)).text();
   assert.match(issue, /地域医療/);
-  assert.match(issue, /#policy-healthcare/);
-  assert.match(issue, /サンプル回答/);
+  assert.match(issue, /確認中の質問案/);
+  assert.match(issue, /本人の回答は、まだありません/);
+  assert.match(issue, /href="\/policy-register"/);
+  assert.doesNotMatch(issue, /サンプル回答|href="\/candidates\//);
   const invalid = await (await fetch(`${origin}/issues?theme=unknown`)).text();
   assert.match(invalid, /指定されたテーマが見つからない/);
   const duplicate = await (
     await fetch(`${origin}/issues?theme=education&theme=healthcare`)
   ).text();
   assert.match(duplicate, /指定されたテーマが見つからない/);
-  const candidate = await (
-    await fetch(`${origin}/candidates/sato-misaki`)
-  ).text();
-  assert.match(candidate, /id="policy-transport"/);
-  assert.match(candidate, /この政策の情報源・本人の説明/);
-  assert.match(candidate, /一次情報は未掲載/);
-  assert.doesNotMatch(candidate, /<iframe/);
+  const candidates = await (await fetch(`${origin}/candidates`)).text();
+  assert.match(candidates, /候補者の情報は、これから/);
+  assertNoCandidateFixturesOrScores(candidates, "/candidates");
+  assert.doesNotMatch(candidates, /href="\/candidates\//);
   const home = await (await fetch(origin)).text();
-  for (const path of ["/compare", "/saved", "/issues"])
-    assert.ok(home.includes(`href="${path}"`));
+  assert.match(home, /つくば市選挙区/);
+  assert.ok(home.includes(projectLabel));
+  assert.match(home, /候補者情報は未掲載/);
+  assert.match(home, /Podcast取材はこれから/);
+  for (const href of [
+    "/compare",
+    "/saved",
+    "/issues",
+    "/stories",
+    "/interests",
+    "/research",
+    "/policy-register",
+  ])
+    assert.ok(home.includes(`href="${href}"`), href);
 });
 
-test("unknown candidate and missing page have real 404 responses", async () => {
-  for (const path of ["/candidates/not-a-candidate", "/page-does-not-exist"]) {
+test("new research entrances preserve the draft and pre-interview boundaries", async () => {
+  const register = await (await fetch(`${origin}/policy-register`)).text();
+  assert.match(register, /まだ草案/);
+  assert.match(register, /question-ledger-2026-09-18-v1/);
+  assert.match(register, /保留/);
+  assert.match(register, /id="P01"/);
+  assert.match(register, /id="P08"/);
+  const stories = await (await fetch(`${origin}/stories`)).text();
+  assert.match(stories, /取材・掲載の準備中/);
+  assert.match(stories, /ヒアリングはまだ実施していません/);
+  for (let index = 1; index <= 6; index++) {
+    assert.ok(stories.includes(`id="H0${index}"`));
+  }
+  assert.doesNotMatch(stories, /<iframe/);
+});
+
+test("former demo candidates, unknown candidates and missing pages return real 404s", async () => {
+  for (const path of [
+    "/candidates/sato-misaki",
+    "/candidates/takahashi-ken",
+    "/candidates/tanaka-aya",
+    "/candidates/yamada-taro",
+    "/candidates/not-a-candidate",
+    "/page-does-not-exist",
+  ]) {
     const response = await fetch(`${origin}${path}`, {
       headers: { "User-Agent": "Twitterbot" },
     });
     assert.equal(response.status, 404, path);
-    assert.match(await response.text(), /ページが見つかりません/);
+    const html = await response.text();
+    assert.match(html, /ページが見つかりません/);
+    assertNoCandidateFixturesOrScores(html, path);
   }
 });
 
@@ -264,8 +329,10 @@ test("operator profiles, self-reported answers and the supplied portraits are se
   assert.match(html, /本人の回答を準備中/);
   for (const path of ["/privacy", "/method", "/sources"]) {
     const page = await (await fetch(`${origin}${path}`)).text();
-    assert.ok(page.includes("大屋涼"), path);
-    assert.ok(page.includes("竹内琉瑛"), path);
+    if (path === "/privacy") {
+      assert.ok(page.includes("大屋涼"), path);
+      assert.ok(page.includes("竹内琉瑛"), path);
+    }
     assert.ok(page.includes('href="/about#team"'), path);
     assert.doesNotMatch(page, /運営主体・責任者は未確定/, path);
   }

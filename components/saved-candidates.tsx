@@ -1,16 +1,13 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
-import { candidates, demoAnswerFixtures } from "../lib/data";
-import { calculateMatch } from "../lib/matching";
+import { candidates } from "../lib/data";
 import { useConsideration } from "./use-consideration";
-import { useDiagnosis } from "./session";
 import { CandidateRow } from "./candidate-row";
 import styles from "./consideration.module.css";
 
 export function SavedCandidates() {
   const { savedIds, ready, storageAvailable, clearSaved } = useConsideration();
-  const diagnosis = useDiagnosis();
   const [confirming, setConfirming] = useState(false);
   const [message, setMessage] = useState("");
   return (
@@ -29,7 +26,7 @@ export function SavedCandidates() {
         </p>
       </div>
       <p className="caption">
-        掲載候補は仮名、政策比較は確認用のデモです。保存順ではなく五十音順で表示します。
+        保存した候補者は五十音順で表示します。候補者の情報は現在、掲載準備中です。
       </p>
       {storageAvailable === false && (
         <p role="status" className="empty-notice">
@@ -58,21 +55,11 @@ export function SavedCandidates() {
               </Link>
             </div>
           ) : (
-            candidates
+            [...candidates]
+              .sort((a, b) => a.kana.localeCompare(b.kana, "ja"))
               .filter((candidate) => savedIds.includes(candidate.id))
               .map((candidate) => (
-                <CandidateRow
-                  key={candidate.id}
-                  candidate={candidate}
-                  match={
-                    diagnosis.ready && diagnosis.state.complete
-                      ? calculateMatch(
-                          diagnosis.state.answers,
-                          demoAnswerFixtures[candidate.id],
-                        )
-                      : undefined
-                  }
-                />
+                <CandidateRow key={candidate.id} candidate={candidate} />
               ))
           )}
           {!!savedIds.length && (

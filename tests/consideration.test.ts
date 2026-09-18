@@ -5,14 +5,9 @@ import {
   createConsiderationStore,
   sanitizeSelection,
 } from "../lib/consideration.ts";
-import {
-  candidates,
-  demoAnswerFixtures,
-  questions,
-  type CandidateId,
-  type QuestionId,
-} from "../lib/data.ts";
-import { calculateMatch } from "../lib/matching.ts";
+import { questions, type CandidateId, type QuestionId } from "../lib/data.ts";
+import { candidates, demoAnswerFixtures } from "./fixtures/legacy-data.ts";
+import { calculateMatch } from "./helpers/legacy-matching.ts";
 
 function memoryStorage() {
   const data = new Map<string, string>();
@@ -38,12 +33,15 @@ function memoryStorage() {
   return { data, writes, removals, failure, storage };
 }
 
+const candidateIds = candidates.map((candidate) => candidate.id);
+
 function setup() {
   const local = memoryStorage();
   const session = memoryStorage();
   const store = createConsiderationStore(
     () => local.storage,
     () => session.storage,
+    candidateIds,
   );
   return { local, session, store };
 }
@@ -92,6 +90,7 @@ test("saved candidates use local storage while comparisons and priorities stay i
   const sameTab = createConsiderationStore(
     () => local.storage,
     () => session.storage,
+    candidateIds,
   );
   assert.deepEqual(sameTab.getSnapshot().savedIds, ["sato-misaki"]);
   assert.deepEqual(sameTab.getSnapshot().compareIds, ["takahashi-ken"]);
@@ -102,6 +101,7 @@ test("saved candidates use local storage while comparisons and priorities stay i
   const newTab = createConsiderationStore(
     () => local.storage,
     () => newSession.storage,
+    candidateIds,
   );
   assert.deepEqual(newTab.getSnapshot().savedIds, ["sato-misaki"]);
   assert.deepEqual(newTab.getSnapshot().compareIds, []);
@@ -315,7 +315,7 @@ test("null or throwing storage providers still accept in-memory choices and trut
       throw new Error("SecurityError");
     },
   ]) {
-    const store = createConsiderationStore(provider, provider);
+    const store = createConsiderationStore(provider, provider, candidateIds);
     assert.equal(store.toggleSaved("sato-misaki").ok, true);
     assert.equal(store.toggleCompare("takahashi-ken").ok, true);
     assert.equal(store.togglePriority("transport").ok, true);
@@ -355,6 +355,7 @@ test("refreshSaved syncs saved candidates across tabs without touching tab-local
   const other = createConsiderationStore(
     () => local.storage,
     () => otherSession.storage,
+    candidateIds,
   );
   other.toggleCompare("yamada-taro");
   other.togglePriority("healthcare");
@@ -452,6 +453,7 @@ test("refreshSaved preserves memory when the provider is unavailable and after p
   const unavailable = createConsiderationStore(
     () => null,
     () => null,
+    candidateIds,
   );
   unavailable.toggleSaved("sato-misaki");
   unavailable.refreshSaved();

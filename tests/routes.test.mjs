@@ -2,6 +2,8 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { readFile, readdir } from "node:fs/promises";
 import path from "node:path";
+import { project, projectLabel } from "../lib/project.ts";
+import { candidates as candidateRegistry } from "../lib/data.ts";
 const { default: worker } = await import("../dist/server/index.js");
 async function render(path) {
   return worker.fetch(
@@ -14,7 +16,27 @@ async function render(path) {
     { waitUntil() {}, passThroughOnException() {} },
   );
 }
-test("home explains the policy-first flow without prototype infrastructure", async () => {
+function assertNoCandidateFixturesOrScores(html, pathname) {
+  const content = html
+    .replace(/<script\b[^>]*>[\s\S]*?<\/script>/g, "")
+    .replace(/<style\b[^>]*>[\s\S]*?<\/style>/g, "")
+    .replace(/<[^>]+>/g, " ");
+  assert.doesNotMatch(
+    content,
+    /山田\s*太郎|佐藤\s*美咲|高橋\s*健|田中\s*彩/,
+    pathname,
+  );
+  assert.doesNotMatch(
+    content,
+    /一致度\s*[:：]?\s*\d|\d+\s*[%％]|近い候補者が見つかり/,
+    pathname,
+  );
+}
+
+test("home explains the question-level flow and Tsukuba preparation status", async () => {
+  assert.equal(project.electionYear, 2026);
+  assert.equal(project.district, "つくば市選挙区");
+  assert.equal(candidateRegistry.length, 0);
   const response = await render("/");
   assert.equal(response.status, 200);
   const html = await response.text();
@@ -23,13 +45,19 @@ test("home explains the policy-first flow without prototype infrastructure", asy
   assert.match(html, /href="\/diagnosis"/);
   assert.match(html, /href="\/candidates"/);
   assert.match(html, /プロトタイプ/);
+  assert.match(html, /つくば市選挙区/);
+  assert.ok(html.includes(projectLabel));
+  assert.match(html, /候補者情報は未掲載/);
+  assert.match(html, /Podcast取材はこれから/);
+  assert.match(html, /一問ずつ/);
+  assertNoCandidateFixturesOrScores(html, "/");
   assert.doesNotMatch(
     html,
     /codex-preview|react-loading-skeleton|Starter Project|Your site is taking shape/,
   );
   assert.match(html, /property="og:image"/);
 });
-test("all required pages server-render and individual candidates have distinct metadata", async () => {
+test("all current public routes render without fictional candidates or match scores", async () => {
   for (const path of [
     "/diagnosis",
     "/questions",
@@ -43,46 +71,83 @@ test("all required pages server-render and individual candidates have distinct m
     "/method",
     "/sources",
     "/privacy",
-    "/candidates/sato-misaki",
-    "/candidates/takahashi-ken",
-    "/candidates/tanaka-aya",
-    "/candidates/yamada-taro",
+    "/interests",
+    "/stories",
+    "/research",
+    "/policy-register",
   ]) {
     const response = await render(path);
     assert.equal(response.status, 200, path);
     const html = await response.text();
     assert.match(html, /<main\b/, path);
     assert.match(html, /id="main"/, path);
-    if (path.includes("/candidates/")) {
-      assert.match(html, /仮名/);
-      assert.match(html, /実際の候補者回答は未掲載/);
-      assert.match(html, /name="twitter:title"/);
-      assert.doesNotMatch(html, /<iframe/);
-    }
+    assertNoCandidateFixturesOrScores(html, path);
+    assert.doesNotMatch(html, /土浦市選挙区/, path);
+    if (path !== "/questions") assert.match(html, /つくば市選挙区/, path);
   }
 });
 
-test("issue deep links and candidate policy sources are rendered transparently", async () => {
+test("issue deep links show draft questions and genuinely empty candidate answers", async () => {
   const issue = await (await render("/issues?theme=education")).text();
   assert.match(issue, /県立高校/);
-  assert.match(issue, /サンプル回答/);
-  assert.match(issue, /#policy-education/);
+  assert.match(issue, /確認中の質問案/);
+  assert.match(issue, /本人の回答は、まだありません/);
+  assert.match(issue, /href="\/policy-register"/);
+  assert.doesNotMatch(issue, /サンプル回答|href="\/candidates\//);
   const invalid = await (await render("/issues?theme=unknown")).text();
   assert.match(invalid, /指定されたテーマが見つからない/);
-  const candidate = await (await render("/candidates/sato-misaki")).text();
-  assert.match(candidate, /id="policy-transport"/);
-  assert.match(candidate, /この政策の情報源・本人の説明/);
-  assert.match(candidate, /一次情報は未掲載/);
-  assert.doesNotMatch(candidate, /<iframe/);
+  const duplicate = await (
+    await render("/issues?theme=education&theme=healthcare")
+  ).text();
+  assert.match(duplicate, /指定されたテーマが見つからない/);
+  const candidates = await (await render("/candidates")).text();
+  assert.match(candidates, /候補者の情報は、これから/);
+  assertNoCandidateFixturesOrScores(candidates, "/candidates");
+  assert.doesNotMatch(candidates, /href="\/candidates\//);
   const home = await (await render("/")).text();
-  for (const path of ["/compare", "/saved", "/issues"])
-    assert.ok(home.includes(`href="${path}"`));
+  for (const href of [
+    "/compare",
+    "/saved",
+    "/issues",
+    "/stories",
+    "/interests",
+    "/research",
+    "/policy-register",
+  ])
+    assert.ok(home.includes(`href="${href}"`), href);
 });
-test("unknown candidate is a genuine 404, not another candidate", async () => {
-  const response = await render("/candidates/not-a-candidate");
-  assert.equal(response.status, 404);
-  const html = await response.text();
-  assert.match(html, /ページが見つかりません/);
+
+test("research preparation keeps the question register and unrecorded interviews transparent", async () => {
+  const register = await (await render("/policy-register")).text();
+  assert.match(register, /まだ草案/);
+  assert.match(register, /question-ledger-2026-09-18-v1/);
+  assert.match(register, /保留/);
+  assert.match(register, /id="P01"/);
+  assert.match(register, /id="P08"/);
+  const stories = await (await render("/stories")).text();
+  assert.match(stories, /取材・掲載の準備中/);
+  assert.match(stories, /ヒアリングはまだ実施していません/);
+  for (let index = 1; index <= 6; index++) {
+    assert.ok(stories.includes(`id="H0${index}"`));
+  }
+  assert.doesNotMatch(stories, /<iframe/);
+});
+
+test("former demo candidates and unknown pages return genuine 404 responses", async () => {
+  for (const pathname of [
+    "/candidates/sato-misaki",
+    "/candidates/takahashi-ken",
+    "/candidates/tanaka-aya",
+    "/candidates/yamada-taro",
+    "/candidates/not-a-candidate",
+    "/page-does-not-exist",
+  ]) {
+    const response = await render(pathname);
+    assert.equal(response.status, 404, pathname);
+    const html = await response.text();
+    assert.match(html, /ページが見つかりません/, pathname);
+    assertNoCandidateFixturesOrScores(html, pathname);
+  }
 });
 
 test("operator profiles and self-reported Q&A render on Sites without client-side state", async () => {

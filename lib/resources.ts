@@ -27,12 +27,7 @@ export interface CandidateResources {
 /** No source, interview, thumbnail, or quote is invented for the demo names. */
 export const candidateResources: Readonly<
   Record<CandidateId, CandidateResources>
-> = {
-  "sato-misaki": { links: [], interview: null },
-  "takahashi-ken": { links: [], interview: null },
-  "tanaka-aya": { links: [], interview: null },
-  "yamada-taro": { links: [], interview: null },
-};
+> = {};
 
 /** A URL check prevents unsafe navigation; editorial source checking is separate. */
 export function isSafeResourceUrl(value: string): boolean {

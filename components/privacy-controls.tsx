@@ -22,7 +22,7 @@ export function PrivacyControls() {
     setConfirming(false);
     setMessage(
       analyticsCleared && diagnosisCleared && considerationCleared.ok
-        ? "気になる候補・このタブの回答・比較・重視テーマ・操作記録を削除し、記録への同意も取り消しました。"
+        ? "気になる候補・このタブの回答・比較・知りたいテーマ・操作記録を削除し、記録への同意も取り消しました。"
         : "画面内のデータを解除し操作記録を停止しましたが、保存領域の削除を確認できません。ブラウザのサイトデータ設定から削除してください。",
     );
   }
@@ -58,7 +58,7 @@ export function PrivacyControls() {
         <span>このタブ内の操作記録を有効にする（任意）</span>
       </label>
       <p className="caption">
-        回答内容・一致度は記録しません。サーバーへの送信も行いません。
+        回答内容は操作記録に含めません。サーバーへの送信も行いません。
       </p>
       <div className="control-buttons">
         <button className="button secondary" onClick={download}>
@@ -74,7 +74,7 @@ export function PrivacyControls() {
       {confirming && (
         <div className="delete-confirmation">
           <p>
-            気になる候補と、このタブの回答・比較・重視テーマ・操作記録を削除します。この操作は元に戻せません。
+            気になる候補と、このタブの回答・比較・知りたいテーマ・操作記録を削除します。この操作は元に戻せません。
             訪問計測の設定は維持し、Vercelで集計済みのデータは削除しません。
           </p>
           <button type="button" className="button secondary" onClick={eraseAll}>
