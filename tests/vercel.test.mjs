@@ -6,12 +6,13 @@ import { readFile } from "node:fs/promises";
 import { after, before, test } from "node:test";
 import { project, projectLabel } from "../lib/project.ts";
 import { candidates as candidateRegistry } from "../lib/data.ts";
+import { registerSeoHttpTests } from "./seo-http.test.mjs";
 
 let server;
 let origin;
-let logs = "";
-before(async () => {
-  server = spawn(
+async function startServer(vercelEnvironment = "production") {
+  let logs = "";
+  const child = spawn(
     process.execPath,
     [
       "node_modules/next/dist/bin/next",
@@ -22,42 +23,56 @@ before(async () => {
       "0",
     ],
     {
-      env: { ...process.env, SITE_URL: "", NEXT_TELEMETRY_DISABLED: "1" },
+      env: {
+        ...process.env,
+        SITE_URL: "",
+        VERCEL_ENV: vercelEnvironment,
+        NEXT_TELEMETRY_DISABLED: "1",
+      },
       stdio: ["ignore", "pipe", "pipe"],
     },
   );
-  await new Promise((resolve, reject) => {
-    const timer = setTimeout(
-      () => reject(new Error(`Next.js did not become ready: ${logs}`)),
-      30000,
-    );
+  const address = await new Promise((resolve, reject) => {
+    const timer = setTimeout(() => {
+      child.kill("SIGTERM");
+      reject(new Error(`Next.js did not become ready: ${logs}`));
+    }, 30000);
     const onData = (chunk) => {
       logs += chunk.toString();
       const address = logs.match(/http:\/\/127\.0\.0\.1:(\d+)/);
       if (address && /Ready in/.test(logs)) {
-        origin = address[0];
         clearTimeout(timer);
-        resolve();
+        resolve(address[0]);
       }
     };
-    server.stdout.on("data", onData);
-    server.stderr.on("data", onData);
-    server.once("error", (error) => {
+    child.stdout.on("data", onData);
+    child.stderr.on("data", onData);
+    child.once("error", (error) => {
       clearTimeout(timer);
       reject(error);
     });
-    server.once("exit", (code) => {
+    child.once("exit", (code) => {
       clearTimeout(timer);
       reject(new Error(`Next.js exited ${code}: ${logs}`));
     });
   });
+  return {
+    origin: address,
+    async stop() {
+      if (child.exitCode === null) {
+        const closed = once(child, "exit");
+        child.kill("SIGTERM");
+        await closed;
+      }
+    },
+  };
+}
+before(async () => {
+  server = await startServer();
+  origin = server.origin;
 });
 after(async () => {
-  if (server && server.exitCode === null) {
-    const closed = once(server, "exit");
-    server.kill("SIGTERM");
-    await closed;
-  }
+  await server?.stop();
 });
 
 function assertNoCandidateFixturesOrScores(html, pathname) {
@@ -105,7 +120,7 @@ test("all application routes render on the Vercel Next.js runtime", async () => 
     assert.equal(response.headers.get("x-powered-by"), null);
     assert.equal(response.headers.get("x-content-type-options"), "nosniff");
     assert.equal(response.headers.get("referrer-policy"), "origin");
-    assert.equal(response.headers.get("x-robots-tag"), "noindex, nofollow");
+    assert.doesNotMatch(response.headers.get("x-robots-tag") ?? "", /noindex/);
     const html = await response.text();
     assert.match(html, /lang="ja"/, path);
     assert.match(html, /name="referrer" content="origin"/, path);
@@ -128,7 +143,7 @@ test("all application routes render on the Vercel Next.js runtime", async () => 
       path,
     );
     assert.match(html, /name="theme-color" content="#fffdf7"/, path);
-    assert.ok(html.includes(`${origin}/og.png?v=logo-2`), path);
+    assert.ok(html.includes("https://www.oshisen.com/og.png?v=logo-2"), path);
     assert.match(html, /property="og:image:width" content="1733"/, path);
     assert.match(html, /property="og:image:height" content="907"/, path);
     assert.match(html, /src="\/brand-logo\.png"/, path);
@@ -183,8 +198,6 @@ test("full brand logo, favicon, home screen icons, manifest and social card are 
     await (await fetch(`${origin}/site.webmanifest`)).json(),
     "versioned manifest requests serve the current manifest without changing its identity",
   );
-  const robots = await (await fetch(`${origin}/robots.txt`)).text();
-  assert.match(robots, /Disallow: \//);
 });
 
 test("client navigation receives React payloads and loadable JavaScript", async () => {
@@ -385,3 +398,5 @@ test("official links open safely and contact details remain usable without email
   assert.match(about, /id="contact"/);
   assert.match(about, /アドレスをコピー/);
 });
+
+registerSeoHttpTests({ getOrigin: () => origin, startServer });

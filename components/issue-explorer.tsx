@@ -29,6 +29,11 @@ export function IssueExplorer({
         <span className="outline-label">確認中の質問案</span>
         <p>{questionDraftNotice}</p>
       </div>
+      <p>
+        <Link href="/ibaraki-2026/tsukuba">
+          対象選挙と掲載予定の情報を見る →
+        </Link>
+      </p>
       <nav className={styles.themeNav} aria-label="気になるテーマから選ぶ">
         <h2>気になるテーマは？</h2>
         <ul className={styles.themeList}>
@@ -89,6 +94,9 @@ export function IssueExplorer({
         </div>
       )}
       <div className="exploration-links">
+        <Link href={`/ibaraki-2026/tsukuba/issues/${question.id}`}>
+          このテーマの背景と用語を読む →
+        </Link>
         <Link href="/diagnosis">自分でも質問に答える →</Link>
         <Link href="/policy-register">質問の台帳を見る →</Link>
         <Link href="/stories">本人の経験や考え方を知る →</Link>

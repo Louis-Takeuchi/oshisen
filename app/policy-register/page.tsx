@@ -1,15 +1,16 @@
-import type { Metadata } from "next";
+import { pageMetadata } from "../../lib/seo";
 import Link from "next/link";
 import {
   questionLedger,
   QUESTION_LEDGER_VERSION,
 } from "../../lib/question-ledger";
 import { QuestionHelp } from "../../components/question-help";
-export const metadata: Metadata = {
-  title: "政策の質問台帳",
+export const metadata = pageMetadata("/policy-register", {
+  title: "政策の質問台帳・設問案の確認状況",
   description:
-    "質問案、採否の理由、確認が必要な点、設問・選択肢・補足の版を公開します。",
-};
+    "茨城県議選に向けた政策の設問案、採否・保留の理由、制度・権限・用語の確認事項、質問と選択肢の版を公開します。現在の質問は草案です。",
+  index: true,
+});
 export default function Page() {
   return (
     <main id="main" className="container page-main">

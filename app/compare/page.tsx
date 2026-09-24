@@ -1,11 +1,12 @@
-import type { Metadata } from "next";
+import { pageMetadata } from "../../lib/seo";
 import { CandidateComparison } from "../../components/candidate-comparison";
 
-export const metadata: Metadata = {
-  title: "候補者を比較する",
+export const metadata = pageMetadata("/compare", {
+  title: "2人の政策回答を比較する",
   description:
-    "同じ質問への本人回答を、理由・条件・出典と一緒に見比べます。候補者情報は掲載準備中です。",
-};
+    "候補者2人の政策回答とその理由を一問ずつ見比べる画面です。現在は候補者情報の取材・掲載を準備中です。",
+  index: false,
+});
 
 export default function Page() {
   return <CandidateComparison />;

@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import { OrganizationData } from "../../components/organization-data";
+import { pageMetadata } from "../../lib/seo";
 import Link from "next/link";
 import { TeamSection } from "../../components/team-section";
 import { OfficialContacts } from "../../components/official-contacts";
@@ -7,15 +8,17 @@ import { teamMembers } from "../../lib/team";
 import { projectLabel } from "../../lib/project";
 import styles from "./about.module.css";
 
-export const metadata: Metadata = {
-  title: "オシセンについて",
+export const metadata = pageMetadata("/about", {
+  title: "オシセンとは｜2026年茨城県議選での実証プロジェクト",
   description:
-    "代表のRyo（大屋涼）と共同代表のLouis（竹内琉瑛）。オシセンをつくる2人の担当と人となりを、写真と本人のことばで紹介します。",
-};
+    "オシセンが目指すこと、代表のRyo（大屋涼）と共同代表のLouis（竹内琉瑛）、2026年茨城県議選・つくば市選挙区で準備する実証プロジェクトを紹介します。",
+  index: true,
+});
 
 export default function AboutPage() {
   return (
     <main id="main" className={`container document-page ${styles.page}`}>
+      <OrganizationData />
       <p className="eyebrow">オシセンについて</p>
       <h1>
         政治家との出会い方を、

@@ -1,14 +1,15 @@
-import type { Metadata } from "next";
+import { pageMetadata } from "../../lib/seo";
 import Link from "next/link";
 import { getPublicInterviewBlocks } from "../../lib/interviews";
 import { publishedInterviewDocument } from "../../lib/published-interviews";
 import { InterviewStories } from "../../components/interview-stories";
 
-export const metadata: Metadata = {
-  title: "本人の話から見る",
+export const metadata = pageMetadata("/stories", {
+  title: "本人インタビュー・Podcastの掲載方針と共通質問",
   description:
-    "取り組みの背景、判断と選択、考えの変化。政策への回答だけでは分からない経験や理由を、本人の言葉から知る入口です。現在は取材・掲載の準備中です。",
-};
+    "政策回答の背景にある経験や判断の理由を聞く、オシセンの共通インタビュー6問を紹介します。2026年茨城県議選に向けて取材・Podcast掲載を準備中です。",
+  index: true,
+});
 export default function StoriesPage() {
   const blocks = getPublicInterviewBlocks(publishedInterviewDocument);
   return (

@@ -1,13 +1,14 @@
-import type { Metadata } from "next";
+import { pageMetadata } from "../../lib/seo";
 import Link from "next/link";
 import { projectLabel } from "../../lib/project";
 import { contactEmail, contactMailto } from "../../lib/site-contact";
 
-export const metadata: Metadata = {
-  title: "情報源・公平性",
+export const metadata = pageMetadata("/sources", {
+  title: "情報源・公平性・掲載方針",
   description:
-    "候補者情報の掲載状況、元の発言への導線、本人回答・引用・編集部要約の区別、掲載と確認の方針を公開します。",
-};
+    "候補者情報の出典、本人回答と引用・編集部要約の区別、共通取材、掲載・訂正・公平性に関するオシセンの方針を公開します。",
+  index: true,
+});
 
 export default function SourcesPage() {
   return (

@@ -1,0 +1,129 @@
+import Link from "next/link";
+import { Breadcrumbs } from "../../../components/breadcrumbs";
+import { questions } from "../../../lib/data";
+import { electionHubPath, issuePagePath } from "../../../lib/issue-content";
+import { project } from "../../../lib/project";
+import { pageMetadata } from "../../../lib/seo";
+import styles from "./election.module.css";
+
+export const metadata = pageMetadata(electionHubPath, {
+  title: "2026年 茨城県議会議員選挙 つくば市選挙区",
+  description:
+    "2026年茨城県議会議員選挙・つくば市選挙区に向けたオシセンの案内。公共交通、教育、子育てなど8つのテーマの設問案、情報の見方、掲載方針を紹介します。候補者情報・本人回答・Podcastは準備中です。",
+  index: true,
+});
+
+export default function ElectionPage() {
+  return (
+    <main id="main" className={`container document-page ${styles.page}`}>
+      <Breadcrumbs
+        items={[
+          { label: "オシセン", href: "/" },
+          { label: "2026年 茨城県議選・つくば市選挙区", href: electionHubPath },
+        ]}
+      />
+      <p className="eyebrow">政策の問いから、本人のことばへ。</p>
+      <h1>
+        {project.electionYear}年 {project.electionName}
+        <br />
+        {project.district}
+      </h1>
+      <p className="lead">
+        オシセンは、つくば市選挙区を対象に、候補者の政策への回答と、その理由や経験を知るための情報を準備しています。
+        いまは8つのテーマの設問案と、情報をどのように確認・掲載するかを公開しています。
+      </p>
+
+      <div className={styles.status}>
+        <strong className={styles.statusLabel}>{project.status}</strong>
+        <p>
+          候補者情報・本人回答はまだ掲載していません。Podcast取材も未実施です。
+          政策の質問は操作を試すための草案で、現行の制度・予算・県の権限や出典は確認中です。
+        </p>
+      </div>
+
+      <section className={styles.section} aria-labelledby="scope-heading">
+        <h2 id="scope-heading">対象としている選挙・地域</h2>
+        <p>
+          オシセンの実証プロジェクトは、2026年の茨城県議会議員選挙・つくば市選挙区を対象に準備を進めています。
+          このページはプロジェクトの案内です。投票日や立候補者の確定情報を発表するものではありません。
+        </p>
+        <dl className={styles.facts}>
+          <div>
+            <dt>対象選挙</dt>
+            <dd>
+              {project.electionYear}年 {project.electionName}
+            </dd>
+          </div>
+          <div>
+            <dt>対象地域</dt>
+            <dd>茨城県 {project.district}</dd>
+          </div>
+          <div>
+            <dt>公開している情報</dt>
+            <dd>政策の設問案、質問台帳、回答の見方、掲載・公平性の方針</dd>
+          </div>
+        </dl>
+      </section>
+
+      <section className={styles.section} aria-labelledby="issues-heading">
+        <h2 id="issues-heading">8つのテーマから、政策の問いを見る</h2>
+        <p>
+          何を尋ねるのか、言葉の意味、考えるポイント、公開前に確認することをテーマごとに整理しています。
+          選挙の争点を確定した一覧ではなく、県政全体を網羅するものでもありません。
+        </p>
+        <ul className={styles.themeList}>
+          {questions.map((question) => (
+            <li key={question.id}>
+              <Link
+                href={issuePagePath(question.id)}
+                className={styles.themeCard}
+              >
+                <h3>{question.theme}</h3>
+                <p>{question.context}</p>
+                <span className={styles.cardLink}>
+                  設問案と確認することを見る <span aria-hidden="true">→</span>
+                </span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section className={styles.section} aria-labelledby="preparation-heading">
+        <h2 id="preparation-heading">候補者情報の公開に向けて</h2>
+        <p>
+          今後、候補者へ共通の質問を行い、本人の回答と、その理由・条件・出典を確認してから掲載する予定です。
+          公開資料から今回の回答を推測したり、回答がない状態を中立の回答に置き換えたりしません。
+        </p>
+        <ul>
+          <li>同じ質問に対する政策の回答と、その理由・条件</li>
+          <li>共通インタビューで本人が話した経験や判断の理由</li>
+          <li>発言の前後が分かる文字起こし、Podcastの該当箇所・全編</li>
+          <li>公式情報へのリンク、出典・確認日</li>
+        </ul>
+        <p>
+          政策の回答は一問ずつ見比べる方針です。候補者を総合点や順位にまとめたり、特定の候補者への投票を勧めたりしません。
+        </p>
+        <div className={styles.relatedLinks}>
+          <Link href="/stories">本人に尋ねる共通の質問 →</Link>
+          <Link href="/method">回答・比較の仕組み →</Link>
+        </div>
+      </section>
+
+      <section className={styles.section} aria-labelledby="read-more-heading">
+        <h2 id="read-more-heading">情報の見方と、掲載の方針</h2>
+        <p>
+          設問の採用理由や確認中の事項は質問台帳へ、出典の扱いや公平性・訂正の方針は情報源のページへ。
+          質問に答える前に、仕組みを確かめることもできます。
+        </p>
+        <div className={styles.relatedLinks}>
+          <Link href="/issues">争点・設問案の一覧 →</Link>
+          <Link href="/policy-register">政策の質問台帳 →</Link>
+          <Link href="/sources">情報源・公平性 →</Link>
+          <Link href="/diagnosis">質問の操作を試す →</Link>
+          <Link href="/about">オシセンについて →</Link>
+        </div>
+      </section>
+    </main>
+  );
+}

@@ -1,10 +1,11 @@
-import type { Metadata } from "next";
+import { pageMetadata } from "../../lib/seo";
 import { SavedCandidates } from "../../components/saved-candidates";
-export const metadata: Metadata = {
+export const metadata = pageMetadata("/saved", {
   title: "気になる候補",
   description:
-    "このブラウザに保存した候補者を見返して、政策を比較できます。保存は支持や投票先の表明ではありません。",
-};
+    "このブラウザに保存した気になる候補者を確認する画面です。保存内容は端末間で同期されません。",
+  index: false,
+});
 export default function Page() {
   return <SavedCandidates />;
 }

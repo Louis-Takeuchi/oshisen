@@ -1,12 +1,13 @@
-import type { Metadata } from "next";
+import { pageMetadata } from "../../lib/seo";
 import { IssueExplorer } from "../../components/issue-explorer";
 import { getIssueQuestion, resolveIssueTheme } from "../../lib/issues";
 
-export const metadata: Metadata = {
-  title: "争点から見る",
+export const metadata = pageMetadata("/issues", {
+  title: "茨城県議選の争点から見る｜2026年つくば市選挙区",
   description:
-    "公共交通、教育、子育てなど、気になるテーマから政策の問いを考えます。設問は確認中の草案で、候補者の本人回答は未掲載です。",
-};
+    "2026年茨城県議選・つくば市選挙区に向け、公共交通・教育・子育てなど8つのテーマから政策の問いを考えます。設問は確認中の草案で、候補者回答は未掲載です。",
+  index: true,
+});
 
 export default async function Page({
   searchParams,

@@ -1,16 +1,25 @@
+import { pageMetadata, siteDescription } from "../lib/seo";
+import { OrganizationData } from "../components/organization-data";
 import Link from "next/link";
-import Image from "next/image";
+import { BrandLogo } from "../components/brand-logo";
 import { projectLabel } from "../lib/project";
 import styles from "./home-pop.module.css";
+
+export const metadata = pageMetadata("/", {
+  title: "オシセン｜政策の回答から、本人のことばへ",
+  description: siteDescription,
+  index: true,
+});
 
 export default function Home() {
   return (
     <main id="main" className={styles.home}>
+      <OrganizationData website />
       <section className="container home-hero">
         <div className="hero-copy">
           <p className="eyebrow">
             <span className="blue-dot" aria-hidden="true" />
-            {projectLabel}
+            <Link href="/ibaraki-2026/tsukuba">{projectLabel}</Link>
           </p>
           <h1>
             政治家の<span className="marked">気にピ</span>、<br />
@@ -40,7 +49,7 @@ export default function Home() {
             <span className={styles.spark} aria-hidden="true">
               ✦
             </span>
-            <Image
+            <BrandLogo
               src="/brand-logo.png"
               alt="オシセン！"
               width={900}

@@ -1,13 +1,14 @@
-import type { Metadata } from "next";
+import { pageMetadata } from "../../lib/seo";
 import Link from "next/link";
 import { projectLabel } from "../../lib/project";
 import { contactEmail, contactMailto } from "../../lib/site-contact";
 
-export const metadata: Metadata = {
-  title: "回答と情報の見方",
+export const metadata = pageMetadata("/method", {
+  title: "政策回答の照合と情報の見方",
   description:
-    "政策は一問ずつ照合し、経験・判断理由は元の発言へつなぎます。質問の版、判断保留、未回答、出典の扱いを説明します。",
-};
+    "政策の回答を一問ずつ照合する仕組み、質問の版、判断保留・未回答・出典の扱いを説明します。総合一致率や候補者の順位はつけません。",
+  index: true,
+});
 
 export default function MethodPage() {
   return (

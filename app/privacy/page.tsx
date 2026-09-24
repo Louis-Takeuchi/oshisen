@@ -1,14 +1,15 @@
-import type { Metadata } from "next";
+import { pageMetadata } from "../../lib/seo";
 import Link from "next/link";
 import { PrivacyControls } from "../../components/privacy-controls";
 import { VisitorAnalyticsControls } from "../../components/visitor-analytics-controls";
 import { contactEmail, contactMailto } from "../../lib/site-contact";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata("/privacy", {
   title: "プライバシーとデータの扱い",
   description:
-    "政策回答のブラウザ内保存、Vercelによる訪問集計と停止方法、任意のローカル操作記録、削除方法を説明します。政策回答や知りたいテーマは訪問集計に送りません。",
-};
+    "政策回答のブラウザ内保存、訪問集計と停止方法、任意のローカル操作記録、削除方法を説明します。研究データとアクセス集計は分けて扱います。",
+  index: true,
+});
 
 export default function PrivacyPage() {
   return (

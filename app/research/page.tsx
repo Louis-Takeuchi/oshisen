@@ -1,13 +1,13 @@
-import type { Metadata } from "next";
+import { pageMetadata } from "../../lib/seo";
 import Link from "next/link";
 import { ResearchWorkbench } from "../../components/research-workbench";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata("/research", {
   title: "研究の準備・表示確認",
   description:
-    "共通取材の準備と、同じ承認済み情報のB/C表示をローカルで確認する画面。研究参加や実データ収集はまだ開始していません。",
-  robots: { index: false, follow: false },
-};
+    "共通取材の準備と、同じ承認済み情報のB/C表示を手元で確認する画面です。研究参加や実データ収集はまだ開始していません。",
+  index: false,
+});
 export default function ResearchPage() {
   return (
     <main id="main" className="container document-page">

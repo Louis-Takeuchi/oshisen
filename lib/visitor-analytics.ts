@@ -22,6 +22,7 @@ const publicPaths = new Set([
   "/interests",
   "/stories",
   "/policy-register",
+  "/ibaraki-2026/tsukuba",
 ]);
 
 export function isVisitorAnalyticsDeployment(
@@ -35,6 +36,13 @@ export function isVisitorAnalyticsDeployment(
 export function visitorAnalyticsPath(pathname: string): string | null {
   const path = pathname === "/" ? "/" : pathname.replace(/\/$/, "");
   if (publicPaths.has(path)) return path;
+  // Count the page category without recording a visitor's chosen policy theme.
+  if (
+    /^\/ibaraki-2026\/tsukuba\/issues\/(transport|education|childcare|healthcare|disaster|environment|agriculture|administration)$/.test(
+      path,
+    )
+  )
+    return "/ibaraki-2026/tsukuba/issues/[theme]";
   if (/^\/candidates\/[^/?#]+$/.test(path)) return "/candidates/[id]";
   return null;
 }

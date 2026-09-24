@@ -2,7 +2,11 @@ import type { Metadata, Viewport } from "next";
 import { headers } from "next/headers";
 import { SiteShell } from "../components/site-shell";
 import { VisitorAnalytics } from "../components/visitor-analytics";
-import { resolveSiteOrigin } from "../lib/site-origin";
+import {
+  isSearchIndexingEnabled,
+  publicSiteOrigin,
+  siteDescription,
+} from "../lib/seo";
 import { isVisitorAnalyticsDeployment } from "../lib/visitor-analytics";
 import "./globals.css";
 import "./pop-theme.css";
@@ -13,7 +17,9 @@ export const viewport: Viewport = {
   colorScheme: "light",
 };
 export async function generateMetadata(): Promise<Metadata> {
-  const origin = resolveSiteOrigin(await headers(), process.env.SITE_URL);
+  // Request-time metadata keeps preview deployments noindex at runtime.
+  await headers();
+  const origin = publicSiteOrigin();
   return {
     metadataBase: origin,
     applicationName: "オシセン",
@@ -42,9 +48,11 @@ export async function generateMetadata(): Promise<Metadata> {
       default: "オシセン｜政策の回答から、本人のことばへ",
       template: "%s｜オシセン",
     },
-    description:
-      "政策の回答を一問ずつ見比べ、経験や判断の理由を元の発言から知る。2026 茨城県議会議員選挙・つくば市選挙区での実証に向けた、オシセンのプロトタイプ。",
-    robots: { index: false, follow: false },
+    description: siteDescription,
+    robots: { index: isSearchIndexingEnabled(), follow: true },
+    verification: process.env.GOOGLE_SITE_VERIFICATION
+      ? { google: process.env.GOOGLE_SITE_VERIFICATION }
+      : undefined,
     openGraph: {
       type: "website",
       locale: "ja_JP",

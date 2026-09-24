@@ -1,3 +1,5 @@
+import type { PublicationSeo } from "./data.ts";
+
 /** Common interview guide. These are questions, never invented answers. */
 export const interviewGuide = [
   {
@@ -121,6 +123,34 @@ export type InterviewBlock = UnrecordedInterviewBlock | RecordedInterviewBlock;
 export interface InterviewDocument {
   schemaVersion: "1.0";
   blocks: InterviewBlock[];
+}
+/** Future public episodes are separate from the research document and its approval workflow. */
+export interface InterviewEpisode {
+  readonly id: string;
+  readonly candidateId: string;
+  readonly title: string;
+  readonly description: string;
+  readonly publicationStatus: "draft" | "published";
+  /** YYYY-MM-DD. Set only after the source blocks and full transcript are approved. */
+  readonly publishedAt?: string;
+  readonly youtubeUrl?: string;
+  readonly audioUrl?: string;
+  readonly thumbnailUrl?: string;
+  readonly durationSeconds?: number;
+  readonly transcriptUrl?: string;
+  readonly transcript: readonly {
+    readonly text: string;
+    readonly startSeconds: number;
+    readonly endSeconds: number;
+  }[];
+  readonly chapters: readonly {
+    readonly title: string;
+    readonly startSeconds: number;
+    readonly questionId?: InterviewQuestionId;
+  }[];
+  /** References existing, publication-approved InterviewDocument blocks. */
+  readonly blockIds: readonly string[];
+  readonly seo?: PublicationSeo;
 }
 export interface InterviewValidation {
   valid: boolean;

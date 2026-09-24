@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import Image from "next/image";
+import { BrandLogo } from "./brand-logo";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useConsideration } from "./use-consideration";
@@ -39,7 +39,7 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
             onClick={closeMenu}
             aria-label="オシセン ホーム"
           >
-            <Image
+            <BrandLogo
               src="/brand-logo.png"
               alt="オシセン！"
               width={540}
@@ -122,6 +122,9 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
             className="mobile-menu"
             aria-label="モバイルナビゲーション"
           >
+            <Link onClick={closeMenu} href="/ibaraki-2026/tsukuba">
+              2026年茨城県議選・つくば市選挙区 →
+            </Link>
             <Link onClick={closeMenu} href="/candidates">
               候補者を見る →
             </Link>
@@ -168,7 +171,7 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
             <div className="footer-top">
               <div>
                 <Link className="logo" href="/" aria-label="オシセン ホーム">
-                  <Image
+                  <BrandLogo
                     src="/brand-logo.png"
                     alt="オシセン！"
                     width={540}
@@ -180,6 +183,9 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
                 <p>政治家との出会い方を、変える。</p>
               </div>
               <nav aria-label="フッターナビゲーション">
+                <Link href="/ibaraki-2026/tsukuba">
+                  2026年茨城県議選・つくば市選挙区
+                </Link>
                 <Link href="/issues">争点から見る</Link>
                 <Link href="/stories">本人の話から見る</Link>
                 <Link href="/interests">知りたいことから見る</Link>

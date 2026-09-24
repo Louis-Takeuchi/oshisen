@@ -3,7 +3,7 @@ import test from "node:test";
 import { readFile, readdir } from "node:fs/promises";
 import path from "node:path";
 import { project, projectLabel } from "../lib/project.ts";
-import { candidates as candidateRegistry } from "../lib/data.ts";
+import { candidates as candidateRegistry, questions } from "../lib/data.ts";
 const { default: worker } = await import("../dist/server/index.js");
 async function render(path) {
   return worker.fetch(
@@ -115,6 +115,145 @@ test("issue deep links show draft questions and genuinely empty candidate answer
     "/policy-register",
   ])
     assert.ok(home.includes(`href="${href}"`), href);
+});
+
+test("Sites renders the election hub and eight issue pages with canonical metadata, draft content, and working ledger anchors", async () => {
+  const hubPath = "/ibaraki-2026/tsukuba";
+  const publicOrigin = new URL(
+    process.env.SITE_URL || "https://www.oshisen.com",
+  ).origin;
+  const hub = await render(hubPath);
+  assert.equal(hub.status, 200);
+  const hubHtml = await hub.text();
+  const register = await (await render("/policy-register")).text();
+  assert.equal(questions.length, 8);
+  assert.match(hubHtml, /Podcast取材も未実施/);
+
+  for (const [pathname, html] of [
+    [hubPath, hubHtml],
+    ...(await Promise.all(
+      questions.map(async (question) => {
+        const pathname = `${hubPath}/issues/${question.id}`;
+        assert.ok(hubHtml.includes(`href="${pathname}"`), pathname);
+        const response = await render(pathname);
+        assert.equal(response.status, 200, pathname);
+        const html = await response.text();
+        assert.ok(html.includes(question.text), pathname);
+        assert.ok(html.includes(question.context), pathname);
+        assert.match(html, /確認中の設問案/, pathname);
+        assert.match(html, /確認済みの出典はまだありません/, pathname);
+        assert.match(html, /候補者本人の回答も未掲載/, pathname);
+        assert.ok(
+          html.includes(`href="/policy-register#${question.id}"`),
+          pathname,
+        );
+        assert.ok(register.includes(`id="${question.id}"`), pathname);
+        return [pathname, html];
+      }),
+    )),
+  ]) {
+    assertNoCandidateFixturesOrScores(html, pathname);
+    assert.equal([...html.matchAll(/<h1\b/g)].length, 1, pathname);
+    assert.match(
+      html,
+      /<meta name="robots" content="index, follow"\s*\/?\s*>/,
+      pathname,
+    );
+    assert.doesNotMatch(
+      html,
+      /<meta name="robots" content="[^"]*noindex/,
+      pathname,
+    );
+    const canonical = [
+      ...html.matchAll(/<link\b[^>]*rel="canonical"[^>]*href="([^"]+)"/g),
+    ];
+    assert.equal(canonical.length, 1, pathname);
+    assert.equal(canonical[0][1], `${publicOrigin}${pathname}`, pathname);
+    const data = [
+      ...html.matchAll(
+        /<script\b[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g,
+      ),
+    ].map((match) => JSON.parse(match[1]));
+    const breadcrumb = data.find((item) => item["@type"] === "BreadcrumbList");
+    assert.ok(breadcrumb, pathname);
+    assert.equal(
+      breadcrumb.itemListElement.at(-1).item,
+      `${publicOrigin}${pathname}`,
+    );
+  }
+
+  const invalid = await render(`${hubPath}/issues/not-a-theme`);
+  assert.equal(invalid.status, 404);
+  const invalidHtml = await invalid.text();
+  assert.match(invalidHtml, /ページが見つかりません/);
+  assert.match(invalidHtml, /<meta name="robots" content="noindex"/);
+});
+
+test("Sites serves a crawlable robots file and a sitemap that excludes personal tools and unpublished candidates", async () => {
+  const publicOrigin = new URL(
+    process.env.SITE_URL || "https://www.oshisen.com",
+  ).origin;
+  const robots = await render("/robots.txt");
+  assert.equal(robots.status, 200);
+  assert.match(robots.headers.get("content-type"), /text\/plain/);
+  const robotsText = await robots.text();
+  assert.match(robotsText, /^User-Agent: \*$/m);
+  assert.match(robotsText, /^Allow: \/$/m);
+  assert.doesNotMatch(robotsText, /^Disallow:\s*\//m);
+  assert.ok(robotsText.includes(`Sitemap: ${publicOrigin}/sitemap.xml`));
+
+  const sitemap = await render("/sitemap.xml");
+  assert.equal(sitemap.status, 200);
+  assert.match(sitemap.headers.get("content-type"), /xml/);
+  const xml = await sitemap.text();
+  assert.match(
+    xml,
+    /<urlset\b[^>]*xmlns="http:\/\/www.sitemaps.org\/schemas\/sitemap\/0.9"/,
+  );
+  const urls = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map(
+    (match) => match[1],
+  );
+  const expectedPaths = [
+    "/",
+    "/about",
+    "/method",
+    "/sources",
+    "/privacy",
+    "/issues",
+    "/stories",
+    "/policy-register",
+    "/ibaraki-2026/tsukuba",
+    ...questions.map(
+      (question) => `/ibaraki-2026/tsukuba/issues/${question.id}`,
+    ),
+  ];
+  assert.equal(urls.length, new Set(urls).size, "no duplicate sitemap URLs");
+  assert.deepEqual(
+    [...urls].sort(),
+    expectedPaths
+      .map((pathname) => new URL(pathname, publicOrigin).href)
+      .sort(),
+  );
+
+  for (const pathname of [
+    "/candidates",
+    "/compare",
+    "/diagnosis",
+    "/questions",
+    "/results",
+    "/saved",
+    "/interests",
+    "/research",
+  ]) {
+    const response = await render(pathname);
+    assert.equal(response.status, 200, pathname);
+    assert.match(
+      await response.text(),
+      /<meta name="robots" content="noindex, follow"\s*\/?\s*>/,
+      pathname,
+    );
+    assert.ok(!urls.includes(new URL(pathname, publicOrigin).href), pathname);
+  }
 });
 
 test("research preparation keeps the question register and unrecorded interviews transparent", async () => {
