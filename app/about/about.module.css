@@ -39,10 +39,10 @@ main.page {
 .contactSection {
   margin-top: 48px;
   padding: clamp(22px, 4vw, 36px);
-  border: 2px solid var(--ink);
+  border: 1px solid var(--line);
   border-radius: 24px;
   background: var(--blue-soft);
-  box-shadow: 6px 6px 0 var(--yellow);
+  box-shadow: none;
   scroll-margin-top: 30px;
 }
 

@@ -7,6 +7,7 @@ import { useConsideration } from "./use-consideration";
 import { ConsiderationBar } from "./consideration-bar";
 import { OfficialContacts } from "./official-contacts";
 import { projectLabel } from "../lib/project";
+import titleStyles from "./home-title.module.css";
 export function SiteShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const compact = pathname === "/questions";
@@ -31,7 +32,9 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
       <a className="skip-link" href="#main">
         本文へ移動
       </a>
-      <header className={`site-header ${compact ? "compact-header" : ""}`}>
+      <header
+        className={`site-header ${compact ? "compact-header" : ""} ${pathname === "/" ? titleStyles.homeHeader : ""}`}
+      >
         <div className="container header-inner">
           <Link
             href="/"
@@ -180,7 +183,7 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
                     unoptimized
                   />
                 </Link>
-                <p>政治家との出会い方を、変える。</p>
+                <p>政策と本人の話を紹介する、政治家の情報サービス。</p>
               </div>
               <nav aria-label="フッターナビゲーション">
                 <Link href="/ibaraki-2026/tsukuba">

@@ -79,7 +79,7 @@ export default async function IssuePage({ params }: Props) {
       </section>
 
       <section className={styles.section} aria-labelledby="discussion-heading">
-        <h2 id="discussion-heading">この問いで考えるポイント</h2>
+        <h2 id="discussion-heading">主な論点</h2>
         <ul>
           {question.sections.discussion.map((point) => (
             <li key={point}>{point}</li>
@@ -104,7 +104,7 @@ export default async function IssuePage({ params }: Props) {
       </section>
 
       <section className={styles.section} aria-labelledby="prefecture-heading">
-        <h2 id="prefecture-heading">県政との関係と、確認すること</h2>
+        <h2 id="prefecture-heading">県政との関係・確認事項</h2>
         <p>{question.sections.currentState}</p>
         <ul>
           {question.pendingChecks.map((check) => (
@@ -158,7 +158,7 @@ export default async function IssuePage({ params }: Props) {
       </section>
 
       <section className={styles.section} aria-labelledby="related-heading">
-        <h2 id="related-heading">ほかのテーマも見る</h2>
+        <h2 id="related-heading">その他のテーマ</h2>
         <nav className={styles.relatedLinks} aria-label="ほかの争点・設問案">
           {questions
             .filter((item) => item.id !== question.id)

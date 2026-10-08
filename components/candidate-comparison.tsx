@@ -15,8 +15,8 @@ export function CandidateComparison() {
     .slice(0, 2);
   return (
     <main id="main" className="container page-main">
-      <p className="eyebrow">同じ問いから、考え方を見る。</p>
-      <h1>2人の回答を見比べる</h1>
+      <p className="eyebrow">政策への回答</p>
+      <h1>候補者の回答比較</h1>
       <p className="lead">選択肢だけでなく、理由や条件、出典まで。</p>
       {!ready ? (
         <p aria-busy="true">選択を確認しています。</p>
@@ -26,8 +26,8 @@ export function CandidateComparison() {
             <div className="empty-notice">
               <h2>
                 {candidates.length
-                  ? "比較する2人を選んでください。"
-                  : "候補者の回答は掲載準備中です。"}
+                  ? "比較する候補者の選択"
+                  : "候補者回答の掲載準備"}
               </h2>
               <p>回答がそろったら、同じ質問への本人回答を並べます。</p>
               <Link href="/candidates" className="text-link">

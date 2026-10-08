@@ -18,7 +18,7 @@ export function Results() {
     return (
       <main id="main" className="container empty-page">
         <p className="eyebrow">あなたの回答</p>
-        <h1>まずは、あなたの考えから。</h1>
+        <h1>回答の見直し</h1>
         <p>質問に答えると、選んだ回答をここで見返せます。</p>
         <Link href="/diagnosis" className="button primary">
           質問へ進む →
@@ -36,11 +36,7 @@ export function Results() {
           回答を見直す ↗
         </Link>
       </div>
-      <h1>
-        同じ答えも、違う答えも。
-        <br className="mobile-only" />
-        理由まで見てみよう。
-      </h1>
+      <h1>回答の見直し・比較</h1>
       <p className="lead">候補者の本人回答がそろったら、質問ごとに並べます。</p>
       <div className="notice">
         <span className="outline-label">掲載準備中</span>
@@ -76,7 +72,7 @@ export function Results() {
           ))
       ) : (
         <div className="empty-notice">
-          <h2>候補者の回答は、これから。</h2>
+          <h2>候補者回答の掲載準備</h2>
           <p>同じ質問への本人回答を確認してから掲載します。</p>
         </div>
       )}

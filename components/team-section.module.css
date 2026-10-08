@@ -1,10 +1,10 @@
 .team {
   margin-block: 58px 64px;
   padding: clamp(22px, 4vw, 42px);
-  border: 2px solid var(--ink);
+  border: 1px solid var(--line);
   border-radius: 30px;
   background: var(--blue-soft);
-  box-shadow: 8px 8px 0 var(--yellow);
+  box-shadow: none;
   scroll-margin-top: 30px;
 }
 
@@ -63,10 +63,10 @@
 .member {
   min-width: 0;
   overflow: hidden;
-  border: 2px solid var(--ink);
+  border: 1px solid var(--line);
   border-radius: 22px;
   background: white;
-  box-shadow: 4px 4px 0 var(--ink);
+  box-shadow: none;
   scroll-margin-top: 32px;
 }
 

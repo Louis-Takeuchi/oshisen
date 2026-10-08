@@ -66,7 +66,7 @@ export default function ElectionPage() {
       </section>
 
       <section className={styles.section} aria-labelledby="issues-heading">
-        <h2 id="issues-heading">8つのテーマから、政策の問いを見る</h2>
+        <h2 id="issues-heading">政策の8テーマ</h2>
         <p>
           何を尋ねるのか、言葉の意味、考えるポイント、公開前に確認することをテーマごとに整理しています。
           選挙の争点を確定した一覧ではなく、県政全体を網羅するものでもありません。
@@ -90,7 +90,7 @@ export default function ElectionPage() {
       </section>
 
       <section className={styles.section} aria-labelledby="preparation-heading">
-        <h2 id="preparation-heading">候補者情報の公開に向けて</h2>
+        <h2 id="preparation-heading">候補者情報の公開準備</h2>
         <p>
           今後、候補者へ共通の質問を行い、本人の回答と、その理由・条件・出典を確認してから掲載する予定です。
           公開資料から今回の回答を推測したり、回答がない状態を中立の回答に置き換えたりしません。
@@ -111,7 +111,7 @@ export default function ElectionPage() {
       </section>
 
       <section className={styles.section} aria-labelledby="read-more-heading">
-        <h2 id="read-more-heading">情報の見方と、掲載の方針</h2>
+        <h2 id="read-more-heading">情報の見方・掲載方針</h2>
         <p>
           設問の採用理由や確認中の事項は質問台帳へ、出典の扱いや公平性・訂正の方針は情報源のページへ。
           質問に答える前に、仕組みを確かめることもできます。

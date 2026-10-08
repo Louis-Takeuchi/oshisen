@@ -15,12 +15,8 @@ export function DiagnosisStart() {
   }
   return (
     <main id="main" className="container diagnosis-start">
-      <p className="eyebrow">あなたの考えから、はじめよう。</p>
-      <h1>
-        まずは、あなたの考えを
-        <br className="desktop-only" />
-        教えてください。
-      </h1>
+      <p className="eyebrow">政策への回答</p>
+      <h1>政策の質問</h1>
       <p className="lead">
         正解はありません。
         <br />

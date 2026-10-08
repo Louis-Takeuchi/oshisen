@@ -64,7 +64,7 @@ export function CandidateDetail({
       </section>
       <section className="detail-section" id="policy">
         <p className="eyebrow">P / 政策への回答</p>
-        <h2>答えと、その理由を見る。</h2>
+        <h2>政策への回答・理由</h2>
         <p>同じ質問・選択肢・補足の版への本人回答だけを照合します。</p>
         <label className="policy-filter">
           <input
@@ -92,7 +92,7 @@ export function CandidateDetail({
       </section>
       <section className="detail-section" id="humanity">
         <p className="eyebrow">H / 本人の言葉</p>
-        <h2>どんな経験をして、どう考えた？</h2>
+        <h2>経験・判断の理由</h2>
         <p>
           {interviewBlocks.length
             ? "本人の経験・選択・理由を、共通の項目で見てみましょう。"
@@ -105,7 +105,7 @@ export function CandidateDetail({
         />
       </section>
       <section className="detail-section">
-        <h2>もっと詳しく見る</h2>
+        <h2>関連資料</h2>
         <p>本人の発信や一次情報へ。</p>
         <div className="source-links">
           {resources?.links.map((resource) => (

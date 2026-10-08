@@ -13,7 +13,7 @@ export function PriorityThemePicker() {
       aria-labelledby="priority-heading"
     >
       <p className="eyebrow">N / 知りたいことから。</p>
-      <h2 id="priority-heading">どのテーマが気になる？</h2>
+      <h2 id="priority-heading">関心のあるテーマ</h2>
       <p>
         任意で3つまで。選んだテーマへの案内に使います。政策の回答照合や候補者の並び順には使いません。
       </p>

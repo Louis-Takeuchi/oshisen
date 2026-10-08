@@ -15,20 +15,12 @@ export default function StoriesPage() {
   return (
     <main id="main" className="container document-page">
       <p className="eyebrow">本人の話から見る</p>
-      <h1>
-        その考えの、
-        <br />
-        きっかけを聞きたい。
-      </h1>
+      <h1>本人インタビュー</h1>
       <p className="lead">
         何を経験して、どう選んだのか。政策の賛否だけではわからない話を、本人に聞きます。質問への回答を終えなくても、ここから知ることができます。
       </p>
       <section className="document-section">
-        <h2>
-          {blocks.length
-            ? "同じ項目から、本人の話を読む。"
-            : "取材・掲載の準備中です。"}
-        </h2>
+        <h2>{blocks.length ? "公開インタビュー" : "取材・掲載の準備状況"}</h2>
         {blocks.length ? (
           <p>
             短い要約から、本人の言葉と元の音声まで。気になる項目や、知りたい人を選んで読めます。
@@ -47,7 +39,7 @@ export default function StoriesPage() {
       </section>
       <InterviewStories blocks={blocks} />
       <section className="document-section">
-        <h2>短く知って、元の話まで。</h2>
+        <h2>インタビューの掲載形式</h2>
         <p>
           本人が語った経験、選択・行動、理由、条件を分けて示します。要約から本人の言葉、その前後の文脈、Podcastの全編へ進める形で掲載します。
         </p>

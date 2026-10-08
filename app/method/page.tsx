@@ -14,18 +14,14 @@ export default function MethodPage() {
   return (
     <main id="main" className="container document-page">
       <p className="eyebrow">回答と情報の見方</p>
-      <h1>
-        同じ答え。
-        <br />
-        でも、理由も同じ？
-      </h1>
+      <h1>回答の比較方法</h1>
       <p className="lead">
         政策への回答は、一問ずつ。その理由や経験は、本人の発言から。
         どこまで分かり、何がまだ分からないのかも示します。
       </p>
 
       <section className="document-section">
-        <h2>いまは、取材・掲載の準備中です。</h2>
+        <h2>取材・掲載の準備状況</h2>
         <p>
           {projectLabel}
           を対象に準備しています。候補者情報・本人回答は未掲載で、Podcast取材も未実施です。
@@ -37,7 +33,7 @@ export default function MethodPage() {
       </section>
 
       <section className="document-section" id="calculation">
-        <h2>回答を、一問ずつ見比べる。</h2>
+        <h2>質問ごとの回答比較</h2>
         <p>
           同じ質問文・条件・選択肢・補足説明の版に対する回答を並べます。
           公開できる本人回答を確認したうえで、選択肢が同じなら「同じ回答」、異なれば「違う回答」と表示します。
@@ -58,7 +54,7 @@ export default function MethodPage() {
       </section>
 
       <section className="document-section">
-        <h2>「分からない」を、賛否に置き換えない。</h2>
+        <h2>判断保留・未回答の扱い</h2>
         <p>
           回答は「賛成」から「反対」までの5段階です。
           真ん中の「賛成でも反対でもない」は、ひとつの回答です。
@@ -81,7 +77,7 @@ export default function MethodPage() {
       </section>
 
       <section className="document-section" id="comparison">
-        <h2>三つの情報を、混ぜない。</h2>
+        <h2>取り扱う情報の種類</h2>
         <dl>
           <dt>P：政策への回答</dt>
           <dd>候補者と利用者に同じ問いを尋ね、一問ずつ見比べます。</dd>
@@ -105,7 +101,7 @@ export default function MethodPage() {
       </section>
 
       <section className="document-section">
-        <h2>短く読む入口と、文脈に戻る出口。</h2>
+        <h2>インタビューの構成と出典</h2>
         <p>
           取材では共通の6問を使い、必要に応じて具体的な場面や条件を聞きます。
           公開時は「経験・選択・理由・条件」を整理し、本人の引用、前後の文字起こし、Podcastの該当箇所と全編につなぎます。
@@ -120,7 +116,7 @@ export default function MethodPage() {
       </section>
 
       <section className="document-section">
-        <h2>質問も、見直せるように。</h2>
+        <h2>質問の作成・確認手順</h2>
         <p>
           住民が知りたいことと、議会・予算・行政計画などの情報を突き合わせ、設問候補を作ります。
           一問でひとつの判断を尋ね、用語、現状・県との関係、主な論点、出典を分けて示します。
@@ -136,7 +132,7 @@ export default function MethodPage() {
       </section>
 
       <section className="document-section">
-        <h2>この形式で、伝わりやすくなるか。</h2>
+        <h2>表示方法の検証</h2>
         <p>
           同じ取材内容を「取材順」と「共通形式」で見せ、発言内容と根拠を把握しやすくなるかを確かめる計画です。
           政治家の人格や、投票先を当てる研究ではありません。効果はまだ検証していません。
@@ -147,7 +143,7 @@ export default function MethodPage() {
       </section>
 
       <section className="document-section">
-        <h2>掲載・訂正について</h2>
+        <h2>掲載・訂正の手順</h2>
         <p>
           取材後は原音・原文を確認し、別担当者の文脈確認と本人による発言趣旨の確認を分けて記録する方針です。
           AIを下書きに使う場合も、そのまま公開せず、承認済みの文章を掲載します。

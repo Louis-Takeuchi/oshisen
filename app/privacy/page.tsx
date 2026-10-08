@@ -15,11 +15,7 @@ export default function PrivacyPage() {
   return (
     <main id="main" className="container document-page">
       <p className="eyebrow">プライバシーとデータの扱い</p>
-      <h1>
-        あなたの回答を、
-        <br />
-        あなたの手元に。
-      </h1>
+      <h1>プライバシー</h1>
       <p className="lead">
         このプロトタイプで答えた政策の回答は、お使いのブラウザのタブ内で扱います。
         氏名やメールアドレスの登録は必要ありません。
@@ -55,7 +51,7 @@ export default function PrivacyPage() {
       </section>
 
       <section className="document-section" id="visitor-analytics">
-        <h2>サイトの訪問数を集計します。</h2>
+        <h2>訪問数の集計</h2>
         <p>
           公開サイトでは、利用状況を把握してサイトを改善するため、Vercel Web
           Analyticsで訪問数やページの種類ごとの閲覧数を集計します。
@@ -89,7 +85,7 @@ export default function PrivacyPage() {
       </section>
 
       <section className="document-section">
-        <h2>このタブ内だけの操作記録は、任意です。</h2>
+        <h2>任意の操作記録</h2>
         <p>
           操作の確認に協力する設定を有効にした場合のみ、政策の質問の開始・回答操作・完了、
           候補者詳細や人となりの閲覧、候補の保存・解除などの行動をブラウザ内に記録します。
@@ -109,7 +105,7 @@ export default function PrivacyPage() {
       </section>
 
       <section className="document-section" id="research-preview">
-        <h2>研究用の表示確認は、この画面の中だけで。</h2>
+        <h2>研究用データの表示確認</h2>
         <p>
           「研究の準備」では、手元のJSONファイルを読み込み、同じ取材内容を二つの形式で表示する確認ができます。
           読み込んだ内容は画面のメモリだけで扱います。サーバーへ送信せず、ブラウザの保存領域にも書き込みません。再読み込みやタブを閉じると消えます。
@@ -129,7 +125,7 @@ export default function PrivacyPage() {
       </section>
 
       <section className="document-section" id="data-controls">
-        <h2>保存したデータを消すには</h2>
+        <h2>保存データの削除</h2>
         <p>
           以下の設定から、気になる候補と、このタブの回答・比較する候補・知りたいテーマ・行動記録を削除できます。
           行動記録への同意も取り消せます。回答を削除すると、見返したり照合したりするには再び質問に答える必要があります。
@@ -146,7 +142,7 @@ export default function PrivacyPage() {
       </section>
 
       <section className="document-section">
-        <h2>外部サイトと、このページの範囲</h2>
+        <h2>外部サイトのデータ取り扱い</h2>
         <p>
           本番では、候補者の公式サイトやYouTubeなど、確認済みの一次情報へのリンクを掲載する予定です。
           移動先でのデータの扱いは、それぞれのサイトの説明を確認してください。

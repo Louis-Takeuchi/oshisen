@@ -91,7 +91,7 @@ test("issue deep links show draft questions and genuinely empty candidate answer
   const issue = await (await render("/issues?theme=education")).text();
   assert.match(issue, /県立高校/);
   assert.match(issue, /確認中の質問案/);
-  assert.match(issue, /本人の回答は、まだありません/);
+  assert.match(issue, /本人回答の掲載準備/);
   assert.match(issue, /href="\/policy-register"/);
   assert.doesNotMatch(issue, /サンプル回答|href="\/candidates\//);
   const invalid = await (await render("/issues?theme=unknown")).text();
@@ -101,7 +101,7 @@ test("issue deep links show draft questions and genuinely empty candidate answer
   ).text();
   assert.match(duplicate, /指定されたテーマが見つからない/);
   const candidates = await (await render("/candidates")).text();
-  assert.match(candidates, /候補者の情報は、これから/);
+  assert.match(candidates, /候補者情報の掲載準備/);
   assertNoCandidateFixturesOrScores(candidates, "/candidates");
   assert.doesNotMatch(candidates, /href="\/candidates\//);
   const home = await (await render("/")).text();
@@ -264,7 +264,7 @@ test("research preparation keeps the question register and unrecorded interviews
   assert.match(register, /id="P01"/);
   assert.match(register, /id="P08"/);
   const stories = await (await render("/stories")).text();
-  assert.match(stories, /取材・掲載の準備中/);
+  assert.match(stories, /取材・掲載の準備状況/);
   assert.match(stories, /ヒアリングはまだ実施していません/);
   for (let index = 1; index <= 6; index++) {
     assert.ok(stories.includes(`id="H0${index}"`));

@@ -45,7 +45,7 @@ export async function generateMetadata(): Promise<Metadata> {
     appleWebApp: { title: "オシセン" },
     formatDetection: { telephone: false },
     title: {
-      default: "オシセン｜政策の回答から、本人のことばへ",
+      default: "オシセン｜政治家の政策と人柄",
       template: "%s｜オシセン",
     },
     description: siteDescription,
@@ -57,21 +57,21 @@ export async function generateMetadata(): Promise<Metadata> {
       type: "website",
       locale: "ja_JP",
       siteName: "オシセン",
-      title: "政治家の気にピ、つくってみない？",
-      description: "政策の回答から、理由へ。気になったら、元の発言まで。",
+      title: "政治家の政策と人柄",
+      description: "政策への回答と本人へのインタビューを紹介するサービスです。",
       images: [
         {
           url: new URL("/og.png?v=logo-2", origin).href,
           width: 1733,
           height: 907,
-          alt: "オシセン｜政治家の気にピ、つくってみない？",
+          alt: "オシセン｜政治家の政策と人柄",
         },
       ],
     },
     twitter: {
       card: "summary_large_image",
-      title: "政治家の気にピ、つくってみない？",
-      description: "政策の回答から、理由へ。気になったら、元の発言まで。",
+      title: "政治家の政策と人柄",
+      description: "政策への回答と本人へのインタビューを紹介するサービスです。",
       images: [new URL("/og.png?v=logo-2", origin).href],
     },
   };

@@ -12,16 +12,12 @@ export default function ResearchPage() {
   return (
     <main id="main" className="container document-page">
       <p className="eyebrow">RESEARCH / 準備中</p>
-      <h1>
-        同じ話を、
-        <br />
-        伝わる形にできるか。
-      </h1>
+      <h1>研究の準備・表示確認</h1>
       <p className="lead">
         本人が何を話し、何を理由に挙げたのか。共通の項目で見比べると、発言と根拠をつかみやすくなるのかを確かめたい。
       </p>
       <section className="document-section">
-        <h2>いまは研究の準備段階です。</h2>
+        <h2>研究の準備状況</h2>
         <p>
           2026年茨城県議選のつくば市選挙区を対象に準備しています。ヒアリングは未実施で、候補者データも登録していません。このページは取材の形式と表示の確認用です。通常のサイト利用とは分けています。
         </p>

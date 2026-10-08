@@ -45,7 +45,7 @@ export function SavedCandidates() {
           </div>
           {!savedIds.length ? (
             <div className="empty-notice">
-              <h2>まだ保存した候補はいません。</h2>
+              <h2>保存した候補者：0人</h2>
               <p>候補者の「気になる候補に追加」から保存できます。</p>
               <Link className="button primary" href="/candidates">
                 候補者を見る →

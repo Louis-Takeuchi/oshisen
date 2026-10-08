@@ -244,7 +244,7 @@ test("draft issues and empty candidate registry survive production rendering", a
   const issue = await (await fetch(`${origin}/issues?theme=healthcare`)).text();
   assert.match(issue, /地域医療/);
   assert.match(issue, /確認中の質問案/);
-  assert.match(issue, /本人の回答は、まだありません/);
+  assert.match(issue, /本人回答の掲載準備/);
   assert.match(issue, /href="\/policy-register"/);
   assert.doesNotMatch(issue, /サンプル回答|href="\/candidates\//);
   const invalid = await (await fetch(`${origin}/issues?theme=unknown`)).text();
@@ -254,7 +254,7 @@ test("draft issues and empty candidate registry survive production rendering", a
   ).text();
   assert.match(duplicate, /指定されたテーマが見つからない/);
   const candidates = await (await fetch(`${origin}/candidates`)).text();
-  assert.match(candidates, /候補者の情報は、これから/);
+  assert.match(candidates, /候補者情報の掲載準備/);
   assertNoCandidateFixturesOrScores(candidates, "/candidates");
   assert.doesNotMatch(candidates, /href="\/candidates\//);
   const home = await (await fetch(origin)).text();
@@ -282,7 +282,7 @@ test("new research entrances preserve the draft and pre-interview boundaries", a
   assert.match(register, /id="P01"/);
   assert.match(register, /id="P08"/);
   const stories = await (await fetch(`${origin}/stories`)).text();
-  assert.match(stories, /取材・掲載の準備中/);
+  assert.match(stories, /取材・掲載の準備状況/);
   assert.match(stories, /ヒアリングはまだ実施していません/);
   for (let index = 1; index <= 6; index++) {
     assert.ok(stories.includes(`id="H0${index}"`));

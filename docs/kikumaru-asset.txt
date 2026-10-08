@@ -1,0 +1,9 @@
+きくまる：トップ画面用素材
+
+ユーザー提供のキャラクター画像を参照し、内蔵 image_gen ツールで生成。
+透過PNG: public/mascot/kikumaru.png
+配信用WebP: public/mascot/kikumaru.webp
+WebPはPNGから幅1000px・品質90で変換し、アルファチャンネルを保持。
+
+Final prompt:
+Extract and faithfully recreate a SINGLE existing mascot character Kikumaru from the attached character reference sheets as a transparent-background website asset. Use the happy open-eyed smiling character in the top row third position of the expression sheet. Keep this exact character identity and drawing style: ivory/off-white rounded speech bubble face/body with small curved tail at lower left, two gigantic fluid ear-like shapes extending left and right, left ear vivid royal/electric blue #0050ff, right ear vivid sunny yellow #ffe72b, 2 or 3 short white curved gleams in each ear, small dark blue oval eyes with white highlights, pink cheek strokes, small happy pink open mouth. Crisp smooth organic outlines, beautiful flat 2D illustration with extremely subtle paper-like color variation only. Symmetric-ish friendly pose with left ear a little higher, character facing viewer. Include two little floating pink excitement strokes above each ear, like reference. Exactly one character, complete ears and speech bubble tail, no text, no lettering, no logo, no shadow, no added hands, arms or legs, no new features. True alpha transparency around the mascot; no white backdrop or checkerboard. Tight but comfortable framing, landscape aspect ratio about 1.6:1. This is for a high-quality animation on an existing Japanese website; retain the provided mascot rather than redesigning it.

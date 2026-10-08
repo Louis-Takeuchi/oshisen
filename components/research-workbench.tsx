@@ -131,7 +131,7 @@ export function ResearchWorkbench() {
     <div className={styles.workbench} data-private="true">
       <section className={styles.panel} aria-labelledby="preparation-files">
         <p className={styles.kicker}>01 / FILE CHECK</p>
-        <h2 id="preparation-files">収録後に入れる情報を、先に揃える。</h2>
+        <h2 id="preparation-files">取材情報の入力形式</h2>
         <p>
           空の6項目をダウンロードできます。読み込んだファイルは、このタブのメモリだけで扱います。サーバーへの送信・保存・公開は行いません。
         </p>
@@ -232,7 +232,7 @@ export function ResearchWorkbench() {
 
       <section className={styles.panel} aria-labelledby="view-comparison">
         <p className={styles.kicker}>02 / SAME MATERIAL</p>
-        <h2 id="view-comparison">同じ発言を、二つの並べ方で。</h2>
+        <h2 id="view-comparison">表示形式の比較</h2>
         <p>
           本文・引用・原音・文字起こしは共通です。Bは取材順、CはH01〜H06ごとに並べます。最大2人を選べます。ここでの切り替えは表示確認用で、本番研究の割り付けではありません。表示条件を切り替えると、同意と操作記録をリセットします。
         </p>
@@ -315,7 +315,7 @@ export function ResearchWorkbench() {
 
       <section className={styles.panel} aria-labelledby="local-measurement">
         <p className={styles.kicker}>03 / LOCAL CHECK ONLY</p>
-        <h2 id="local-measurement">記録も、通常の利用と分ける。</h2>
+        <h2 id="local-measurement">研究用の操作記録</h2>
         <p>
           この画面の確認操作だけを、同意した後からタブ内に記録できます。参加者の募集や研究データの収集は、まだ始めていません。氏名や政治的な回答は記録しません。
         </p>

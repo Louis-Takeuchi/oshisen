@@ -15,7 +15,7 @@ export default function Page() {
   return (
     <main id="main" className="container page-main">
       <p className="eyebrow">P / QUESTION REGISTER</p>
-      <h1>何を聞くかも、確かめる。</h1>
+      <h1>政策質問の台帳</h1>
       <p className="lead">今ある8問も、新しい8つの案も、まだ草案です。</p>
       <div className="notice">
         <p>

@@ -19,26 +19,22 @@ export default function AboutPage() {
   return (
     <main id="main" className={`container document-page ${styles.page}`}>
       <OrganizationData />
-      <p className="eyebrow">オシセンについて</p>
-      <h1>
-        政治家との出会い方を、
-        <br />
-        変える。
-      </h1>
+      <p className="eyebrow">サービス・運営情報</p>
+      <h1>オシセンについて</h1>
       <p className="lead">
-        政策の回答から、経験や判断の理由へ。そして、元の発言へ。
-        オシセンは、候補者を知るきっかけをつくるサービスです。
+        オシセンは、政策への回答と本人へのインタビューを通じて、政治家を知るためのサービスです。
+        2026年茨城県議選・つくば市選挙区を対象に、取材と掲載の準備を進めています。
       </p>
 
       <nav className={styles.jumpLinks} aria-label="このページの目次">
         <a href="#team">
-          つくっている2人 <span aria-hidden="true">↓</span>
+          運営メンバー <span aria-hidden="true">↓</span>
         </a>
         <a href="#team-qa">
-          人となりのQ&A <span aria-hidden="true">↓</span>
+          メンバーのQ&A <span aria-hidden="true">↓</span>
         </a>
         <a href="#our-idea">
-          オシセンの考え方 <span aria-hidden="true">↓</span>
+          サービスの目的 <span aria-hidden="true">↓</span>
         </a>
         <a href="#operations">
           運営情報 <span aria-hidden="true">↓</span>
@@ -51,25 +47,19 @@ export default function AboutPage() {
       <TeamSection />
 
       <section className="document-section" id="our-idea">
-        <h2>
-          「今回、誰が気になる？」が、
-          <br />
-          ふつうに交わされる社会へ。
-        </h2>
+        <h2>サービスの目的</h2>
         <p>
-          候補者を選ぶとき、政策は大事です。でも、どんな経験をしてきたのか。
-          どんなことで迷うのか。どういう基準で決断するのか。
-          そんな情報を知ることで、政策の見え方が少し変わるかもしれません。
+          候補者の政策への賛否だけでなく、その考えに至った経験や判断の理由を伝えることが目的です。
+          政策への回答とインタビューを別々の情報として掲載し、利用者が自分で判断するための材料を提供します。
         </p>
         <p>
-          同じ政策の回答でも、理由まで同じとは限りません。
-          どんな場面で、何を選び、なぜそう考えたのか。
-          本人の話を、前後の文脈まで確かめられる入口をつくります。
+          インタビューの要約には、本人の発言や原音へのリンクを付ける予定です。
+          気になった内容を、前後の文脈も含めて確認できる形を目指しています。
         </p>
       </section>
 
       <section className="document-section">
-        <h2>政策から、もう一歩先へ。</h2>
+        <h2>主な機能</h2>
         <ol>
           <li>質問に答えて、政策について自分の考えを整理する。</li>
           <li>候補者の回答と、一問ずつ見比べる。</li>
@@ -87,7 +77,7 @@ export default function AboutPage() {
       </section>
 
       <section className="document-section">
-        <h2>Phase 0で、確かめたいこと。</h2>
+        <h2>実証プロジェクト</h2>
         <p>
           同じ取材内容でも、共通の項目で整理すると、発言とその根拠をつかみやすくなるのか。
           {projectLabel}を対象に、この問いを確かめる準備を進めています。
@@ -103,7 +93,7 @@ export default function AboutPage() {
       </section>
 
       <section className="document-section">
-        <h2>投票先を決めるのは、あなたです。</h2>
+        <h2>中立性と掲載方針</h2>
         <p>
           オシセンは、特定の候補者への投票を推奨・依頼するサービスではありません。
           一問への回答が同じでも、人物全体が似ているとは限りません。
@@ -119,7 +109,7 @@ export default function AboutPage() {
       </section>
 
       <section className="document-section" id="operations">
-        <h2>運営について</h2>
+        <h2>運営情報</h2>
         <dl>
           <div>
             <dt>プロジェクト</dt>
@@ -166,8 +156,8 @@ export default function AboutPage() {
         className={styles.contactSection}
         aria-labelledby="contact-title"
       >
-        <p className="eyebrow">KEEP IN TOUCH / つながる</p>
-        <h2 id="contact-title">オシセンと、つながろう。</h2>
+        <p className="eyebrow">連絡先</p>
+        <h2 id="contact-title">公式SNS・お問い合わせ</h2>
         <p className={styles.contactIntro}>
           公式Instagram・Xはこちらから。
           <br />

@@ -48,11 +48,11 @@ export function InformationNeeds() {
   return (
     <main id="main" className="container page-main">
       <p className="eyebrow">N / INFORMATION NEEDS</p>
-      <h1>いま、何を知りたい？</h1>
+      <h1>関心に応じた情報検索</h1>
       <p className="lead">答えなくても大丈夫。気になる話への道しるべです。</p>
       <PriorityThemePicker />
       <section className="information-types">
-        <h2>どんな情報を見たい？</h2>
+        <h2>情報の種類</h2>
         <p>いくつでも選べます。この選択は今の画面内だけで使います。</p>
         <fieldset>
           <legend className="sr-only">情報の種類</legend>
@@ -75,7 +75,7 @@ export function InformationNeeds() {
         </fieldset>
       </section>
       <section className="needs-links">
-        <h2>気になるところから、どうぞ。</h2>
+        <h2>関連する情報</h2>
         {priorityIds.length > 0 && (
           <div className="exploration-links">
             {questions

@@ -59,21 +59,12 @@ export function TeamSection() {
     <section id="team" className={styles.team} aria-labelledby="team-title">
       <div className={styles.sectionHeading}>
         <div>
-          <p className={styles.eyebrow}>MEET THE TEAM / 運営メンバー</p>
-          <h2 id="team-title">
-            つくっている私たちも、
-            <br />
-            <span>どんな人？</span>
-          </h2>
+          <p className={styles.eyebrow}>運営体制</p>
+          <h2 id="team-title">運営メンバー</h2>
         </div>
-        <span className={styles.sticker} aria-hidden="true">
-          はじめまして！
-        </span>
       </div>
       <p className={styles.intro}>
-        候補者の人となりを伝えるなら、つくり手のことも。
-        <br />
-        オシセンをつくる2人の担当と、肩書きだけでは分からない一面を紹介します。
+        運営メンバーの担当業務と、本人から寄せられたプロフィールを紹介します。
       </p>
 
       <div className={styles.members}>
@@ -150,7 +141,7 @@ export function TeamSection() {
         aria-labelledby="team-qa-title"
       >
         <p className={styles.eyebrow}>BEYOND THE ROLE / 肩書きの、その先へ</p>
-        <h2 id="team-qa-title">仕事の話を、ちょっと離れて。</h2>
+        <h2 id="team-qa-title">メンバーのQ&A</h2>
         <p className={styles.intro}>
           休日のこと、好きなこと、迷ったときのこと。
           <br />

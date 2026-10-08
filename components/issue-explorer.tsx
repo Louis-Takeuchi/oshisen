@@ -23,7 +23,7 @@ export function IssueExplorer({
   return (
     <main id="main" className="container page-main">
       <p className="eyebrow">気になるテーマから。</p>
-      <h1>争点から見る</h1>
+      <h1>政策テーマ</h1>
       <p className="lead">同じ問いへの考え方を、理由と一緒に。</p>
       <div className="notice">
         <span className="outline-label">確認中の質問案</span>
@@ -35,7 +35,7 @@ export function IssueExplorer({
         </Link>
       </p>
       <nav className={styles.themeNav} aria-label="気になるテーマから選ぶ">
-        <h2>気になるテーマは？</h2>
+        <h2>テーマ一覧</h2>
         <ul className={styles.themeList}>
           {questions.map((q, i) => (
             <li key={q.id}>
@@ -87,7 +87,7 @@ export function IssueExplorer({
           ))
       ) : (
         <div className="empty-notice">
-          <h2>本人の回答は、まだありません。</h2>
+          <h2>本人回答の掲載準備</h2>
           <p>
             同じ質問への回答を確認してから、理由・条件・出典と一緒に掲載します。
           </p>

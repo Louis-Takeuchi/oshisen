@@ -14,18 +14,14 @@ export default function SourcesPage() {
   return (
     <main id="main" className="container document-page">
       <p className="eyebrow">情報源・公平性</p>
-      <h1>
-        その話の、
-        <br />
-        もとまでたどる。
-      </h1>
+      <h1>情報源・公平性</h1>
       <p className="lead">
         誰が、いつ、どんな場面で話したのか。
         短く読む入口から、発言の前後まで戻れるようにします。
       </p>
 
       <section className="document-section">
-        <h2>いま掲載しているもの</h2>
+        <h2>公開中の情報</h2>
         <p>
           {projectLabel}
           での実証に向けたプロトタイプです。候補者情報はまだ掲載していません。
@@ -60,7 +56,7 @@ export default function SourcesPage() {
       </section>
 
       <section className="document-section">
-        <h2>本人のことばと、編集した文章を分ける。</h2>
+        <h2>本人の発言と編集の区別</h2>
         <ul>
           <li>本人回答、本人の回顧、公式記録、編集部要約を区別します。</li>
           <li>
@@ -83,7 +79,7 @@ export default function SourcesPage() {
       </section>
 
       <section className="document-section">
-        <h2>同じ問いを、同じ条件で。</h2>
+        <h2>質問と掲載条件の統一</h2>
         <ul>
           <li>政策は、同じ版の質問文・条件・選択肢・補足説明で尋ねます。</li>
           <li>
@@ -107,7 +103,7 @@ export default function SourcesPage() {
       </section>
 
       <section className="document-section">
-        <h2>取材後に、公開まで確認すること。</h2>
+        <h2>公開前の確認手順</h2>
         <p>
           収録から文字起こしを作り、原音と照合します。要点を整理した後は、別担当者が文脈を確認し、本人にも発言趣旨の確認を依頼する計画です。
           AIを下書きに使う場合も、原文・原音の確認を省略せず、承認済みの版だけを公開します。
