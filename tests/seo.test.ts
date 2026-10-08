@@ -37,6 +37,12 @@ test("canonical and social metadata use one configured public origin", () => {
 });
 
 test("SEO routes are counted without sending the selected policy theme", () => {
+  for (const path of ["/guides/high-school-election", "/tsukuba/elections"]) {
+    assert.equal(visitorAnalyticsPath(path), path);
+    assert.equal(visitorAnalyticsPath(`${path}/`), path);
+    assert.equal(visitorAnalyticsPath(`${path}/not-a-guide`), null);
+    assert.equal(visitorAnalyticsPath(`${path}?answer=private`), null);
+  }
   assert.equal(
     visitorAnalyticsPath("/ibaraki-2026/tsukuba"),
     "/ibaraki-2026/tsukuba",

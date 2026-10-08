@@ -6,6 +6,7 @@ import {
   isSearchIndexingEnabled,
   publicSiteOrigin,
   siteDescription,
+  siteTitle,
 } from "../lib/seo";
 import { isVisitorAnalyticsDeployment } from "../lib/visitor-analytics";
 import "./globals.css";
@@ -45,7 +46,7 @@ export async function generateMetadata(): Promise<Metadata> {
     appleWebApp: { title: "オシセン" },
     formatDetection: { telephone: false },
     title: {
-      default: "オシセン｜政治家の政策と人柄",
+      default: siteTitle,
       template: "%s｜オシセン",
     },
     description: siteDescription,
@@ -57,21 +58,21 @@ export async function generateMetadata(): Promise<Metadata> {
       type: "website",
       locale: "ja_JP",
       siteName: "オシセン",
-      title: "政治家の政策と人柄",
-      description: "政策への回答と本人へのインタビューを紹介するサービスです。",
+      title: siteTitle,
+      description: siteDescription,
       images: [
         {
           url: new URL("/og.png?v=logo-2", origin).href,
           width: 1733,
           height: 907,
-          alt: "オシセン｜政治家の政策と人柄",
+          alt: siteTitle,
         },
       ],
     },
     twitter: {
       card: "summary_large_image",
-      title: "政治家の政策と人柄",
-      description: "政策への回答と本人へのインタビューを紹介するサービスです。",
+      title: siteTitle,
+      description: siteDescription,
       images: [new URL("/og.png?v=logo-2", origin).href],
     },
   };

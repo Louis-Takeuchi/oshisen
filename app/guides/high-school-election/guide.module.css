@@ -1,0 +1,94 @@
+.page > h1 {
+  margin-block: 12px 24px;
+  font-size: clamp(30px, 5vw, 46px);
+}
+
+.subtitle {
+  display: block;
+  margin-top: 12px;
+  font-size: clamp(18px, 3vw, 26px);
+  letter-spacing: 0;
+}
+
+.page p a {
+  color: var(--blue);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.contents {
+  display: grid;
+  gap: 6px;
+  margin-top: 32px;
+  padding: 20px 24px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--white);
+}
+
+.contents a {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--blue);
+  font-size: 14px;
+  font-weight: 650;
+  text-decoration: underline;
+}
+
+.answer {
+  padding: 24px;
+  border: 2px solid var(--ink);
+  border-radius: 20px;
+  background: var(--white);
+  box-shadow: 3px 3px 0 var(--ink);
+}
+
+.answer strong {
+  font-size: 18px;
+  line-height: 1.9;
+}
+
+.page .steps {
+  padding-left: 28px;
+}
+
+.steps > li {
+  padding-left: 8px;
+}
+
+.steps > li::marker {
+  color: var(--blue);
+  font-weight: 750;
+}
+
+.page .steps h3 {
+  margin-top: 16px;
+}
+
+.page .steps p {
+  margin-top: 12px;
+}
+
+.relatedLinks {
+  display: grid;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.relatedLinks a {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--blue);
+  font-size: 14px;
+  font-weight: 650;
+  text-decoration: underline;
+}
+
+@media (max-width: 640px) {
+  .contents,
+  .answer {
+    padding: 20px;
+  }
+}

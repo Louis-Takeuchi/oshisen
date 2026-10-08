@@ -75,6 +75,8 @@ test("all current public routes render without fictional candidates or match sco
     "/stories",
     "/research",
     "/policy-register",
+    "/guides/high-school-election",
+    "/tsukuba/elections",
   ]) {
     const response = await render(path);
     assert.equal(response.status, 200, path);
@@ -223,6 +225,8 @@ test("Sites serves a crawlable robots file and a sitemap that excludes personal 
     "/stories",
     "/policy-register",
     "/ibaraki-2026/tsukuba",
+    "/guides/high-school-election",
+    "/tsukuba/elections",
     ...questions.map(
       (question) => `/ibaraki-2026/tsukuba/issues/${question.id}`,
     ),
@@ -253,6 +257,72 @@ test("Sites serves a crawlable robots file and a sitemap that excludes personal 
       pathname,
     );
     assert.ok(!urls.includes(new URL(pathname, publicOrigin).href), pathname);
+  }
+});
+
+test("Sites renders election guides with readable content, breadcrumbs and crawlable links", async () => {
+  const guidePaths = ["/guides/high-school-election", "/tsukuba/elections"];
+  const publicOrigin = new URL(
+    process.env.SITE_URL || "https://www.oshisen.com",
+  ).origin;
+  const home = await (await render("/")).text();
+  const homeMain = home.match(/<main\b[^>]*>([\s\S]*?)<\/main>/)?.[1] ?? "";
+  const homeLinks = [
+    ...homeMain.matchAll(/<a\b[^>]*href="([^"]+)"[^>]*>/g),
+  ].map(([, href]) => href);
+
+  for (const [index, pathname] of guidePaths.entries()) {
+    assert.ok(
+      homeLinks.includes(pathname),
+      `${pathname}: linked from home content`,
+    );
+    const response = await render(pathname);
+    assert.equal(response.status, 200, pathname);
+    const html = await response.text();
+    const main = html
+      .match(/<main\b[^>]*>([\s\S]*?)<\/main>/)?.[1]
+      ?.replace(/<script\b[^>]*>[\s\S]*?<\/script>/g, "");
+    assert.ok(main, pathname);
+    const text = main.replace(/<[^>]+>/g, " ");
+    assert.match(text, index === 0 ? /高校生/ : /つくば市/, pathname);
+    assert.match(text, /投票/, pathname);
+    assert.equal([...main.matchAll(/<h1\b/g)].length, 1, pathname);
+    assertNoCandidateFixturesOrScores(html, pathname);
+    const anchors = [...main.matchAll(/<a\b[^>]*href="([^"]+)"[^>]*>/g)].map(
+      ([, href]) => href,
+    );
+    assert.ok(
+      anchors.includes(guidePaths[1 - index]),
+      `${pathname}: related guide`,
+    );
+    assert.ok(
+      anchors.includes("/ibaraki-2026/tsukuba"),
+      `${pathname}: election hub`,
+    );
+    assert.ok(
+      anchors.some((href) =>
+        /^https:\/\/[^/]+(?:\.go\.jp|\.lg\.jp|\.pref\.[a-z]+\.jp)\//.test(href),
+      ),
+      `${pathname}: official source`,
+    );
+    const canonical = html.match(
+      /<link\b[^>]*rel="canonical"[^>]*href="([^"]+)"/,
+    );
+    assert.equal(canonical?.[1], `${publicOrigin}${pathname}`, pathname);
+    const structuredData = [
+      ...html.matchAll(
+        /<script\b[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g,
+      ),
+    ].map(([, json]) => JSON.parse(json));
+    const breadcrumb = structuredData.find(
+      (item) => item["@type"] === "BreadcrumbList",
+    );
+    assert.ok(breadcrumb, pathname);
+    assert.equal(
+      breadcrumb.itemListElement.at(-1).item,
+      `${publicOrigin}${pathname}`,
+      pathname,
+    );
   }
 });
 

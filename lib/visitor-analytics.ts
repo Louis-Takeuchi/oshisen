@@ -22,6 +22,8 @@ const publicPaths = new Set([
   "/interests",
   "/stories",
   "/policy-register",
+  "/guides/high-school-election",
+  "/tsukuba/elections",
   "/ibaraki-2026/tsukuba",
 ]);
 

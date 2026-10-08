@@ -125,6 +125,12 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
             className="mobile-menu"
             aria-label="モバイルナビゲーション"
           >
+            <Link onClick={closeMenu} href="/guides/high-school-election">
+              高校生のための選挙ガイド →
+            </Link>
+            <Link onClick={closeMenu} href="/tsukuba/elections">
+              つくば市の選挙情報 →
+            </Link>
             <Link onClick={closeMenu} href="/ibaraki-2026/tsukuba">
               2026年茨城県議選・つくば市選挙区 →
             </Link>
@@ -186,6 +192,10 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
                 <p>政策と本人の話を紹介する、政治家の情報サービス。</p>
               </div>
               <nav aria-label="フッターナビゲーション">
+                <Link href="/guides/high-school-election">
+                  高校生のための選挙ガイド
+                </Link>
+                <Link href="/tsukuba/elections">つくば市の選挙情報</Link>
                 <Link href="/ibaraki-2026/tsukuba">
                   2026年茨城県議選・つくば市選挙区
                 </Link>

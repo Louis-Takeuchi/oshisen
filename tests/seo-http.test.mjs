@@ -5,6 +5,7 @@ import { test } from "node:test";
 
 const publicOrigin = "https://www.oshisen.com";
 const districtPath = "/ibaraki-2026/tsukuba";
+const guidePaths = ["/guides/high-school-election", "/tsukuba/elections"];
 const themePaths = [
   "transport",
   "education",
@@ -25,6 +26,7 @@ const publicPaths = [
   "/stories",
   "/policy-register",
   districtPath,
+  ...guidePaths,
   ...themePaths,
 ];
 const excludedPaths = [
@@ -73,6 +75,27 @@ function meta(html, key) {
     .map(([tag]) => attributes(tag))
     .filter((tag) => tag.name === key || tag.property === key)
     .map((tag) => tag.content);
+}
+
+function mainContent(html, path) {
+  const main = html.match(/<main\b[^>]*>([\s\S]*?)<\/main>/)?.[1];
+  assert.ok(main, `${path}: server-rendered main content`);
+  return main
+    .replace(/<script\b[^>]*>[\s\S]*?<\/script>/g, "")
+    .replace(/<style\b[^>]*>[\s\S]*?<\/style>/g, "");
+}
+
+function readableText(html) {
+  return decodeEntities(html.replace(/<[^>]+>/g, " ")).replace(/\s+/g, " ");
+}
+
+function links(html) {
+  return [...html.matchAll(/<a\b([^>]*)>([\s\S]*?)<\/a>/g)].map(
+    ([, attrs, content]) => ({
+      ...attributes(attrs),
+      text: readableText(content).trim(),
+    }),
+  );
 }
 
 function canonical(html, path) {
@@ -228,6 +251,7 @@ export function registerSeoHttpTests({ getOrigin, startServer }) {
       ["/about?utm_source=search", "/about"],
       ["/issues?theme=education&utm_source=search", "/issues"],
       ["/issues?theme=unknown", "/issues"],
+      ...guidePaths.map((path) => [`${path}?utm_source=search`, path]),
       [`${themePaths[0]}?utm_source=search`, themePaths[0]],
     ]) {
       const { response, html } = await fetchPage(getOrigin(), requestPath);
@@ -317,7 +341,7 @@ export function registerSeoHttpTests({ getOrigin, startServer }) {
     );
     assert.ok(aboutOrganization, "about Organization");
     assert.equal(aboutOrganization["@id"], organization["@id"]);
-    for (const path of [districtPath, ...themePaths]) {
+    for (const path of [districtPath, ...guidePaths, ...themePaths]) {
       const data = structuredData(
         (await fetchPage(getOrigin(), path)).html,
         path,
@@ -338,6 +362,63 @@ export function registerSeoHttpTests({ getOrigin, startServer }) {
         new URL(path, publicOrigin).href,
         path,
       );
+    }
+  });
+
+  test("election guides answer search intent in rendered content and link to official sources", async () => {
+    const topics = [
+      ["高校生", "18歳", "選挙", "投票"],
+      ["つくば市", "市長", "市議会", "県議会", "投票"],
+    ];
+    for (const [index, path] of guidePaths.entries()) {
+      const { html } = await fetchPage(getOrigin(), path);
+      const main = mainContent(html, path);
+      const text = readableText(main);
+      for (const topic of topics[index]) {
+        assert.ok(
+          text.includes(topic),
+          `${path}: explains ${topic} in the body`,
+        );
+      }
+      const heading = readableText(
+        main.match(/<h1\b[^>]*>([\s\S]*?)<\/h1>/)?.[1] ?? "",
+      );
+      assert.ok(
+        heading.includes(topics[index][0]),
+        `${path}: descriptive primary heading`,
+      );
+      const anchors = links(main);
+      const officialSources = anchors.filter(({ href, text }) => {
+        if (!href || !text) return false;
+        const url = new URL(href, publicOrigin);
+        return (
+          url.protocol === "https:" &&
+          /(?:\.go\.jp|\.lg\.jp|\.pref\.[a-z]+\.jp)$/.test(url.hostname)
+        );
+      });
+      assert.ok(
+        officialSources.length > 0,
+        `${path}: readable official source links`,
+      );
+      for (const target of [guidePaths[1 - index], districtPath]) {
+        assert.ok(
+          anchors.some(({ href, text }) => href === target && text.length > 0),
+          `${path}: crawlable related guide link to ${target}`,
+        );
+      }
+    }
+  });
+
+  test("the home page and election hub expose crawlable entry links to both guides", async () => {
+    for (const path of ["/", districtPath]) {
+      const { html } = await fetchPage(getOrigin(), path);
+      const anchors = links(mainContent(html, path));
+      for (const target of guidePaths) {
+        assert.ok(
+          anchors.some(({ href, text }) => href === target && text.length > 0),
+          `${path}: links to ${target} without opening a menu or running JavaScript`,
+        );
+      }
     }
   });
 
@@ -387,6 +468,7 @@ export function registerSeoHttpTests({ getOrigin, startServer }) {
         "/",
         "/about",
         districtPath,
+        ...guidePaths,
         themePaths[0],
         "/diagnosis",
       ]) {

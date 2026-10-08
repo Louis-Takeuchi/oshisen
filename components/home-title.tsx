@@ -65,7 +65,9 @@ export function HomeTitle() {
         </h1>
 
         <p className={styles.tagline}>
-          政策への考え方と、本人の経験を知るためのサービスです。
+          高校生にもわかる選挙の入口。
+          <br />
+          つくば市から、政策への考え方と本人の経験を知る。
         </p>
 
         <div className={styles.mascotEntrance}>

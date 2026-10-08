@@ -63,6 +63,13 @@ export default function ElectionPage() {
             <dd>政策の設問案、質問台帳、回答の見方、掲載・公平性の方針</dd>
           </div>
         </dl>
+        <p>
+          投票日や投票方法を調べたい方は、
+          <Link href="/tsukuba/elections" className="text-link">
+            つくば市の選挙ガイド
+          </Link>
+          へ。市長選・市議選と県議選の違い、日程・投票所・選挙公報・結果の公式確認先を案内しています。
+        </p>
       </section>
 
       <section className={styles.section} aria-labelledby="issues-heading">
@@ -122,6 +129,9 @@ export default function ElectionPage() {
           <Link href="/sources">情報源・公平性 →</Link>
           <Link href="/diagnosis">質問の操作を試す →</Link>
           <Link href="/about">オシセンについて →</Link>
+          <Link href="/guides/high-school-election">
+            高校生と選挙のガイド →
+          </Link>
         </div>
       </section>
     </main>

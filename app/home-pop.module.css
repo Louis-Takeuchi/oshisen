@@ -31,6 +31,17 @@
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 18px;
 }
+.guideSection {
+  padding-top: 64px;
+  padding-bottom: 64px;
+}
+.guideGrid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.guideGrid p {
+  font-size: 14px;
+  line-height: 1.9;
+}
 .menuGrid > a {
   display: flex;
   flex-direction: column;
@@ -231,6 +242,9 @@
   .menuGrid p {
     padding-right: 28px;
     font-size: 11px;
+  }
+  .guideGrid p {
+    font-size: 13px;
   }
   .menuArrow {
     position: absolute;

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { pageMetadata, siteDescription } from "../lib/seo";
+import { pageMetadata, siteDescription, siteTitle } from "../lib/seo";
 import { OrganizationData } from "../components/organization-data";
 import { HomeTitle } from "../components/home-title";
 import { ServiceIntroduction } from "../components/service-introduction";
@@ -7,7 +7,7 @@ import { projectLabel } from "../lib/project";
 import styles from "./home-pop.module.css";
 
 export const metadata = pageMetadata("/", {
-  title: "オシセン｜政治家の政策・人柄を知るサービス",
+  title: siteTitle,
   description: siteDescription,
   index: true,
 });
@@ -17,6 +17,38 @@ export default function Home() {
     <main id="main" className={styles.home}>
       <OrganizationData website />
       <HomeTitle />
+      <section
+        className={`${styles.menuSection} ${styles.guideSection}`}
+        aria-labelledby="guide-title"
+      >
+        <div className={styles.sectionHeading}>
+          <h2 id="guide-title">はじめての選挙、どこから知る？</h2>
+          <p>投票の基本と、地域の情報の調べ方から。</p>
+        </div>
+        <div className={`${styles.menuGrid} ${styles.guideGrid}`}>
+          <Link href="/guides/high-school-election">
+            <span className={styles.menuNumber}>はじめての方へ</span>
+            <h3>高校生のための選挙ガイド</h3>
+            <p>
+              18歳になったら投票できる？
+              投票の流れや、政策を読むときのポイントを紹介します。
+            </p>
+            <span className={styles.menuArrow} aria-hidden="true">
+              ↗
+            </span>
+          </Link>
+          <Link href="/tsukuba/elections">
+            <span className={styles.menuNumber}>地域の選挙を調べる</span>
+            <h3>つくば市の選挙情報ガイド</h3>
+            <p>
+              市長選・市議選・県議選の違いと、日程・投票所・候補者情報を確認できる公式窓口へ。
+            </p>
+            <span className={styles.menuArrow} aria-hidden="true">
+              ↗
+            </span>
+          </Link>
+        </div>
+      </section>
       <ServiceIntroduction />
       <section className={styles.menuSection} aria-labelledby="menu-title">
         <div className={styles.sectionHeading}>
@@ -64,7 +96,8 @@ export default function Home() {
             候補者情報は未掲載、Podcast取材はこれからです。
           </p>
           <Link href="/ibaraki-2026/tsukuba" className={styles.moreLink}>
-            対象選挙の詳細 <span aria-hidden="true">→</span>
+            2026年茨城県議選・つくば市選挙区の詳細{" "}
+            <span aria-hidden="true">→</span>
           </Link>
         </div>
         <dl className={styles.statusList}>
