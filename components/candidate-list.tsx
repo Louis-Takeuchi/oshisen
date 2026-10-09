@@ -2,7 +2,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import { candidates } from "../lib/data";
-import { project } from "../lib/project";
+import { project, projectDistrictLabel } from "../lib/project";
+import { KikumaruNote } from "./kikumaru";
 import { CandidateRow } from "./candidate-row";
 export function CandidateList() {
   const [search, setSearch] = useState("");
@@ -19,15 +20,19 @@ export function CandidateList() {
       <p className="eyebrow">まずは、一人ひとりを知る。</p>
       <h1>候補者一覧</h1>
       <p className="lead">
-        {project.electionYear}年 {project.electionName} / {project.district}
+        {project.electionYear}年 {project.electionName} / {projectDistrictLabel}
       </p>
       {!candidates.length ? (
         <div className="empty-notice">
-          <span className="outline-label">掲載準備中</span>
-          <h2>候補者情報の掲載準備</h2>
-          <p>
-            本人の回答や取材内容を確認してから掲載します。今は、政策の質問や共通の取材ガイドを試せます。
-          </p>
+          <KikumaruNote panel>
+            <div>
+              <span className="outline-label">掲載準備中</span>
+              <h2>候補者情報の掲載準備</h2>
+              <p>
+                本人の回答や取材内容を確認してから掲載します。今は、政策の質問や共通の取材ガイドを試せます。
+              </p>
+            </div>
+          </KikumaruNote>
         </div>
       ) : (
         <>

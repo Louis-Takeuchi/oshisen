@@ -91,12 +91,12 @@ export default function Home() {
           <h2 id="status-title">公開状況</h2>
           <p>{projectLabel}</p>
           <p>
-            つくば市選挙区での実証に向けて準備中です。
+            つくば市選挙区・土浦市選挙区の両地域での実証に向けて準備中です。
             <br />
             候補者情報は未掲載、Podcast取材はこれからです。
           </p>
-          <Link href="/ibaraki-2026/tsukuba" className={styles.moreLink}>
-            2026年茨城県議選・つくば市選挙区の詳細{" "}
+          <Link href="/about#project" className={styles.moreLink}>
+            つくば市・土浦市での取り組みの詳細{" "}
             <span aria-hidden="true">→</span>
           </Link>
         </div>

@@ -149,8 +149,9 @@ test("all application routes render on the Vercel Next.js runtime", async () => 
     assert.match(html, /src="\/brand-logo\.png"/, path);
     assert.doesNotMatch(html, /vinext|Starter Project|codex-preview/, path);
     assertNoCandidateFixturesOrScores(html, path);
-    assert.doesNotMatch(html, /土浦市選挙区/, path);
-    if (path !== "/questions") assert.match(html, /つくば市選挙区/, path);
+    if (path !== "/questions") {
+      assert.match(html, /つくば市選挙区・土浦市選挙区/, path);
+    }
   }
 });
 
@@ -239,7 +240,7 @@ test("client navigation receives React payloads and loadable JavaScript", async 
 
 test("draft issues and empty candidate registry survive production rendering", async () => {
   assert.equal(project.electionYear, 2026);
-  assert.equal(project.district, "つくば市選挙区");
+  assert.deepEqual(project.districts, ["つくば市選挙区", "土浦市選挙区"]);
   assert.equal(candidateRegistry.length, 0);
   const issue = await (await fetch(`${origin}/issues?theme=healthcare`)).text();
   assert.match(issue, /地域医療/);

@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { KikumaruNote } from "./kikumaru";
 import { useRouter } from "next/navigation";
 import { questions } from "../lib/data";
 import { trackEvent } from "../lib/analytics";
@@ -17,11 +18,13 @@ export function DiagnosisStart() {
     <main id="main" className="container diagnosis-start">
       <p className="eyebrow">政策への回答</p>
       <h1>政策の質問</h1>
-      <p className="lead">
-        正解はありません。
-        <br />
-        「どちらかといえば」で答えて大丈夫です。
-      </p>
+      <KikumaruNote>
+        <p className="lead">
+          正解はありません。
+          <br />
+          「どちらかといえば」で答えて大丈夫です。
+        </p>
+      </KikumaruNote>
       {!!state.staleQuestionIds?.length && (
         <p role="status" className="notice">
           質問や補足が更新されたため、以前の回答の一部は照合に使っていません。

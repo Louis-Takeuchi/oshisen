@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { resolveSiteOrigin } from "./site-origin.ts";
 
 export const PUBLIC_SITE_URL = "https://www.oshisen.com";
-export const siteTitle = "オシセン｜高校生にもわかる選挙と政策・つくば市から";
+export const siteTitle = "オシセン｜高校生にもわかる選挙と政策・つくば市・土浦市から";
 export const siteDescription =
-  "高校生のはじめての選挙から、つくば市の選挙情報まで。オシセンは投票の基本と政策の見方を紹介し、2026年茨城県議会議員選挙・つくば市選挙区に向けて、候補者の政策・人柄を知る情報を準備しています。";
+  "高校生のはじめての選挙から、つくば市・土浦市での取り組みまで。オシセンは投票の基本と政策の見方を紹介し、2026年茨城県議会議員選挙・つくば市選挙区・土浦市選挙区に向けて、候補者の政策・人柄を知る情報を準備しています。";
 
 /** Canonicals never follow a preview host or an untrusted Host header. */
 export function publicSiteOrigin(): URL {

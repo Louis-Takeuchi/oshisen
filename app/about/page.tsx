@@ -11,7 +11,7 @@ import styles from "./about.module.css";
 export const metadata = pageMetadata("/about", {
   title: "オシセンとは｜2026年茨城県議選での実証プロジェクト",
   description:
-    "オシセンが目指すこと、代表のRyo（大屋涼）と共同代表のLouis（竹内琉瑛）、2026年茨城県議選・つくば市選挙区で準備する実証プロジェクトを紹介します。",
+    "オシセンが目指すこと、代表のRyo（大屋涼）と共同代表のLouis（竹内琉瑛）、2026年茨城県議選・つくば市選挙区・土浦市選挙区で準備する実証プロジェクトを紹介します。",
   index: true,
 });
 
@@ -23,7 +23,7 @@ export default function AboutPage() {
       <h1>オシセンについて</h1>
       <p className="lead">
         オシセンは、政策への回答と本人へのインタビューを通じて、政治家を知るためのサービスです。
-        2026年茨城県議選・つくば市選挙区を対象に、取材と掲載の準備を進めています。
+        2026年茨城県議選・つくば市選挙区・土浦市選挙区を対象に、取材と掲載の準備を進めています。
       </p>
 
       <nav className={styles.jumpLinks} aria-label="このページの目次">
@@ -76,8 +76,8 @@ export default function AboutPage() {
         </Link>
       </section>
 
-      <section className="document-section">
-        <h2>実証プロジェクト</h2>
+      <section className="document-section" id="project">
+        <h2>つくば市・土浦市での実証プロジェクト</h2>
         <p>
           同じ取材内容でも、共通の項目で整理すると、発言とその根拠をつかみやすくなるのか。
           {projectLabel}を対象に、この問いを確かめる準備を進めています。

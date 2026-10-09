@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Breadcrumbs } from "../../../components/breadcrumbs";
 import { electionHubPath } from "../../../lib/issue-content";
-import { project } from "../../../lib/project";
+import { project, projectDistrictLabel } from "../../../lib/project";
 import { pageMetadata } from "../../../lib/seo";
 import { teamMembers } from "../../../lib/team";
 import styles from "./guide.module.css";
@@ -52,7 +52,7 @@ export default function HighSchoolElectionPage() {
         <a href="#voting">はじめての投票の疑問</a>
         <a href="#before-eighteen">18歳未満からできること</a>
         <a href="#reading-policies">政策を読む4つの手順</a>
-        <a href="#oshisen">つくば市の選挙とオシセン</a>
+        <a href="#oshisen">つくば市・土浦市とオシセン</a>
       </nav>
 
       <section className="document-section" aria-labelledby="eligibility">
@@ -184,10 +184,10 @@ export default function HighSchoolElectionPage() {
       </section>
 
       <section className="document-section" aria-labelledby="oshisen">
-        <h2 id="oshisen">つくば市の選挙を知る入口として</h2>
+        <h2 id="oshisen">つくば市・土浦市の政治家を知る入口として</h2>
         <p>
           オシセンは、{project.electionYear}年の{project.electionName}・
-          {project.district}
+          {projectDistrictLabel}
           を対象に、政策への回答と本人へのインタビューを伝える準備を進めています。
           現在公開しているのは、政策の設問案や情報の見方、掲載方針です。
           候補者情報・本人回答は未掲載で、Podcast取材も準備中です。

@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { candidates, questions } from "../lib/data";
 import { policyAnswerLabel } from "../lib/policy";
+import { KikumaruLoading } from "./kikumaru";
 import { useDiagnosis } from "./session";
 import { CandidateRow } from "./candidate-row";
 import { PriorityThemePicker } from "./priority-themes";
@@ -11,7 +12,7 @@ export function Results() {
   if (!ready)
     return (
       <main id="main" className="container page-main" aria-busy="true">
-        <p>回答を読み込んでいます。</p>
+        <KikumaruLoading message="回答を読み込んでいます。" />
       </main>
     );
   if (!state.complete)

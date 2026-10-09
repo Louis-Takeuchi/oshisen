@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { answerOptions, questions } from "../lib/data";
 import { createPolicyAnswerRecord, type UserPolicyAnswer } from "../lib/policy";
 import { trackEvent } from "../lib/analytics";
+import { KikumaruLoading } from "./kikumaru";
 import { useDiagnosis } from "./session";
 import { QuestionHelp } from "./question-help";
 export function Questionnaire() {
@@ -56,7 +57,7 @@ export function Questionnaire() {
   if (!ready)
     return (
       <main id="main" className="question-page" aria-busy="true">
-        <p>回答を読み込んでいます。</p>
+        <KikumaruLoading message="回答を読み込んでいます。" />
       </main>
     );
   return (

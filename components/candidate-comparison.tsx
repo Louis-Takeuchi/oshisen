@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { KikumaruLoading } from "./kikumaru";
 import { candidates, questions } from "../lib/data";
 import { useConsideration } from "./use-consideration";
 import { useDiagnosis } from "./session";
@@ -19,7 +20,7 @@ export function CandidateComparison() {
       <h1>候補者の回答比較</h1>
       <p className="lead">選択肢だけでなく、理由や条件、出典まで。</p>
       {!ready ? (
-        <p aria-busy="true">選択を確認しています。</p>
+        <KikumaruLoading message="選択を確認しています。" />
       ) : (
         <>
           {selected.length < 2 && (

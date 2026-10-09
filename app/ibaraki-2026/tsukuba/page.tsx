@@ -26,7 +26,7 @@ export default function ElectionPage() {
       <h1>
         {project.electionYear}年 {project.electionName}
         <br />
-        {project.district}
+        つくば市選挙区
       </h1>
       <p className="lead">
         オシセンは、つくば市選挙区を対象に、候補者の政策への回答と、その理由や経験を知るための情報を準備しています。
@@ -44,8 +44,8 @@ export default function ElectionPage() {
       <section className={styles.section} aria-labelledby="scope-heading">
         <h2 id="scope-heading">対象としている選挙・地域</h2>
         <p>
-          オシセンの実証プロジェクトは、2026年の茨城県議会議員選挙・つくば市選挙区を対象に準備を進めています。
-          このページはプロジェクトの案内です。投票日や立候補者の確定情報を発表するものではありません。
+          オシセンの実証プロジェクトは、2026年の茨城県議会議員選挙・つくば市選挙区と土浦市選挙区の両地域を対象に準備を進めています。
+          このページでは、つくば市選挙区の取り組みを紹介しています。投票日や立候補者の確定情報を発表するものではありません。
         </p>
         <dl className={styles.facts}>
           <div>
@@ -56,7 +56,7 @@ export default function ElectionPage() {
           </div>
           <div>
             <dt>対象地域</dt>
-            <dd>茨城県 {project.district}</dd>
+            <dd>茨城県 つくば市選挙区</dd>
           </div>
           <div>
             <dt>公開している情報</dt>

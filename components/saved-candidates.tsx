@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { KikumaruLoading } from "./kikumaru";
 import { useState } from "react";
 import { candidates } from "../lib/data";
 import { useConsideration } from "./use-consideration";
@@ -34,7 +35,7 @@ export function SavedCandidates() {
         </p>
       )}
       {!ready ? (
-        <p aria-busy="true">保存した候補を確認しています。</p>
+        <KikumaruLoading message="保存した候補を確認しています。" />
       ) : (
         <>
           <div className={styles.savedTools}>

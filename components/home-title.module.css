@@ -263,12 +263,10 @@
   right: 2.5%;
   bottom: 15%;
   width: clamp(210px, 23vw, 345px);
-  animation: mascotArrive 0.95s 1.1s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .mascotFloat {
   position: relative;
-  animation: float 3.8s 2.1s ease-in-out infinite;
   rotate: -12deg;
 }
 
@@ -479,27 +477,6 @@
   to {
     opacity: 1;
     transform: translateY(0);
-  }
-}
-
-@keyframes mascotArrive {
-  from {
-    opacity: 0;
-    transform: translate(55px, 45px) rotate(18deg) scale(0.6);
-  }
-  to {
-    opacity: 1;
-    transform: translate(0, 0) rotate(0) scale(1);
-  }
-}
-
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0) rotate(0);
-  }
-  50% {
-    transform: translateY(-14px) rotate(4deg);
   }
 }
 

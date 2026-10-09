@@ -53,21 +53,23 @@ export function HomeTitle() {
         </div>
 
         <h1 id="home-title" className={styles.headline}>
-          <span className="sr-only">政治家の政策と人柄</span>
+          <span className="sr-only">政治家の気にピ、つくってみない？</span>
           <span className={styles.line} aria-hidden="true">
             <Letters text="政治家の" />
+            <span className={styles.highlight}>
+              <Letters text="気にピ" start={4} />
+            </span>
+            <Letters text="、" start={7} />
           </span>
           <span className={styles.line} aria-hidden="true">
-            <span className={styles.highlight}>
-              <Letters text="政策と人柄" start={4} />
-            </span>
+            <Letters text="つくってみない？" start={8} />
           </span>
         </h1>
 
         <p className={styles.tagline}>
           高校生にもわかる選挙の入口。
           <br />
-          つくば市から、政策への考え方と本人の経験を知る。
+          つくば市・土浦市から、政策への考え方と本人の経験を知る。
         </p>
 
         <div className={styles.mascotEntrance}>
@@ -116,8 +118,8 @@ export function HomeTitle() {
         >
           <span aria-hidden="true">{paused ? "▶" : "Ⅱ"}</span>
         </button>
-        <Link href="/ibaraki-2026/tsukuba" className={styles.region}>
-          2026 茨城県議選・つくば <span>準備中</span>
+        <Link href="/about#project" className={styles.region}>
+          2026 茨城県議選・つくば市・土浦市 <span>準備中</span>
         </Link>
         <a
           href="#discover"

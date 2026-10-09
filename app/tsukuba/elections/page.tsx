@@ -131,7 +131,7 @@ export default function TsukubaElectionsPage() {
               <tr>
                 <th scope="row">茨城県議会議員選挙</th>
                 <td>
-                  茨城県議会の議員。オシセンの対象は、つくば市選挙区です。
+                  茨城県議会の議員。オシセンの対象は、つくば市選挙区・土浦市選挙区です。
                 </td>
               </tr>
               <tr>

@@ -33,9 +33,9 @@ function assertNoCandidateFixturesOrScores(html, pathname) {
   );
 }
 
-test("home explains the question-level flow and Tsukuba preparation status", async () => {
+test("home explains the question-level flow and Tsukuba and Tsuchiura preparation status", async () => {
   assert.equal(project.electionYear, 2026);
-  assert.equal(project.district, "つくば市選挙区");
+  assert.deepEqual(project.districts, ["つくば市選挙区", "土浦市選挙区"]);
   assert.equal(candidateRegistry.length, 0);
   const response = await render("/");
   assert.equal(response.status, 200);
@@ -84,8 +84,9 @@ test("all current public routes render without fictional candidates or match sco
     assert.match(html, /<main\b/, path);
     assert.match(html, /id="main"/, path);
     assertNoCandidateFixturesOrScores(html, path);
-    assert.doesNotMatch(html, /土浦市選挙区/, path);
-    if (path !== "/questions") assert.match(html, /つくば市選挙区/, path);
+    if (path !== "/questions") {
+      assert.match(html, /つくば市選挙区・土浦市選挙区/, path);
+    }
   }
 });
 
