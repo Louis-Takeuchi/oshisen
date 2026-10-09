@@ -59,9 +59,9 @@ test("ICO container retains each supplied PNG at the declared size", async () =>
   }
 });
 
-test("published icon assets are conversions of the complete current user logo", async () => {
+test("published icon assets are conversions of the complete current SNS artwork", async () => {
   const source = await readFile(
-    new URL("../public/brand-logo.png", import.meta.url),
+    new URL("../public/brand-icon.png", import.meta.url),
   );
   for (const [name, size] of [
     ["apple-touch-icon.png", 180],

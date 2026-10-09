@@ -28,21 +28,21 @@ export async function generateMetadata(): Promise<Metadata> {
     icons: {
       icon: [
         {
-          url: "/favicon.ico?v=logo-2",
+          url: "/favicon.ico?v=sns-1",
           sizes: "16x16 32x32 48x48",
           type: "image/x-icon",
         },
-        { url: "/icon-192.png?v=logo-2", sizes: "192x192", type: "image/png" },
+        { url: "/icon-192.png?v=sns-1", sizes: "192x192", type: "image/png" },
       ],
       apple: [
         {
-          url: "/apple-touch-icon.png?v=logo-2",
+          url: "/apple-touch-icon.png?v=sns-1",
           sizes: "180x180",
           type: "image/png",
         },
       ],
     },
-    manifest: "/site.webmanifest?v=logo-2",
+    manifest: "/site.webmanifest?v=sns-1",
     appleWebApp: { title: "オシセン" },
     formatDetection: { telephone: false },
     title: {

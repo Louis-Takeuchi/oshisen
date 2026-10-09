@@ -1,12 +1,12 @@
-// Delivery-size conversions of the user's complete handwritten logo.
-// Keep every letter, the yellow offset and the heart; do not draw a new icon.
+// Delivery-size conversions of the user's square SNS artwork.
+// Preserve the complete artwork and its aspect ratio.
 import { readFile, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import sharp from "sharp";
 
 const publicDirectory = new URL("../public/", import.meta.url);
-const logoUrl = new URL("brand-logo.png", publicDirectory);
+const logoUrl = new URL("brand-icon.png", publicDirectory);
 const faviconSizes = [16, 32, 48];
 const pngOutputs = [
   ["apple-touch-icon.png", 180],
@@ -59,7 +59,7 @@ export async function generateIcons() {
   const metadata = await sharp(source).metadata();
   if (metadata.format !== "png" || !metadata.width || !metadata.height) {
     throw new Error(
-      "public/brand-logo.png must contain the approved PNG logo.",
+      "public/brand-icon.png must contain the approved PNG icon artwork.",
     );
   }
   const faviconImages = await Promise.all(
@@ -82,7 +82,7 @@ export async function generateIcons() {
     await writeFile(new URL(name, publicDirectory), png);
   }
   console.log(
-    "Generated 16/32/48, 180, 192 and 512px icons from the complete brand-logo.png artwork.",
+    "Generated 16/32/48, 180, 192 and 512px icons from the complete brand-icon.png artwork.",
   );
 }
 

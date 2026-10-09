@@ -125,16 +125,16 @@ test("all application routes render on the Vercel Next.js runtime", async () => 
     assert.match(html, /lang="ja"/, path);
     assert.match(html, /name="referrer" content="origin"/, path);
     assert.match(html, /id="main"/, path);
-    assert.match(html, /rel="icon"[^>]*href="\/favicon\.ico\?v=logo-2"/, path);
-    assert.match(html, /rel="icon"[^>]*href="\/icon-192\.png\?v=logo-2"/, path);
+    assert.match(html, /rel="icon"[^>]*href="\/favicon\.ico\?v=sns-1"/, path);
+    assert.match(html, /rel="icon"[^>]*href="\/icon-192\.png\?v=sns-1"/, path);
     assert.match(
       html,
-      /rel="apple-touch-icon"[^>]*href="\/apple-touch-icon\.png\?v=logo-2"/,
+      /rel="apple-touch-icon"[^>]*href="\/apple-touch-icon\.png\?v=sns-1"/,
       path,
     );
     assert.match(
       html,
-      /rel="manifest"[^>]*href="\/site\.webmanifest\?v=logo-2"/,
+      /rel="manifest"[^>]*href="\/site\.webmanifest\?v=sns-1"/,
       path,
     );
     assert.doesNotMatch(
@@ -158,13 +158,13 @@ test("all application routes render on the Vercel Next.js runtime", async () => 
 test("full brand logo, favicon, home screen icons, manifest and social card are served", async () => {
   for (const path of [
     "/favicon.ico",
-    "/favicon.ico?v=logo-2",
+    "/favicon.ico?v=sns-1",
     "/apple-touch-icon.png",
-    "/apple-touch-icon.png?v=logo-2",
+    "/apple-touch-icon.png?v=sns-1",
     "/icon-192.png",
-    "/icon-192.png?v=logo-2",
+    "/icon-192.png?v=sns-1",
     "/icon-512.png",
-    "/icon-512.png?v=logo-2",
+    "/icon-512.png?v=sns-1",
     "/brand-logo.png",
     "/og.png",
     "/og.png?v=logo-2",
@@ -184,7 +184,7 @@ test("full brand logo, favicon, home screen icons, manifest and social card are 
     }
     assert.match(response.headers.get("content-type"), /image\//, path);
   }
-  const manifestResponse = await fetch(`${origin}/site.webmanifest?v=logo-2`);
+  const manifestResponse = await fetch(`${origin}/site.webmanifest?v=sns-1`);
   assert.equal(manifestResponse.status, 200);
   const manifest = await manifestResponse.json();
   assert.equal(manifest.short_name, "オシセン");
@@ -192,7 +192,7 @@ test("full brand logo, favicon, home screen icons, manifest and social card are 
   assert.equal(manifest.background_color, "#fffdf7");
   assert.deepEqual(
     manifest.icons.map(({ src }) => src),
-    ["/icon-192.png?v=logo-2", "/icon-512.png?v=logo-2"],
+    ["/icon-192.png?v=sns-1", "/icon-512.png?v=sns-1"],
   );
   assert.deepEqual(
     manifest,
