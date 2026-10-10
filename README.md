@@ -33,7 +33,7 @@
 | `/neutrality`                          | 中立性ポリシー全文（第1版・2026年10月10日作成）                       |
 | `/method`・`/sources`・`/privacy`      | 回答の使い方・情報源と掲載状況・データの扱い                                  |
 
-運営・掲載・編集の共通基準は `/neutrality` を参照元とします。各ページは、`/method` が現在の機能の使い方、`/sources` が情報源と掲載状況、`/privacy` が保存・集計・削除の具体的な説明を担当します。候補者向け掲載規約（正式案 v1.0）は、ポリシー第13項、`/about#publication-rules`、フッターからPDFを参照できます。
+運営・掲載・編集の共通基準は `/neutrality` を参照元とします。各ページは、`/method` が現在の機能の使い方、`/sources` が情報源と掲載状況、`/privacy` が保存・集計・削除の具体的な説明を担当します。候補者向け掲載規約は、ポリシー第13項、`/about#publication-rules`、フッターからPDFを参照できます。
 
 掲載規約は `documents/publication-rules/content.md` を正本とし、TypstでPDF化します。更新は `npm run documents:preview`、手順は [掲載規約の更新](documents/publication-rules/README.md) を参照してください。サイトのビルド時に再生成漏れを検知します。
 

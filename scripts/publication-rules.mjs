@@ -46,8 +46,11 @@ function inspectSource() {
   const edition = blocks[1];
   const date = edition.match(/(\d{4})年(\d{1,2})月(\d{1,2})日$/u);
   assert.ok(date, "The edition must end with the document date.");
-  const version = edition.match(/\bv\d+(?:\.\d+)+\b/u)?.[0];
-  assert.ok(version, "The edition must include a version such as v1.0.");
+  assert.doesNotMatch(
+    edition,
+    /\bv\d+(?:\.\d+)+\b/u,
+    "Do not display a version number in the publication rules.",
+  );
   assert.ok(
     blocks[2] && !blocks[2].startsWith("#"),
     "The preamble is missing.",
@@ -96,14 +99,15 @@ function inspectSource() {
     config.expectedClauses,
     "Clause count changed; review document.json.",
   );
-  assert.ok(
-    annex && nextClause > 1,
-    "The final article or supplementary provision is missing.",
+  assert.ok(nextClause > 1, "The final article is empty.");
+  assert.equal(
+    annex,
+    config.expectedSupplementaryProvision,
+    "Supplementary provision changed; review document.json.",
   );
   return {
     title: blocks[0].slice(2),
     edition,
-    version,
     date: `${date[1]}-${date[2].padStart(2, "0")}-${date[3].padStart(2, "0")}`,
     articles,
     clauses,
@@ -144,7 +148,10 @@ function verifyPdf(pdf) {
     Array.from({ length: pages }, (_, index) => index + 1),
     "Page numbering is incomplete.",
   );
-  const expected = normalize(source.replace(/^#{1,2} /gmu, ""));
+  // Markdown's list-marker dot is syntax; the supplied PDF uses plain numbers.
+  const expected = normalize(
+    source.replace(/^#{1,2} /gmu, "").replace(/^(\d+)\. /gmu, "$1 "),
+  );
   const actual = normalize(text.replace(footer, ""));
   if (expected !== actual) {
     let at = 0;

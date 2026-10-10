@@ -34,7 +34,7 @@
 #show heading: set text(font: heading-font, size: 11.5pt, weight: "bold")
 #show heading: set block(above: 14pt, below: 6pt, sticky: true)
 #set enum(
-  numbering: "1.",
+  numbering: "1",
   indent: 0pt,
   body-indent: 2.3mm,
   number-align: left,
