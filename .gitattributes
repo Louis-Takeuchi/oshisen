@@ -1,0 +1,6 @@
+# Preserve distributable documents and fonts byte-for-byte across platforms.
+*.pdf binary
+*.ttf binary
+
+# Keep the upstream font licenses verbatim, including their whitespace.
+documents/publication-rules/fonts/OFL-*.txt -whitespace

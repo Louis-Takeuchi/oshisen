@@ -7,6 +7,7 @@ import { useConsideration } from "./use-consideration";
 import { ConsiderationBar } from "./consideration-bar";
 import { OfficialContacts } from "./official-contacts";
 import { projectLabel } from "../lib/project";
+import publicationRules from "../lib/publication-rules.json";
 import titleStyles from "./home-title.module.css";
 export function SiteShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -221,6 +222,9 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
                 <Link href="/research">研究の準備</Link>
                 <Link href="/sources">情報源・掲載状況</Link>
                 <Link href="/neutrality">中立性ポリシー</Link>
+                <a href={publicationRules.href} type="application/pdf">
+                  候補者向け掲載規約（PDF）
+                </a>
                 <Link href="/privacy">プライバシー</Link>
               </nav>
             </div>

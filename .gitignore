@@ -40,3 +40,7 @@ yarn-error.log*
 /outputs/
 /work/
 *.tsbuildinfo
+
+# Publication-rule PDF review files (the distributed PDF is tracked in public/)
+/tmp/pdfs/publication-rules/
+/output/pdf/oshisen-candidate-publication-rules-2026.pdf

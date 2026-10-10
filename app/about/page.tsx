@@ -6,6 +6,7 @@ import { OfficialContacts } from "../../components/official-contacts";
 import { contactEmail, contactMailto } from "../../lib/site-contact";
 import { teamMembers } from "../../lib/team";
 import { projectLabel } from "../../lib/project";
+import publicationRules from "../../lib/publication-rules.json";
 import styles from "./about.module.css";
 
 export const metadata = pageMetadata("/about", {
@@ -38,6 +39,9 @@ export default function AboutPage() {
         </a>
         <a href="#operations">
           運営情報 <span aria-hidden="true">↓</span>
+        </a>
+        <a href="#publication-rules">
+          候補者向け掲載規約 <span aria-hidden="true">↓</span>
         </a>
         <a href="#contact">
           公式SNS・お問い合わせ <span aria-hidden="true">↓</span>
@@ -100,6 +104,37 @@ export default function AboutPage() {
         <Link href="/neutrality" className="text-link">
           中立性ポリシーを読む <span aria-hidden="true">→</span>
         </Link>
+      </section>
+
+      <section
+        className="document-section"
+        id="publication-rules"
+        aria-labelledby="publication-rules-title"
+      >
+        <h2 id="publication-rules-title">候補者・立候補予定者の方へ</h2>
+        <p>
+          取材への参加、コンテンツの利用、公開前の確認、訂正・異議申立ての条件を、掲載規約にまとめています。
+        </p>
+        <h3>{publicationRules.title}</h3>
+        <p>{publicationRules.edition}</p>
+        <p>
+          PDF・A4・{publicationRules.pages}ページ（
+          {Math.ceil(publicationRules.bytes / 1024)} KB）
+        </p>
+        <p>
+          <a
+            href={publicationRules.href}
+            type="application/pdf"
+            className="text-link"
+          >
+            掲載規約を読む（PDF） <span aria-hidden="true">→</span>
+          </a>
+        </p>
+        <p>
+          <a href={publicationRules.href} download className="text-link">
+            PDFをダウンロード <span aria-hidden="true">↓</span>
+          </a>
+        </p>
       </section>
 
       <section className="document-section" id="operations">

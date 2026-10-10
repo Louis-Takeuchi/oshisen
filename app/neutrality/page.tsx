@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { pageMetadata } from "../../lib/seo";
 import { contactEmail, contactMailto } from "../../lib/site-contact";
+import publicationRules from "../../lib/publication-rules.json";
 import styles from "./neutrality.module.css";
 
 export const metadata = pageMetadata("/neutrality", {
@@ -370,7 +371,15 @@ export default function NeutralityPage() {
         <p>
           確認・訂正・異議申立ての手順や対応方針については、別資料をご参照ください。
         </p>
-        <p>別資料は後日掲載予定です。</p>
+        <p>{publicationRules.edition}</p>
+        <a
+          href={publicationRules.href}
+          type="application/pdf"
+          className="text-link"
+        >
+          候補者向け取材コンテンツ取扱掲載規約（PDF・{publicationRules.pages}
+          ページ） →
+        </a>
       </section>
       <section
         className="document-section"

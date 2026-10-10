@@ -6,6 +6,11 @@
     "node": ">=22.13.0"
   },
   "scripts": {
+    "documents:build": "node scripts/publication-rules.mjs build",
+    "documents:check": "node scripts/publication-rules.mjs check",
+    "documents:preview": "node scripts/publication-rules.mjs preview",
+    "prebuild": "npm run documents:check",
+    "prebuild:vercel": "npm run documents:check",
     "dev": "WRANGLER_LOG_PATH=.wrangler/wrangler.log vinext dev",
     "build": "WRANGLER_LOG_PATH=.wrangler/wrangler.log vinext build",
     "start": "WRANGLER_LOG_PATH=.wrangler/wrangler.log vinext start",
