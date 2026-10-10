@@ -70,7 +70,7 @@ export function DiagnosisStart() {
         )}
       </div>
       <p className="caption">
-        回答によって特定候補への投票を勧めるものではありません。
+        自分の考えを整理し、投票について考えるきっかけとして使えます。
       </p>
       <p className="caption">
         回答はこのタブ内に保存されます。

@@ -32,7 +32,7 @@ export function SourceBlock({
       </h4>
       {block.availability === "not_mentioned" && (
         <p className={styles.note}>
-          今回の回答では言及なし。経験がないという意味ではありません。
+          今回の回答では言及なし。この表示は今回の回答で確認できた範囲を示しています。
         </p>
       )}
       <dl className={styles.fields}>
@@ -123,7 +123,7 @@ export function SourceBlock({
         {block.version}
       </p>
       <p className={styles.meta}>
-        原音照合・別担当者の文脈確認・本人の趣旨確認・公開承認の記録あり。出来事全体の独立した事実確認を意味しません。
+        確認範囲が分かるよう、原音照合・別担当者の文脈確認・本人の趣旨確認・公開承認の記録を示しています。これらは発言内容についての確認記録で、出来事自体の事実確認は別途必要です。
       </p>
       {block.relatedPolicyQuestionIds.length > 0 && (
         <div className={styles.links}>

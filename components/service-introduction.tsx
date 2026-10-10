@@ -28,7 +28,7 @@ const steps = [
       "要約から文字起こしやPodcastの原音へ進み、発言の前後を確認できます。",
     note: "原音・原文と発言趣旨を確認し、出典とともに掲載する予定です。",
     href: "/sources",
-    link: "掲載方針へ",
+    link: "情報源・掲載状況へ",
   },
 ] as const;
 
@@ -297,7 +297,7 @@ export function ServiceIntroduction() {
           unoptimized
         />
         <p>
-          候補者の総合点や、人柄の点数はつけません。
+          政策への考え方や、本人が語る経験を紹介する準備を進めています。
           <br className={styles.mobileBreak} />
           情報をもとに、利用者自身が判断できます。
         </p>

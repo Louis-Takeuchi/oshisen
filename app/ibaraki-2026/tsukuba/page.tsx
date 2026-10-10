@@ -45,7 +45,7 @@ export default function ElectionPage() {
         <h2 id="scope-heading">対象としている選挙・地域</h2>
         <p>
           オシセンの実証プロジェクトは、2026年の茨城県議会議員選挙・つくば市選挙区と土浦市選挙区の両地域を対象に準備を進めています。
-          このページでは、つくば市選挙区の取り組みを紹介しています。投票日や立候補者の確定情報を発表するものではありません。
+          このページでは、つくば市選挙区でのオシセンの取り組みを紹介しています。投票日や立候補者の確定情報は、選挙管理委員会の公式発表をご確認ください。
         </p>
         <dl className={styles.facts}>
           <div>
@@ -76,7 +76,7 @@ export default function ElectionPage() {
         <h2 id="issues-heading">政策の8テーマ</h2>
         <p>
           何を尋ねるのか、言葉の意味、考えるポイント、公開前に確認することをテーマごとに整理しています。
-          選挙の争点を確定した一覧ではなく、県政全体を網羅するものでもありません。
+          県政の一部のテーマを取り上げた設問案として公開しています。今後、制度や出典の確認とともに、取り上げる範囲を見直す予定です。
         </p>
         <ul className={styles.themeList}>
           {questions.map((question) => (
@@ -100,7 +100,7 @@ export default function ElectionPage() {
         <h2 id="preparation-heading">候補者情報の公開準備</h2>
         <p>
           今後、候補者へ共通の質問を行い、本人の回答と、その理由・条件・出典を確認してから掲載する予定です。
-          公開資料から今回の回答を推測したり、回答がない状態を中立の回答に置き換えたりしません。
+          本人の立場と確認状況が混同されないよう、本人回答・公開資料・未回答を区別して掲載します。
         </p>
         <ul>
           <li>同じ質問に対する政策の回答と、その理由・条件</li>
@@ -109,7 +109,7 @@ export default function ElectionPage() {
           <li>公式情報へのリンク、出典・確認日</li>
         </ul>
         <p>
-          政策の回答は一問ずつ見比べる方針です。候補者を総合点や順位にまとめたり、特定の候補者への投票を勧めたりしません。
+          利用者が自分で投票について考えられるよう、本人の政策回答を一問ずつ、その理由とともに見比べられる形で掲載する予定です。
         </p>
         <div className={styles.relatedLinks}>
           <Link href="/stories">本人に尋ねる共通の質問 →</Link>
@@ -120,13 +120,14 @@ export default function ElectionPage() {
       <section className={styles.section} aria-labelledby="read-more-heading">
         <h2 id="read-more-heading">情報の見方・掲載方針</h2>
         <p>
-          設問の採用理由や確認中の事項は質問台帳へ、出典の扱いや公平性・訂正の方針は情報源のページへ。
+          設問の採用理由や確認中の事項は質問台帳へ、掲載・編集の共通基準は中立性ポリシーへ。
           質問に答える前に、仕組みを確かめることもできます。
         </p>
         <div className={styles.relatedLinks}>
           <Link href="/issues">争点・設問案の一覧 →</Link>
           <Link href="/policy-register">政策の質問台帳 →</Link>
-          <Link href="/sources">情報源・公平性 →</Link>
+          <Link href="/sources">情報源・掲載状況 →</Link>
+          <Link href="/neutrality">中立性ポリシー →</Link>
           <Link href="/diagnosis">質問の操作を試す →</Link>
           <Link href="/about">オシセンについて →</Link>
           <Link href="/guides/high-school-election">

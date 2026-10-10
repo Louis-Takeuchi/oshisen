@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
-import { candidates } from "../lib/data";
+import { orderedCandidates as candidates } from "../lib/candidate-order";
 import { useConsideration } from "./use-consideration";
 import styles from "./consideration.module.css";
 

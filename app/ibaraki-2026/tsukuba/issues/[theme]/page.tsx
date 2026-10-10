@@ -71,7 +71,7 @@ export default async function IssuePage({ params }: Props) {
         </div>
         <p>
           この文への考えを「賛成」から「反対」までの5段階で尋ねます。
-          「今は判断できない」や「スキップ」も選べます。判断を保留したことを、賛成・反対や中立に置き換えません。
+          「今は判断できない」や「スキップ」も選べます。迷いや情報不足もそのまま残せるよう、判断保留・スキップと賛否の回答を区別しています。
         </p>
         <Link href="/method" className="text-link">
           回答の選択肢・比較の仕組み →
@@ -86,7 +86,7 @@ export default async function IssuePage({ params }: Props) {
           ))}
         </ul>
         <p>
-          ここに挙げた視点だけで賛否が決まるわけではありません。
+          考えを整理する手がかりとして、主な視点を挙げています。
           対象や費用、具体的な条件によって考えが変わることもあるため、本人の回答を掲載するときは理由・条件も一緒に示す方針です。
         </p>
       </section>
@@ -124,7 +124,7 @@ export default async function IssuePage({ params }: Props) {
           同じ質問への回答を確認してから、理由・条件・出典と一緒に掲載します。
         </p>
         <p>
-          本人が回答していない内容を、過去の発言や資料から推測して埋めることはありません。
+          過去の発言と今回の回答が混同されないよう、本人から得た回答と、その確認状況を明示する予定です。
         </p>
       </section>
 
@@ -147,12 +147,13 @@ export default async function IssuePage({ params }: Props) {
         ) : (
           <p>
             この設問について、確認済みの出典はまだありません。
-            現在の政策・制度や候補者の立場を示す資料として扱わず、質問づくりの途中経過として公開しています。
+            確認前の設問案と分かるよう、質問づくりの途中経過として公開しています。
             確認した資料・基準時点は、質問台帳とあわせて掲載する方針です。
           </p>
         )}
         <div className={styles.relatedLinks}>
-          <Link href="/sources">情報源・公平性・訂正の方針 →</Link>
+          <Link href="/sources">情報源・掲載状況 →</Link>
+          <Link href="/neutrality">中立性ポリシー →</Link>
           <Link href="/research">設問づくり・研究の準備 →</Link>
         </div>
       </section>

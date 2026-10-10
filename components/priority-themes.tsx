@@ -15,7 +15,7 @@ export function PriorityThemePicker() {
       <p className="eyebrow">N / 知りたいことから。</p>
       <h2 id="priority-heading">関心のあるテーマ</h2>
       <p>
-        任意で3つまで。選んだテーマへの案内に使います。政策の回答照合や候補者の並び順には使いません。
+        任意で3つまで選べます。気になる情報に進みやすいよう、選んだテーマへの案内に使っています。
       </p>
       <fieldset>
         <legend>

@@ -1,11 +1,8 @@
 "use client";
 import Link from "next/link";
-import {
-  candidates,
-  questionDraftNotice,
-  questions,
-  type QuestionId,
-} from "../lib/data";
+import { CandidateOrderNote } from "./candidate-order-note";
+import { orderedCandidates as candidates } from "../lib/candidate-order";
+import { questionDraftNotice, questions, type QuestionId } from "../lib/data";
 import { getIssueQuestion } from "../lib/issues";
 import { QuestionHelp } from "./question-help";
 import { PolicyAnswerComparison } from "./policy-answer-comparison";
@@ -66,25 +63,22 @@ export function IssueExplorer({
         <h2>{question.text}</h2>
         <QuestionHelp question={question} />
       </section>
+      {candidates.length > 0 && <CandidateOrderNote />}
       {candidates.length ? (
-        [...candidates]
-          .sort((a, b) => a.kana.localeCompare(b.kana, "ja"))
-          .map((candidate) => (
-            <article className="answer-review" key={candidate.id}>
-              <h2>
-                <Link
-                  href={`/candidates/${candidate.id}#policy-${question.id}`}
-                >
-                  {candidate.name} →
-                </Link>
-              </h2>
-              <PolicyAnswerComparison
-                question={question}
-                candidate={candidate}
-                userRecord={state.answers[question.id]}
-              />
-            </article>
-          ))
+        [...candidates].map((candidate) => (
+          <article className="answer-review" key={candidate.id}>
+            <h2>
+              <Link href={`/candidates/${candidate.id}#policy-${question.id}`}>
+                {candidate.name} →
+              </Link>
+            </h2>
+            <PolicyAnswerComparison
+              question={question}
+              candidate={candidate}
+              userRecord={state.answers[question.id]}
+            />
+          </article>
+        ))
       ) : (
         <div className="empty-notice">
           <h2>本人回答の掲載準備</h2>

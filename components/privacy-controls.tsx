@@ -58,7 +58,7 @@ export function PrivacyControls() {
         <span>このタブ内の操作記録を有効にする（任意）</span>
       </label>
       <p className="caption">
-        回答内容は操作記録に含めません。サーバーへの送信も行いません。
+        回答のプライバシーに配慮し、操作名や日時などに記録項目を限定して、このタブ内だけに保持しています。
       </p>
       <div className="control-buttons">
         <button className="button secondary" onClick={download}>
@@ -75,7 +75,7 @@ export function PrivacyControls() {
         <div className="delete-confirmation">
           <p>
             気になる候補と、このタブの回答・比較・知りたいテーマ・操作記録を削除します。この操作は元に戻せません。
-            訪問計測の設定は維持し、Vercelで集計済みのデータは削除しません。
+            訪問計測の設定は維持します。Vercelで集計済みのデータは、この操作の削除対象の範囲外です。
           </p>
           <button type="button" className="button secondary" onClick={eraseAll}>
             削除する

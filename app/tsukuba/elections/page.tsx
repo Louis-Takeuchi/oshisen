@@ -237,7 +237,7 @@ export default function TsukubaElectionsPage() {
         <p>
           オシセンでは、2026年茨城県議選・つくば市選挙区に向けて、8つのテーマの設問案と掲載方針を公開しています。
           候補者情報・本人回答・Podcastは取材と掲載の準備中です。
-          特定の候補者を推薦せず、利用者が自分で考えるための材料を整えることを目指しています。
+          利用者が自分で投票について考えられるよう、政策の問いと情報の見方を紹介しています。
         </p>
         <div className={styles.links}>
           <Link href={electionHubPath}>
@@ -245,7 +245,8 @@ export default function TsukubaElectionsPage() {
           </Link>
           <Link href="/issues">政策の8テーマと設問案 →</Link>
           <Link href="/method">政策回答の比較方法 →</Link>
-          <Link href="/sources">情報源・公平性・掲載方針 →</Link>
+          <Link href="/sources">情報源・掲載状況 →</Link>
+          <Link href="/neutrality">中立性ポリシー →</Link>
         </div>
       </section>
     </main>

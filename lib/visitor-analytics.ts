@@ -18,6 +18,7 @@ const publicPaths = new Set([
   "/about",
   "/method",
   "/sources",
+  "/neutrality",
   "/privacy",
   "/interests",
   "/stories",

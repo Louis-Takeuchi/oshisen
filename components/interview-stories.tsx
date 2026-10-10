@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { orderedCandidates } from "../lib/candidate-order";
+import { CandidateOrderNote } from "./candidate-order-note";
 import { useState } from "react";
 import { interviewGuide, type PublicInterviewBlock } from "../lib/interviews";
 import { SourceBlock } from "./interview-source-block";
@@ -17,13 +19,20 @@ export function InterviewStories({
   compact?: boolean;
 }) {
   const [selectedSubject, setSelectedSubject] = useState("");
+  const candidateIds = orderedCandidates.map((candidate) => candidate.id);
+  const subjectRank = (id: string) => {
+    const index = candidateIds.indexOf(id);
+    return index < 0 ? candidateIds.length : index;
+  };
   const subjects = [
     ...new Map(
       blocks.map((block) => [block.subjectId, block.subjectLabel]),
     ).entries(),
   ].sort(
     (left, right) =>
-      left[1].localeCompare(right[1], "ja") || left[0].localeCompare(right[0]),
+      subjectRank(left[0]) - subjectRank(right[0]) ||
+      left[1].localeCompare(right[1], "ja") ||
+      left[0].localeCompare(right[0]),
   );
   const activeSubject = subjectId ?? selectedSubject;
   const visibleBlocks = blocks.filter(
@@ -98,9 +107,21 @@ export function InterviewStories({
           ほかの人の話も見る →
         </Link>
       )}
+      {blocks.length > 0 && !subjectId && (
+        <>
+          {subjects.some(([id]) => candidateIds.includes(id)) && (
+            <CandidateOrderNote ids={subjects.map(([id]) => id)} />
+          )}
+          {subjects.some(([id]) => !candidateIds.includes(id)) && (
+            <p className={styles.note}>
+              候補者一覧に未登録の話者は、候補者の後に氏名の文字順で表示しています。
+            </p>
+          )}
+        </>
+      )}
       {blocks.length > 0 && (
         <p className={styles.note}>
-          人物を採点した表示順ではありません。氏名の文字順で並べています。回答が掲載されていないことを、その経験がないという意味には扱いません。
+          経験の有無と掲載状況が混同されないよう、回答を確認できた項目と、まだ掲載に至っていない項目を区別しています。
         </p>
       )}
     </div>

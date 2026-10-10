@@ -1,23 +1,22 @@
 import { pageMetadata } from "../../lib/seo";
 import Link from "next/link";
 import { projectLabel } from "../../lib/project";
-import { contactEmail, contactMailto } from "../../lib/site-contact";
 
 export const metadata = pageMetadata("/sources", {
-  title: "情報源・公平性・掲載方針",
+  title: "情報源・掲載状況",
   description:
-    "候補者情報の出典、本人回答と引用・編集部要約の区別、共通取材、掲載・訂正・公平性に関するオシセンの方針を公開します。",
+    "現在掲載している情報の出所、候補者情報・本人回答・Podcastの準備状況と、原資料の確認先を案内します。",
   index: true,
 });
 
 export default function SourcesPage() {
   return (
     <main id="main" className="container document-page">
-      <p className="eyebrow">情報源・公平性</p>
-      <h1>情報源・公平性</h1>
+      <p className="eyebrow">情報源・掲載状況</p>
+      <h1>情報源・掲載状況</h1>
       <p className="lead">
-        誰が、いつ、どんな場面で話したのか。
-        短く読む入口から、発言の前後まで戻れるようにします。
+        現在掲載している情報と、その出所・確認状況を案内します。
+        掲載や編集に共通する方針は、中立性ポリシーにまとめています。
       </p>
 
       <section className="document-section">
@@ -29,13 +28,15 @@ export default function SourcesPage() {
         <dl>
           <dt>政策の質問</dt>
           <dd>
-            操作を試すための8問の草案です。制度・権限・文言の確認と事前テストを終えた確定質問ではありません。
+            操作を試すための8問の草案を公開しています。制度・権限・文言の確認と事前テストを経て、本番の質問を確定する予定です。
           </dd>
           <dt>候補者の氏名・写真・経歴・政策回答</dt>
-          <dd>未掲載です。仮名の候補者や、架空の回答で補いません。</dd>
+          <dd>
+            現在は掲載準備中です。実在する候補者の情報と本人の回答を確認してから掲載します。
+          </dd>
           <dt>Podcast・共通インタビュー</dt>
           <dd>
-            取材はこれからです。共通質問と掲載の形式を準備しています。本人の発言や収録済みのような見せ方は作りません。
+            取材はこれからです。収録済みの内容と誤解されないよう、現在は共通質問と掲載予定の形式を案内しています。
           </dd>
           <dt>候補者の公式サイト・SNS・選挙公報</dt>
           <dd>
@@ -56,82 +57,56 @@ export default function SourcesPage() {
       </section>
 
       <section className="document-section">
-        <h2>本人の発言と編集の区別</h2>
+        <h2>原資料の確認先</h2>
+        <p>
+          政策の設問案は、各テーマのページに参考資料と確認状況を掲載しています。
+          設問を作った理由や、公開前に確認する事項は質問台帳で確認できます。
+        </p>
         <ul>
-          <li>本人回答、本人の回顧、公式記録、編集部要約を区別します。</li>
           <li>
-            引用には元の発言区間を、要約には確認できる原文を結び付けます。
+            <Link href="/issues" className="text-link">
+              政策テーマごとの設問案・出典 →
+            </Link>
           </li>
           <li>
-            経験・選択・本人が挙げた理由・条件を残し、性格を推測して書き足しません。
+            <Link href="/policy-register" className="text-link">
+              質問台帳・確認中の事項 →
+            </Link>
           </li>
           <li>
-            短い要点だけでなく、前後の文字起こし、Podcastの該当箇所と全編へ進めるようにします。
-          </li>
-          <li>
-            今回の回答で語られなかった内容を「その経験がない」とは扱いません。
+            <Link href="/stories" className="text-link">
+              共通インタビューの質問・掲載状況 →
+            </Link>
           </li>
         </ul>
         <p>
-          本人がそのように説明したことと、出来事を独立した資料で確認できたことは別です。
-          「本人確認済み」の一言で、すべての事実を検証済みとはしません。
+          候補者の本人回答・インタビューは未掲載のため、回答原文、収録音声、文字起こしへのリンクはまだありません。
+          掲載後は各回答・発言に添えた出典から確認できます。
         </p>
       </section>
 
       <section className="document-section">
-        <h2>質問と掲載条件の統一</h2>
+        <h2>掲載・編集の方針とお問い合わせ</h2>
+        <p>
+          掲載対象、出典の扱い、質問、表示順、取材・編集に共通する基準は、中立性ポリシーをご参照ください。
+        </p>
         <ul>
-          <li>政策は、同じ版の質問文・条件・選択肢・補足説明で尋ねます。</li>
           <li>
-            インタビューは、共通6問と追加質問の方針、収録・確認条件をそろえます。
-          </li>
-          <li>回答は一問ずつ示し、総合一致率や人物の順位にはまとめません。</li>
-          <li>
-            通常の候補者一覧・比較は五十音順を基本とし、好みや閲覧履歴による優先表示はしません。
+            <Link href="/neutrality" className="text-link">
+              中立性ポリシー →
+            </Link>
           </li>
           <li>
-            未回答、確認中、版の不一致を分け、過去の発言から回答を補いません。
+            <Link href="/neutrality#section-13" className="text-link">
+              確認・訂正・異議申立てに関する資料の案内 →
+            </Link>
           </li>
-          <li>同じ掲載項目を使い、取得できない情報も共通の形式で示します。</li>
+          <li>
+            <Link href="/about#contact" className="text-link">
+              お問い合わせ →
+            </Link>
+          </li>
         </ul>
-        <p>
-          オシセンは、特定の候補者への投票を推奨・依頼するサービスではありません。
-        </p>
-        <Link href="/method" className="text-link">
-          回答と情報の見方を読む →
-        </Link>
-      </section>
-
-      <section className="document-section">
-        <h2>公開前の確認手順</h2>
-        <p>
-          収録から文字起こしを作り、原音と照合します。要点を整理した後は、別担当者が文脈を確認し、本人にも発言趣旨の確認を依頼する計画です。
-          AIを下書きに使う場合も、原文・原音の確認を省略せず、承認済みの版だけを公開します。
-        </p>
-        <p>
-          収録日・回答日・公開版、確認の種類、訂正・追記を記録します。
-          掲載対象の確定基準、依頼と確認の担当、更新頻度、訂正手順、管理責任者は正式公開前に決めます。
-          研究の効果は未検証です。
-        </p>
-        <Link href="/research" className="text-link">
-          研究と編集の準備を見る →
-        </Link>
-      </section>
-
-      <section className="document-section">
-        <h2>お問い合わせ・訂正依頼</h2>
-        <p>
-          ご連絡は{" "}
-          <a href={contactMailto} className="text-link">
-            {contactEmail}
-          </a>{" "}
-          へ。
-          対象ページのURLと該当箇所、確認できる資料があればそのURLをお知らせください。
-          政策回答や投票先など、お問い合わせに不要な情報は記載しないでください。
-        </p>
-        <Link href="/about#contact" className="text-link">
-          運営情報・お問い合わせを見る →
-        </Link>
       </section>
     </main>
   );

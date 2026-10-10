@@ -27,6 +27,7 @@ export const publicPagePaths = [
   "/about",
   "/method",
   "/sources",
+  "/neutrality",
   "/privacy",
   "/issues",
   "/stories",

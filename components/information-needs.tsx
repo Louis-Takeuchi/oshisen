@@ -99,7 +99,7 @@ export function InformationNeeds() {
           ))}
       </section>
       <p className="caption">
-        政策への賛否とは別の情報です。候補者の採点や、おすすめ順位には使いません。
+        選んだテーマや知りたい情報を手がかりに、関連するページをご案内しています。
       </p>
     </main>
   );

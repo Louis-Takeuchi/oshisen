@@ -5,7 +5,7 @@ import { publishedInterviewDocument } from "../../lib/published-interviews";
 import { InterviewStories } from "../../components/interview-stories";
 
 export const metadata = pageMetadata("/stories", {
-  title: "本人インタビュー・Podcastの掲載方針と共通質問",
+  title: "本人インタビュー・Podcastと共通質問",
   description:
     "政策回答の背景にある経験や判断の理由を聞く、オシセンの共通インタビュー6問を紹介します。2026年茨城県議選に向けて取材・Podcast掲載を準備中です。",
   index: true,
@@ -34,7 +34,7 @@ export default function StoriesPage() {
           {blocks.length
             ? "共通する6つの項目で整理します。"
             : "全員に同じ6つの項目を聞く予定です。"}
-          経験の多さや話し方を採点するものではありません。
+          話し方の印象だけで人物が判断されないよう、経験や判断の背景を本人の言葉とともに紹介する方針です。
         </p>
       </section>
       <InterviewStories blocks={blocks} />
@@ -50,8 +50,8 @@ export default function StoriesPage() {
           政策の質問を見てみる →
         </Link>
         <br />
-        <Link href="/sources" className="text-link">
-          情報の扱い方を読む →
+        <Link href="/neutrality#section-8" className="text-link">
+          取材・編集の共通基準を読む →
         </Link>
       </section>
     </main>

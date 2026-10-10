@@ -1,6 +1,8 @@
 "use client";
 import Link from "next/link";
-import { candidates, questions } from "../lib/data";
+import { CandidateOrderNote } from "./candidate-order-note";
+import { questions } from "../lib/data";
+import { orderedCandidates as candidates } from "../lib/candidate-order";
 import { policyAnswerLabel } from "../lib/policy";
 import { KikumaruLoading } from "./kikumaru";
 import { useDiagnosis } from "./session";
@@ -42,7 +44,7 @@ export function Results() {
       <div className="notice">
         <span className="outline-label">掲載準備中</span>
         <p>
-          現在は自分の回答を見返せます。総合一致率や、おすすめ順位は出しません。
+          自分の考えを一問ずつ確かめられるよう、選んだ回答を質問ごとに表示しています。
         </p>
       </div>
       <p className="answer-counts">
@@ -65,12 +67,11 @@ export function Results() {
         ))}
       </section>
       <PriorityThemePicker />
+      {candidates.length > 0 && <CandidateOrderNote />}
       {candidates.length ? (
-        [...candidates]
-          .sort((a, b) => a.kana.localeCompare(b.kana, "ja"))
-          .map((candidate) => (
-            <CandidateRow key={candidate.id} candidate={candidate} />
-          ))
+        [...candidates].map((candidate) => (
+          <CandidateRow key={candidate.id} candidate={candidate} />
+        ))
       ) : (
         <div className="empty-notice">
           <h2>候補者回答の掲載準備</h2>

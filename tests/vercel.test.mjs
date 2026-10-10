@@ -110,6 +110,7 @@ test("all application routes render on the Vercel Next.js runtime", async () => 
     "/about",
     "/method",
     "/sources",
+    "/neutrality",
     "/privacy",
   ]) {
     const response = await fetch(`${origin}${path}`, {

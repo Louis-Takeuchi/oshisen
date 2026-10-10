@@ -1,8 +1,9 @@
 "use client";
 import Link from "next/link";
+import { CandidateOrderNote } from "./candidate-order-note";
 import { KikumaruLoading } from "./kikumaru";
 import { useState } from "react";
-import { candidates } from "../lib/data";
+import { orderedCandidates as candidates } from "../lib/candidate-order";
 import { useConsideration } from "./use-consideration";
 import { CandidateRow } from "./candidate-row";
 import styles from "./consideration.module.css";
@@ -16,19 +17,17 @@ export function SavedCandidates() {
       <p className="eyebrow">気になった人を、もう少し考える。</p>
       <h1>気になる候補</h1>
       <p className="lead">
-        保存は支持や投票先の表明ではありません。
+        あとで情報を読み返せるよう、気になる候補をこのブラウザに保存できます。
         <br />
         あとで見返したい人を、ここに。
       </p>
       <div className="notice">
         <span className="outline-label">このブラウザ内だけ</span>
         <p>
-          ログイン不要です。同じ端末・ブラウザではタブを閉じても残ります。共有端末では使い終わったら削除してください。端末をまたいだ同期・サーバーへの送信はありません。
+          ログイン不要です。保存先をこのブラウザに限定し、端末間の同期やサーバー送信の対象から除外しています。タブを閉じても残るため、共有端末では使い終わったら削除してください。
         </p>
       </div>
-      <p className="caption">
-        保存した候補者は五十音順で表示します。候補者の情報は現在、掲載準備中です。
-      </p>
+      <CandidateOrderNote ids={savedIds} />
       {storageAvailable === false && (
         <p role="status" className="empty-notice">
           ブラウザに保存できていません。現在の画面内だけで保持しています。
@@ -57,7 +56,6 @@ export function SavedCandidates() {
             </div>
           ) : (
             [...candidates]
-              .sort((a, b) => a.kana.localeCompare(b.kana, "ja"))
               .filter((candidate) => savedIds.includes(candidate.id))
               .map((candidate) => (
                 <CandidateRow key={candidate.id} candidate={candidate} />

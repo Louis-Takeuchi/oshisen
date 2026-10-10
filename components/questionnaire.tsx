@@ -180,7 +180,7 @@ export function Questionnaire() {
         </button>
       </div>
       <p className="caption quiz-footer">
-        「賛成でも反対でもない」「判断できない」「スキップ」は別々に扱います。総合点は出しません。
+        回答の意味をそのまま残せるよう、「賛成でも反対でもない」「判断できない」「スキップ」を区別し、選んだ内容を質問ごとに表示しています。
       </p>
     </main>
   );

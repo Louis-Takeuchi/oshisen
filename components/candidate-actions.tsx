@@ -51,7 +51,7 @@ export function CandidateActions({ candidate }: { candidate: Candidate }) {
         </button>
       </div>
       <p className={styles.saveNote}>
-        保存はこのブラウザ内のみ・支持の表明ではありません。
+        あとで読み返すために、このブラウザ内に保存します。
       </p>
       <p className={styles.actionMessage} role="status">
         {message}

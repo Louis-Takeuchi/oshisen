@@ -133,7 +133,7 @@ export function ResearchWorkbench() {
         <p className={styles.kicker}>01 / FILE CHECK</p>
         <h2 id="preparation-files">取材情報の入力形式</h2>
         <p>
-          空の6項目をダウンロードできます。読み込んだファイルは、このタブのメモリだけで扱います。サーバーへの送信・保存・公開は行いません。
+          空の6項目をダウンロードできます。取材情報の取り扱いに配慮し、読み込んだファイルはこのタブのメモリ内に限定して処理しています。サーバーへの送信・保存・公開は処理対象から除外しています。
         </p>
         <div className={styles.actions}>
           <button
@@ -226,7 +226,7 @@ export function ResearchWorkbench() {
           </details>
         )}
         <p className={styles.note}>
-          内容キーは、確認後に文章や出典が変わっていないかを調べるためのものです。承認者の本人認証ではありません。公開する際は運営側の確認が別途必要です。
+          内容キーは、確認後の文章や出典の変更を検出するために使っています。承認者の本人確認と公開の判断は、運営が別途行う必要があります。
         </p>
       </section>
 
@@ -234,7 +234,7 @@ export function ResearchWorkbench() {
         <p className={styles.kicker}>02 / SAME MATERIAL</p>
         <h2 id="view-comparison">表示形式の比較</h2>
         <p>
-          本文・引用・原音・文字起こしは共通です。Bは取材順、CはH01〜H06ごとに並べます。最大2人を選べます。ここでの切り替えは表示確認用で、本番研究の割り付けではありません。表示条件を切り替えると、同意と操作記録をリセットします。
+          本文・引用・原音・文字起こしは共通です。同じ素材の表示を確かめられるよう、Bは取材順、CはH01〜H06ごとに並べています。最大2人を選べます。本番研究での割り付けは別途準備します。表示条件を切り替えると、同意と操作記録をリセットします。
         </p>
         <div className={styles.toggle} aria-label="表示方法">
           {(["B", "C"] as const).map((value) => (
@@ -270,7 +270,7 @@ export function ResearchWorkbench() {
         <p className={styles.meta}>
           B/Cの本文・引用・出典・分量：
           {materialEqual ? "同一" : "不一致があります"}
-          。未承認の本文は表示しません。
+          。確認済みの情報を扱えるよう、承認済みの本文だけを表示しています。
         </p>
         {publishable.length === 0 || selectedSubjects.length === 0 ? (
           <div className={styles.empty}>
@@ -317,7 +317,7 @@ export function ResearchWorkbench() {
         <p className={styles.kicker}>03 / LOCAL CHECK ONLY</p>
         <h2 id="local-measurement">研究用の操作記録</h2>
         <p>
-          この画面の確認操作だけを、同意した後からタブ内に記録できます。参加者の募集や研究データの収集は、まだ始めていません。氏名や政治的な回答は記録しません。
+          この画面の確認操作だけを、同意した後からタブ内に記録できます。参加者の募集や研究データの収集は準備段階です。プライバシーに配慮し、氏名や政治的な回答を記録対象から除外しています。
         </p>
         <label className={styles.consent}>
           <input
@@ -369,7 +369,7 @@ export function ResearchWorkbench() {
           {access.repeatClicks}回
         </p>
         <p className={styles.note}>
-          クリックは読了・視聴・理解を意味しません。自由閲覧中のアクセスと、課題で指示されたアクセスを混ぜません。同意を外すと記録を削除します。保存済みのファイルは端末側で削除してください。
+          記録から分かる範囲を明確にするため、クリックを操作の記録として扱い、自由閲覧中と課題中のアクセスを区別しています。読了・視聴・理解の確認には別の調査が必要です。同意を外すと記録を削除します。保存済みのファイルは端末側で削除してください。
         </p>
         <button
           type="button"

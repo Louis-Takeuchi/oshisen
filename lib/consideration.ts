@@ -1,9 +1,5 @@
-import {
-  candidates,
-  questions,
-  type CandidateId,
-  type QuestionId,
-} from "./data.ts";
+import { orderedCandidates as candidates } from "./candidate-order.ts";
+import { questions, type CandidateId, type QuestionId } from "./data.ts";
 
 export const considerationKeys = {
   saved: "oshisen:saved-candidates:v1",
@@ -25,9 +21,7 @@ export interface ConsiderationAction {
 }
 type StorageLike = Pick<Storage, "getItem" | "setItem" | "removeItem">;
 type StorageProvider = () => StorageLike | null;
-const publishedCandidateIds = [...candidates]
-  .sort((a, b) => a.kana.localeCompare(b.kana, "ja"))
-  .map((candidate) => candidate.id);
+const publishedCandidateIds = [...candidates].map((candidate) => candidate.id);
 const questionIds = questions.map((question) => question.id);
 export const emptyConsideration: ConsiderationState = Object.freeze({
   savedIds: [],

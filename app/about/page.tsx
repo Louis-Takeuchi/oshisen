@@ -68,7 +68,7 @@ export default function AboutPage() {
         </ol>
         <p>
           政策の回答と、本人が語った経験は、それぞれ別の情報として扱います。
-          人柄の点数や候補者の総合点はつけません。
+          本人の話から利用者が理解を深められるよう、発言の背景や判断の理由を添えて紹介する予定です。
           質問に答えずに「本人の話から見る」入口も使えます。
         </p>
         <Link href="/stories" className="text-link">
@@ -93,18 +93,12 @@ export default function AboutPage() {
       </section>
 
       <section className="document-section">
-        <h2>中立性と掲載方針</h2>
+        <h2>中立性と運営方針</h2>
         <p>
-          オシセンは、特定の候補者への投票を推奨・依頼するサービスではありません。
-          一問への回答が同じでも、人物全体が似ているとは限りません。
-          どの情報をどう受け止めるかは、利用者自身が判断します。
+          掲載・質問・比較・編集の共通基準と、完全に自己資金で運営する方針を、中立性ポリシーにまとめています。
         </p>
-        <p>
-          本番の掲載では、候補者本人の回答や一次情報を確認し、出典と確認日を示す方針です。
-          現在の確認状況や公開前の準備項目は、情報源・公平性のページに掲載しています。
-        </p>
-        <Link href="/sources" className="text-link">
-          情報源・公平性を読む <span aria-hidden="true">→</span>
+        <Link href="/neutrality" className="text-link">
+          中立性ポリシーを読む <span aria-hidden="true">→</span>
         </Link>
       </section>
 
@@ -147,7 +141,7 @@ export default function AboutPage() {
         </dl>
         <p>
           運営メンバーの紹介と、候補者の掲載・評価は分けて扱います。
-          運営者の性格や好みを、回答の照合や候補者の表示順に反映することはありません。
+          運営者個人の好みによって扱いが変わらないよう、回答の照合や候補者の表示順には共通の基準を設けています。
         </p>
       </section>
 
@@ -166,7 +160,7 @@ export default function AboutPage() {
         <OfficialContacts />
         <p className={styles.contactNote}>
           訂正のご連絡には、対象ページのURLと該当箇所を添えてください。
-          このサイトからメールを自動送信したり、診断回答や結果を添付したりすることはありません。
+          メールは、ご自身のメールアプリで内容を確認してから送信する方式です。診断回答や結果は自動添付の対象から除外しています。
         </p>
       </section>
     </main>

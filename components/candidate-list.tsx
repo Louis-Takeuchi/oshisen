@@ -1,20 +1,19 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
-import { candidates } from "../lib/data";
+import { CandidateOrderNote } from "./candidate-order-note";
+import { orderedCandidates as candidates } from "../lib/candidate-order";
 import { project, projectDistrictLabel } from "../lib/project";
 import { KikumaruNote } from "./kikumaru";
 import { CandidateRow } from "./candidate-row";
 export function CandidateList() {
   const [search, setSearch] = useState("");
   const term = search.replace(/\s/g, "");
-  const filtered = [...candidates]
-    .sort((a, b) => a.kana.localeCompare(b.kana, "ja"))
-    .filter(
-      (c) =>
-        c.name.replace(/\s/g, "").includes(term) ||
-        c.kana.replace(/\s/g, "").includes(term),
-    );
+  const filtered = [...candidates].filter(
+    (c) =>
+      c.name.replace(/\s/g, "").includes(term) ||
+      c.kana.replace(/\s/g, "").includes(term),
+  );
   return (
     <main id="main" className="container page-main">
       <p className="eyebrow">まずは、一人ひとりを知る。</p>
@@ -38,7 +37,7 @@ export function CandidateList() {
         <>
           <div className="list-tools">
             <p className="caption" role="status">
-              五十音順 / {filtered.length}名
+              {filtered.length}名
             </p>
             <label className="search-field">
               <span className="sr-only">候補者名を検索</span>
@@ -50,6 +49,7 @@ export function CandidateList() {
               />
             </label>
           </div>
+          <CandidateOrderNote ids={filtered.map((candidate) => candidate.id)} />
           {filtered.map((candidate) => (
             <CandidateRow key={candidate.id} candidate={candidate} />
           ))}

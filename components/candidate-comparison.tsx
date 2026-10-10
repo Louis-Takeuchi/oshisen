@@ -1,7 +1,9 @@
 "use client";
 import Link from "next/link";
+import { CandidateOrderNote } from "./candidate-order-note";
 import { KikumaruLoading } from "./kikumaru";
-import { candidates, questions } from "../lib/data";
+import { questions } from "../lib/data";
+import { orderedCandidates as candidates } from "../lib/candidate-order";
 import { useConsideration } from "./use-consideration";
 import { useDiagnosis } from "./session";
 import { CandidateActions } from "./candidate-actions";
@@ -12,7 +14,6 @@ export function CandidateComparison() {
   const { state } = useDiagnosis();
   const selected = [...candidates]
     .filter((c) => compareIds.includes(c.id))
-    .sort((a, b) => a.kana.localeCompare(b.kana, "ja"))
     .slice(0, 2);
   return (
     <main id="main" className="container page-main">
@@ -89,9 +90,7 @@ export function CandidateComparison() {
         <Link href="/stories">経験や判断の理由を知る →</Link>
         <Link href="/issues">政策のテーマを見る →</Link>
       </div>
-      <p className="caption">
-        候補者の列は五十音順。総合点や、優劣を示す順位はつけません。
-      </p>
+      <CandidateOrderNote ids={selected.map((candidate) => candidate.id)} />
     </main>
   );
 }

@@ -171,7 +171,10 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
               公式SNS・お問い合わせ →
             </Link>
             <Link onClick={closeMenu} href="/sources">
-              情報源・公平性 →
+              情報源・掲載状況 →
+            </Link>
+            <Link onClick={closeMenu} href="/neutrality">
+              中立性ポリシー →
             </Link>
           </nav>
         )}
@@ -216,14 +219,17 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
                 <Link href="/method">回答と情報の見方</Link>
                 <Link href="/policy-register">質問台帳</Link>
                 <Link href="/research">研究の準備</Link>
-                <Link href="/sources">情報源・公平性</Link>
+                <Link href="/sources">情報源・掲載状況</Link>
+                <Link href="/neutrality">中立性ポリシー</Link>
                 <Link href="/privacy">プライバシー</Link>
               </nav>
             </div>
             <OfficialContacts compact />
             <div className="footer-bottom">
               <p>{projectLabel} / Phase 0 準備中</p>
-              <p>特定の候補者への投票を推奨・依頼するものではありません。</p>
+              <p>
+                利用者が自分で投票について考えるための材料として、政策の問いや情報の見方を紹介しています。
+              </p>
             </div>
           </div>
         </footer>

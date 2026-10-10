@@ -96,8 +96,7 @@ export default function Home() {
             候補者情報は未掲載、Podcast取材はこれからです。
           </p>
           <Link href="/about#project" className={styles.moreLink}>
-            つくば市・土浦市での取り組みの詳細{" "}
-            <span aria-hidden="true">→</span>
+            つくば市・土浦市での取り組みの詳細 <span aria-hidden="true">→</span>
           </Link>
         </div>
         <dl className={styles.statusList}>
@@ -129,14 +128,17 @@ export default function Home() {
         <p>
           本人の回答と出典を確認して掲載します。
           <br />
-          特定の候補者への投票を推奨・依頼するサービスではありません。
+          利用者が自分で投票について考えるための材料として、政策の問いや情報の見方を紹介しています。
         </p>
         <div>
           <Link href="/method">
             回答の比較方法 <span aria-hidden="true">↗</span>
           </Link>
+          <Link href="/neutrality">
+            中立性ポリシー <span aria-hidden="true">↗</span>
+          </Link>
           <Link href="/sources">
-            情報源・公平性 <span aria-hidden="true">↗</span>
+            情報源・掲載状況 <span aria-hidden="true">↗</span>
           </Link>
           <Link href="/about">
             運営情報 <span aria-hidden="true">↗</span>

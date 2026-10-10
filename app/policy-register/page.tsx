@@ -19,7 +19,7 @@ export default function Page() {
       <p className="lead">今ある8問も、新しい8つの案も、まだ草案です。</p>
       <div className="notice">
         <p>
-          現在の制度や県の権限、質問の受け取られ方を確認してから採用を決めます。保留は、その政策への賛否を表すものではありません。
+          現在の制度や県の権限、質問の受け取られ方を確認してから採用を決めます。「保留」は、設問としての確認が続いている状態を示しています。
         </p>
       </div>
       <p className="caption">台帳：{QUESTION_LEDGER_VERSION}</p>

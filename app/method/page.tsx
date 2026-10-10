@@ -1,12 +1,10 @@
 import { pageMetadata } from "../../lib/seo";
 import Link from "next/link";
-import { projectLabel } from "../../lib/project";
-import { contactEmail, contactMailto } from "../../lib/site-contact";
 
 export const metadata = pageMetadata("/method", {
   title: "政策回答の照合と情報の見方",
   description:
-    "政策の回答を一問ずつ照合する仕組み、質問の版、判断保留・未回答・出典の扱いを説明します。総合一致率や候補者の順位はつけません。",
+    "政策の回答を一問ずつ照合する仕組み、質問の版、判断保留・未回答・出典の扱いを説明します。現在は自分の回答を質問ごとに見返せます。",
   index: true,
 });
 
@@ -16,38 +14,40 @@ export default function MethodPage() {
       <p className="eyebrow">回答と情報の見方</p>
       <h1>回答の比較方法</h1>
       <p className="lead">
-        政策への回答は、一問ずつ。その理由や経験は、本人の発言から。
-        どこまで分かり、何がまだ分からないのかも示します。
+        現在のサイトでの回答方法と、情報の読み方を説明します。
+        掲載・比較・編集に関する共通の基準は、中立性ポリシーをご参照ください。
       </p>
 
-      <section className="document-section">
-        <h2>取材・掲載の準備状況</h2>
-        <p>
-          {projectLabel}
-          を対象に準備しています。候補者情報・本人回答は未掲載で、Podcast取材も未実施です。
-          現在の8問は操作を試すための草案です。制度や県の権限、用語を確認し、事前テストを経て確定します。
-        </p>
-        <Link href="/policy-register" className="text-link">
-          質問台帳を見る →
+      <p>
+        <Link href="/neutrality" className="text-link">
+          中立性ポリシー →
         </Link>
-      </section>
+      </p>
+      <p>
+        現在は8問の草案に回答し、自分の考えを見返せます。候補者の本人回答は掲載準備中です。
+        <Link href="/sources" className="text-link">
+          情報源・掲載状況を見る →
+        </Link>
+      </p>
 
       <section className="document-section" id="calculation">
         <h2>質問ごとの回答比較</h2>
         <p>
           同じ質問文・条件・選択肢・補足説明の版に対する回答を並べます。
           公開できる本人回答を確認したうえで、選択肢が同じなら「同じ回答」、異なれば「違う回答」と表示します。
-          総合一致率や候補者の順位にはまとめません。
+          現在は、利用者自身が考えを確かめられるよう、回答を一問ずつ見返す機能を公開しています。
         </p>
         <p>
           「同じ回答」は、その一問で同じ選択肢を選んだという意味です。
-          理由や将来の行動、人となりまで同じだという意味ではありません。
+          回答の意味が広く受け取られすぎないよう、比較の対象をその質問の選択肢に限定しています。理由や条件は、本人回答の掲載時に添える予定です。
           一問だけ回答した場合も、その一問の原回答として扱います。
         </p>
         <ul>
-          <li>質問や説明の版が違う回答は、自動で照合しません。</li>
           <li>
-            過去の発言や公開資料から、今回の本人回答を推測して埋めません。
+            同じ条件で比較できるよう、質問や説明の版が一致する回答だけを照合対象にしています。
+          </li>
+          <li>
+            過去の発言が今回の回答と混同されないよう、掲載時には本人から得た回答と公開資料の引用を区別します。
           </li>
           <li>理由・条件・出典を、回答と一緒に確認できる形にします。</li>
         </ul>
@@ -71,7 +71,7 @@ export default function MethodPage() {
           <dd>この質問への回答を飛ばした状態です。</dd>
           <dt>候補者の未回答・確認中</dt>
           <dd>
-            本人の回答がない状態と、公開前の確認中を分けます。中立の回答にはしません。
+            本人の立場と誤解されないよう、掲載時には「未回答」と「公開前の確認中」を区別して示します。
           </dd>
         </dl>
       </section>
@@ -91,9 +91,8 @@ export default function MethodPage() {
           </dd>
         </dl>
         <p>
-          本人の経験を性格の点数にしたり、知りたいテーマを候補者との相性に換算したりしません。
-          通常の候補者一覧・比較は、氏名の読みの五十音順を基本とします。
-          閲覧履歴や関心によって、特定候補者を優先する並べ替えはしません。
+          本人の話は、経験や判断の背景を知るための情報として紹介する予定です。
+          利用者の関心は関連ページへの案内に使い、候補者の表示順には全員共通の基準を設けています。
         </p>
         <Link href="/interests" className="text-link">
           知りたいことから見る →
@@ -108,58 +107,68 @@ export default function MethodPage() {
         </p>
         <p>
           引用と編集部の要約は区別します。「本人がそう語ったこと」と、その出来事を外部資料で確認できたことも別です。
-          言及がない場合は「今回の回答では言及なし」とし、その人に経験がないとは決めつけません。
+          言及の有無が経験そのものの有無と混同されないよう、掲載時には「今回の回答では言及なし」と表示します。
         </p>
         <Link href="/stories" className="text-link">
           共通の質問を見る →
         </Link>
       </section>
 
-      <section className="document-section">
-        <h2>質問の作成・確認手順</h2>
+      <section className="document-section" id="display-order">
+        <h2>候補者の表示順の確認</h2>
         <p>
-          住民が知りたいことと、議会・予算・行政計画などの情報を突き合わせ、設問候補を作ります。
-          一問でひとつの判断を尋ね、用語、現状・県との関係、主な論点、出典を分けて示します。
+          一覧・検索・比較・保存した候補者・本人の話は、選挙区ごとに同じ順序で表示します。
+          立候補届出順を確認できた選挙区は、選挙管理委員会の公式資料に基づいて並べます。
+          各画面の表示順の案内から、根拠となる資料と確認日を確認できます。
         </p>
         <p>
-          質問台帳には採用理由、採用しなかった理由、確認する事項、版を残します。
-          回答が集まることと、意図した意味で理解されることは別です。公開前に、自分の言葉で説明してもらう事前テストを行う計画です。
-          現在の8問が県政全体を網羅するとは説明しません。
+          公式の届出順の公表・確認前は、その選挙区内を氏名の読みの五十音順で仮表示し、その旨を明記します。
+          一部の候補者だけ届出順を確認できた場合も、選挙区内の掲載候補者全員を確認するまでは仮表示を続けます。
+          検索や保存・比較の選択で候補者を絞っても、元の順序を保ちます。
         </p>
-        <Link href="/policy-register" className="text-link">
-          設問候補と確認することを見る →
+        <p>
+          複数の選挙区を表示する場合は、この企画の対象地域の案内順（つくば市選挙区、土浦市選挙区）にまとめます。
+        </p>
+        <Link href="/neutrality#section-7" className="text-link">
+          表示順と紹介機会の方針 →
         </Link>
       </section>
 
       <section className="document-section">
-        <h2>表示方法の検証</h2>
-        <p>
-          同じ取材内容を「取材順」と「共通形式」で見せ、発言内容と根拠を把握しやすくなるかを確かめる計画です。
-          政治家の人格や、投票先を当てる研究ではありません。効果はまだ検証していません。
-        </p>
-        <Link href="/research" className="text-link">
-          研究の準備を見る →
-        </Link>
+        <h2>質問・研究の詳しい情報</h2>
+        <ul>
+          <li>
+            <Link href="/policy-register" className="text-link">
+              設問の採用理由・版・確認中の事項 →
+            </Link>
+          </li>
+          <li>
+            <Link href="/research" className="text-link">
+              表示方法の研究・準備状況 →
+            </Link>
+          </li>
+        </ul>
       </section>
 
       <section className="document-section">
-        <h2>掲載・訂正の手順</h2>
-        <p>
-          取材後は原音・原文を確認し、別担当者の文脈確認と本人による発言趣旨の確認を分けて記録する方針です。
-          AIを下書きに使う場合も、そのまま公開せず、承認済みの文章を掲載します。
-          確認体制、更新頻度、訂正の手順は正式公開前に確定します。
-        </p>
-        <p>
-          ご質問や訂正依頼は{" "}
-          <a href={contactMailto} className="text-link">
-            {contactEmail}
-          </a>{" "}
-          へ。
-          対象ページのURLと該当箇所をお知らせください。政策回答や投票先の送付は必要ありません。
-        </p>
-        <Link href="/sources" className="text-link">
-          情報源・公平性を読む →
-        </Link>
+        <h2>方針とお問い合わせ</h2>
+        <ul>
+          <li>
+            <Link href="/neutrality#section-8" className="text-link">
+              取材・編集の共通基準 →
+            </Link>
+          </li>
+          <li>
+            <Link href="/neutrality#section-13" className="text-link">
+              確認・訂正・異議申立てに関する資料の案内 →
+            </Link>
+          </li>
+          <li>
+            <Link href="/about#contact" className="text-link">
+              お問い合わせ →
+            </Link>
+          </li>
+        </ul>
       </section>
     </main>
   );
