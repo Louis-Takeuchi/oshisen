@@ -1,5 +1,5 @@
 /** Official project channels supplied by the operators, not candidate links. */
-export const contactEmail = "oshisen0914@gmail.com";
+export const contactEmail = "info@oshisen.com";
 export const contactMailto = `mailto:${contactEmail}`;
 
 export const officialSocialLinks = [

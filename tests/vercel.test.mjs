@@ -379,7 +379,7 @@ test("official links open safely and contact details remain usable without email
     }
     assert.ok(
       anchors.some((tag) =>
-        tag.includes('href="mailto:oshisen0914@gmail.com"'),
+        tag.includes('href="mailto:info@oshisen.com"'),
       ),
       path,
     );

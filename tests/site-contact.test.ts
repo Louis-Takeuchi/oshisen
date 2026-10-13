@@ -20,8 +20,8 @@ async function withNavigator(value: unknown, run: () => Promise<void>) {
 }
 
 test("official channels use the exact supplied accounts without sharing parameters", () => {
-  assert.equal(contactEmail, "oshisen0914@gmail.com");
-  assert.equal(contactMailto, "mailto:oshisen0914@gmail.com");
+  assert.equal(contactEmail, "info@oshisen.com");
+  assert.equal(contactMailto, "mailto:info@oshisen.com");
   assert.deepEqual(
     officialSocialLinks.map(({ href }) => href),
     [
@@ -64,7 +64,7 @@ test("clipboard receives only the public address on an explicit copy request", a
     async () => {
       assert.deepEqual(writes, []);
       assert.equal(await copyContactEmail(), true);
-      assert.deepEqual(writes, ["oshisen0914@gmail.com"]);
+      assert.deepEqual(writes, ["info@oshisen.com"]);
     },
   );
 });

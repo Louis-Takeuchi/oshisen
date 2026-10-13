@@ -440,7 +440,7 @@ test("official social and contact links render on Sites with no obsolete closed-
     for (const href of [
       "https://www.instagram.com/oshisen.official/",
       "https://x.com/OshisenOfficial",
-      "mailto:oshisen0914@gmail.com",
+      "mailto:info@oshisen.com",
     ]) {
       assert.ok(html.includes(`href="${href}"`), `${path}: ${href}`);
     }

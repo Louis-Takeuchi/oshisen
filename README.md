@@ -173,7 +173,7 @@ Cookieを使わず、接続時の情報から訪問者数やおおまかな地�
 ### 公式SNS・問い合わせ先
 
 運営者が提供した公式SNSと公開問い合わせ先を `lib/site-contact.ts` に集約しています。変更時はこのファイルを更新してください。
-Instagramは `https://www.instagram.com/oshisen.official/`、Xは `https://x.com/OshisenOfficial`、メールは `oshisen0914@gmail.com` です。Instagramの共有用クエリ `stkn` はリンクに含めません。
+Instagramは `https://www.instagram.com/oshisen.official/`、Xは `https://x.com/OshisenOfficial`、メールは `info@oshisen.com` です。Instagramの共有用クエリ `stkn` はリンクに含めません。
 `/about#contact` とフッターから公式アカウント・問い合わせ先へ進めます。仕組み・情報源・プライバシーの説明にも同じメールアドレスを使用しています。
 
 SNSは通常の外部リンクだけで、SDK・投稿の埋め込み・新しいクリック計測は追加していません。候補者のSNS、政策の一次情報、候補者用の操作記録とは区別しています。
