@@ -3,6 +3,7 @@ import { pageMetadata, siteDescription, siteTitle } from "../lib/seo";
 import { OrganizationData } from "../components/organization-data";
 import { HomeTitle } from "../components/home-title";
 import { ServiceIntroduction } from "../components/service-introduction";
+import { NewsSection } from "../components/news-section";
 import { projectLabel } from "../lib/project";
 import styles from "./home-pop.module.css";
 
@@ -17,6 +18,7 @@ export default function Home() {
     <main id="main" className={styles.home}>
       <OrganizationData website />
       <HomeTitle />
+      <NewsSection />
       <section
         className={`${styles.menuSection} ${styles.guideSection}`}
         aria-labelledby="guide-title"

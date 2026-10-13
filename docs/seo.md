@@ -6,7 +6,7 @@
 
 | 対象                                                                       | 方針                                           |
 | -------------------------------------------------------------------------- | ---------------------------------------------- |
-| `/`、`/about`、`/method`、`/sources`、`/privacy`                           | index                                          |
+| `/`、`/news`、`/about`、`/method`、`/sources`、`/privacy`                  | index                                          |
 | `/issues`、`/stories`、`/policy-register`                                  | 準備状況・草案・未検証の状態を明示してindex    |
 | `/guides/high-school-election`、`/tsukuba/elections`                       | 出典付きの選挙入門・地域の情報案内としてindex |
 | `/ibaraki-2026/tsukuba`、配下の8テーマ                                     | プロジェクト案内と設問案としてindex            |

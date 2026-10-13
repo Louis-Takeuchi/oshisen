@@ -24,6 +24,7 @@ export function isSearchIndexingEnabled(): boolean {
 
 export const publicPagePaths = [
   "/",
+  "/news",
   "/about",
   "/method",
   "/sources",

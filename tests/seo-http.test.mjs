@@ -18,6 +18,7 @@ const themePaths = [
 ].map((theme) => `${districtPath}/issues/${theme}`);
 const publicPaths = [
   "/",
+  "/news",
   "/about",
   "/method",
   "/sources",

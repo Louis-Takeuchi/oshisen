@@ -57,6 +57,12 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
             <>
               <nav className="desktop-nav" aria-label="メインナビゲーション">
                 <Link
+                  href="/news"
+                  aria-current={pathname === "/news" ? "page" : undefined}
+                >
+                  News
+                </Link>
+                <Link
                   href="/candidates"
                   aria-current={
                     pathname.startsWith("/candidates") ? "page" : undefined
@@ -126,6 +132,13 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
             className="mobile-menu"
             aria-label="モバイルナビゲーション"
           >
+            <Link
+              onClick={closeMenu}
+              href="/news"
+              aria-current={pathname === "/news" ? "page" : undefined}
+            >
+              News・お知らせ →
+            </Link>
             <Link onClick={closeMenu} href="/guides/high-school-election">
               高校生のための選挙ガイド →
             </Link>
@@ -201,6 +214,7 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
                 </p>
               </div>
               <nav aria-label="フッターナビゲーション">
+                <Link href="/news">News・お知らせ</Link>
                 <Link href="/guides/high-school-election">
                   高校生のための選挙ガイド
                 </Link>

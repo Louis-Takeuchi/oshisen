@@ -59,6 +59,7 @@ test("home explains the question-level flow and Tsukuba and Tsuchiura preparatio
 });
 test("all current public routes render without fictional candidates or match scores", async () => {
   for (const path of [
+    "/news",
     "/diagnosis",
     "/questions",
     "/results",
@@ -219,6 +220,7 @@ test("Sites serves a crawlable robots file and a sitemap that excludes personal 
   );
   const expectedPaths = [
     "/",
+    "/news",
     "/about",
     "/method",
     "/sources",

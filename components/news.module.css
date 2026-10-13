@@ -1,0 +1,157 @@
+.section {
+  width: min(1120px, calc(100% - 60px));
+  margin: 0 auto;
+  padding: 60px 0 64px;
+}
+
+.heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 28px;
+}
+
+.heading h2 {
+  color: var(--blue);
+  font-size: 36px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.heading p {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.moreLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 24px;
+  min-height: 44px;
+  color: var(--blue);
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.list {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  border-top: 1px solid var(--line);
+}
+
+.list > li {
+  border-bottom: 1px solid var(--line);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 230px minmax(0, 1fr) 32px;
+  align-items: center;
+  gap: 24px;
+  padding: 26px 12px;
+  border-radius: 12px;
+}
+
+.row:hover {
+  background: var(--blue-soft);
+  text-decoration: none;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.meta time {
+  font-variant-numeric: tabular-nums;
+}
+
+.category {
+  display: inline-flex;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: var(--yellow-soft);
+  color: var(--ink);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.row h3 {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+
+.arrow {
+  color: var(--blue);
+  font-size: 23px;
+  text-align: center;
+}
+
+.article {
+  padding: 32px 0;
+  scroll-margin-top: 120px;
+}
+
+.article h2 {
+  margin-top: 16px;
+  font-size: 23px;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+
+.article p,
+.empty {
+  margin-top: 16px;
+  color: var(--muted);
+  line-height: 2;
+}
+
+@media (max-width: 650px) {
+  .section {
+    width: calc(100% - 40px);
+    padding: 36px 0 40px;
+  }
+
+  .heading {
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .heading h2 {
+    font-size: 30px;
+  }
+
+  .moreLink {
+    gap: 12px;
+    font-size: 12px;
+  }
+
+  .row {
+    grid-template-columns: minmax(0, 1fr) 28px;
+    gap: 12px;
+    padding: 22px 4px;
+  }
+
+  .row .meta {
+    grid-column: 1 / -1;
+  }
+
+  .row h3 {
+    font-size: 15px;
+  }
+
+  .article h2 {
+    font-size: 20px;
+  }
+}
