@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Breadcrumbs } from "../../components/breadcrumbs";
 import { formatNewsDate, newsItems } from "../../lib/news";
@@ -39,7 +40,22 @@ export default function NewsPage() {
                   <span className={styles.category}>{item.category}</span>
                 </div>
                 <h2 id={`${item.id}-title`}>{item.title}</h2>
-                <p>{item.body}</p>
+                {item.body.split("\n\n").map((paragraph, index) => (
+                  <p key={index}>{paragraph}</p>
+                ))}
+                {item.image && (
+                  <figure className={styles.figure}>
+                    <Image
+                      src={item.image.src}
+                      alt={item.image.alt}
+                      width={item.image.width}
+                      height={item.image.height}
+                      className={styles.photo}
+                      unoptimized
+                    />
+                    <figcaption>{item.image.caption}</figcaption>
+                  </figure>
+                )}
                 {item.link && (
                   <Link href={item.link.href} className={styles.moreLink}>
                     {item.link.label} <span aria-hidden="true">→</span>

@@ -4,6 +4,13 @@ export interface NewsItem {
   readonly category: string;
   readonly title: string;
   readonly body: string;
+  readonly image?: {
+    readonly src: string;
+    readonly alt: string;
+    readonly width: number;
+    readonly height: number;
+    readonly caption: string;
+  };
   readonly link?: {
     readonly href: string;
     readonly label: string;
@@ -12,6 +19,24 @@ export interface NewsItem {
 
 // 公開するお知らせを日付の新しい順に追加します。
 export const newsItems: readonly NewsItem[] = [
+  {
+    id: "bench-mark-pitch-2026",
+    date: "2026-10-14",
+    category: "イベント",
+    title: "代表の大屋が「BENCH MARK PITCH」に登壇しました！",
+    body: "2026年10月14日（水）、つくば市のベーカリー＆カフェ「BENCH」で開催された、つくばスタートアップパーク主催の「BENCH MARK PITCH」に、オシセン代表の大屋 諒が登壇しました。\n\nプレゼンテーションでは、「政治家との出会い方を、変える。」という思いとともに、オシセンの取り組みを紹介しました。ご参加いただいた皆さま、主催・運営の皆さま、ありがとうございました！",
+    image: {
+      src: "/news/bench-mark-pitch-2026-10-14.webp",
+      alt: "BENCH MARK PITCHで、オシセンのロゴを映したスクリーンの横でプレゼンテーションをする代表の大屋 諒",
+      width: 1800,
+      height: 1086,
+      caption: "2026年10月14日、BENCHでのプレゼンテーションの様子",
+    },
+    link: {
+      href: "https://tsukuba-stapa.jp/event/4210/",
+      label: "イベント詳細（つくばスタートアップパーク）",
+    },
+  },
   {
     id: "neutrality-policy-published",
     date: "2026-10-10",

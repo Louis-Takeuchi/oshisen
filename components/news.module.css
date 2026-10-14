@@ -115,6 +115,24 @@
   line-height: 2;
 }
 
+.figure {
+  margin: 24px 0 16px;
+}
+
+.photo {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 16px;
+}
+
+.figure figcaption {
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.8;
+}
+
 @media (max-width: 650px) {
   .section {
     width: calc(100% - 40px);
