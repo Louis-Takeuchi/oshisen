@@ -4,6 +4,7 @@ export interface NewsItem {
   readonly category: string;
   readonly title: string;
   readonly body: string;
+  readonly author?: string;
   readonly image?: {
     readonly src: string;
     readonly alt: string;
@@ -24,6 +25,7 @@ export const newsItems: readonly NewsItem[] = [
     date: "2026-10-14",
     category: "イベント",
     title: "代表の大屋が「BENCH MARK PITCH」に登壇しました！",
+    author: "共同代表 竹内琉瑛",
     body: "2026年10月14日（水）、つくば市のベーカリー＆カフェ「BENCH」で開催された、つくばスタートアップパーク主催の「BENCH MARK PITCH」に、オシセン代表の大屋 諒が登壇しました。\n\nプレゼンテーションでは、「政治家との出会い方を、変える。」という思いとともに、オシセンの取り組みを紹介しました。ご参加いただいた皆さま、主催・運営の皆さま、ありがとうございました！",
     image: {
       src: "/news/bench-mark-pitch-2026-10-14.webp",

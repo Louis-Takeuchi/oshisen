@@ -133,6 +133,13 @@
   line-height: 1.8;
 }
 
+.byline {
+  margin-top: 20px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.8;
+}
+
 @media (max-width: 650px) {
   .section {
     width: calc(100% - 40px);

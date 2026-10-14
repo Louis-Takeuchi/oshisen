@@ -61,6 +61,11 @@ export default function NewsPage() {
                     {item.link.label} <span aria-hidden="true">→</span>
                   </Link>
                 )}
+                {item.author && (
+                  <footer className={styles.byline}>
+                    記事執筆：{item.author}
+                  </footer>
+                )}
               </article>
             </li>
           ))}
