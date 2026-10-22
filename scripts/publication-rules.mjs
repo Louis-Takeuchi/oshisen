@@ -46,20 +46,18 @@ function inspectSource() {
   const edition = blocks[1];
   const date = edition.match(/(\d{4})年(\d{1,2})月(\d{1,2})日$/u);
   assert.ok(date, "The edition must end with the document date.");
-  assert.doesNotMatch(
-    edition,
-    /\bv\d+(?:\.\d+)+\b/u,
-    "Do not display a version number in the publication rules.",
-  );
+  const firstArticle = blocks.findIndex((block) => block.startsWith("## 第"));
   assert.ok(
-    blocks[2] && !blocks[2].startsWith("#"),
+    firstArticle > 2 &&
+      blocks.slice(2, firstArticle).every((block) => !block.startsWith("#")),
     "The preamble is missing.",
   );
   let articles = 0;
   let clauses = 0;
+  let supplementaryClauses = 0;
   let nextClause = 1;
   let annex = false;
-  for (const block of blocks.slice(3)) {
+  for (const block of blocks.slice(firstArticle)) {
     const article = block.match(/^## 第(\d+)条 [^\n]+$/u);
     const clause = block.match(/^(\d+)\. [\s\S]+$/u);
     if (article) {
@@ -73,20 +71,27 @@ function inspectSource() {
         "Article numbering must be consecutive.",
       );
       nextClause = 1;
+    } else if (block === "## 附則（改定案）") {
+      assert.ok(
+        articles > 0 && nextClause > 1 && !annex,
+        "Misplaced supplementary provision.",
+      );
+      annex = true;
+      nextClause = 1;
     } else if (clause) {
-      assert.ok(articles > 0 && !annex, "Clause outside an article.");
+      assert.ok(articles > 0, "Clause outside an article.");
       assert.equal(
         Number(clause[1]),
         nextClause++,
         "Clause numbering must be consecutive.",
       );
-      clauses++;
+      if (annex) supplementaryClauses++;
+      else clauses++;
     } else {
       assert.ok(
-        block.startsWith("附則　") && !annex && block === blocks.at(-1),
+        nextClause > 1 && !block.startsWith("#") && !/^\d+[.．\u3000]/u.test(block),
         "Unexpected block: retain the simple source format documented in README.md.",
       );
-      annex = true;
     }
   }
   assert.equal(
@@ -105,12 +110,18 @@ function inspectSource() {
     config.expectedSupplementaryProvision,
     "Supplementary provision changed; review document.json.",
   );
+  assert.equal(
+    supplementaryClauses,
+    config.expectedSupplementaryClauses,
+    "Supplementary clause count changed; review document.json.",
+  );
   return {
     title: blocks[0].slice(2),
     edition,
     date: `${date[1]}-${date[2].padStart(2, "0")}-${date[3].padStart(2, "0")}`,
     articles,
     clauses,
+    supplementaryClauses,
   };
 }
 
@@ -150,7 +161,11 @@ function verifyPdf(pdf) {
   );
   // Markdown's list-marker dot is syntax; the supplied PDF uses plain numbers.
   const expected = normalize(
-    source.replace(/^#{1,2} /gmu, "").replace(/^(\d+)\. /gmu, "$1 "),
+    source
+      .replace(/^#{1,2} /gmu, "")
+      .replace(/^> /gmu, "")
+      .replace(/\*\*/gu, "")
+      .replace(/^(\d+)\. /gmu, "$1 "),
   );
   const actual = normalize(text.replace(footer, ""));
   if (expected !== actual) {

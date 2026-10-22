@@ -45,12 +45,18 @@
 
 // Render links without changing the displayed source text or parsing Typst code.
 #let source-text(value) = {
-  let pattern = regex("https://[^\\s]+|[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}")
+  let pattern = regex("\\*\\*[^*]+\\*\\*|https://[^\\s]+|[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}|\\n")
   let cursor = 0
   for found in value.matches(pattern) {
     text(value.slice(cursor, found.start))
-    let destination = if found.text.starts-with("https://") { found.text } else { "mailto:" + found.text }
-    link(destination, text(found.text))
+    if found.text.starts-with("**") {
+      text(font: heading-font, weight: "bold", found.text.slice(2, -2))
+    } else if found.text == "\n" {
+      linebreak()
+    } else {
+      let destination = if found.text.starts-with("https://") { found.text } else { "mailto:" + found.text }
+      link(destination, text(found.text))
+    }
     cursor = found.end
   }
   text(value.slice(cursor))
@@ -62,27 +68,55 @@
 #block(width: 100%, above: 0pt, below: 13pt)[
   #align(right, text(font: heading-font, size: 9pt, edition))
 ]
-#par(source-text(blocks.at(2)))
+#let first-article = blocks.enumerate().find(pair => pair.at(1).starts-with("## 第")).at(0)
+#for paragraph in blocks.slice(2, first-article) {
+  if paragraph.starts-with("> ") {
+    block(inset: 8pt, fill: rgb("#f3f3f3"), par(source-text(paragraph.slice(2))))
+  } else {
+    par(source-text(paragraph))
+  }
+}
+
+#let clause-body(paragraphs) = {
+  for paragraph in paragraphs {
+    if paragraph.starts-with("**") and paragraph.ends-with("**") {
+      block(sticky: true, below: 4pt, par(source-text(paragraph)))
+    } else {
+      par(source-text(paragraph))
+    }
+  }
+}
 
 #let render-sections(paragraphs) = {
   let items = ()
+  let clause-number = none
+  let clause-paragraphs = ()
   for paragraph in paragraphs {
+    let prefix = paragraph.match(regex("^[0-9]+\\. "))
+    if paragraph.starts-with("## ") or prefix != none {
+      if clause-number != none {
+        items.push(enum.item(clause-number, clause-body(clause-paragraphs)))
+        clause-number = none
+        clause-paragraphs = ()
+      }
+    }
     if paragraph.starts-with("## ") {
       if items.len() > 0 { enum(..items); items = () }
       heading(level: 1, text(paragraph.slice(3)))
-    } else if paragraph.match(regex("^[0-9]+\\. ")) != none {
-      let prefix = paragraph.match(regex("^[0-9]+\\. "))
-      items.push(enum.item(int(prefix.text.trim(". ", at: end)), source-text(paragraph.slice(prefix.end))))
+    } else if prefix != none {
+      clause-number = int(prefix.text.trim(". ", at: end))
+      clause-paragraphs = (paragraph.slice(prefix.end),)
     } else {
-      if items.len() > 0 { enum(..items); items = () }
-      // The supplementary provision stays one paragraph; no new heading is added.
-      block(above: 14pt, par(source-text(paragraph)))
+      clause-paragraphs.push(paragraph)
     }
+  }
+  if clause-number != none {
+    items.push(enum.item(clause-number, clause-body(clause-paragraphs)))
   }
   if items.len() > 0 { enum(..items) }
 }
 #let last-article = blocks.enumerate().filter(pair => pair.at(1).starts-with("## ")).last().at(0)
-#render-sections(blocks.slice(3, last-article))
+#render-sections(blocks.slice(first-article, last-article))
 // Keep a short closing article with its supplementary provision. If a future
 // revision makes it long, let it flow across pages without shrinking the type.
 #context {

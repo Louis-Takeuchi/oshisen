@@ -1,7 +1,8 @@
 {
   "filename": "oshisen-candidate-publication-rules-2026.pdf",
   "expectedArticles": 28,
-  "expectedClauses": 110,
-  "expectedSupplementaryProvision": false,
-  "typstVersion": "0.15.1"
+  "expectedClauses": 129,
+  "expectedSupplementaryProvision": true,
+  "typstVersion": "0.15.1",
+  "expectedSupplementaryClauses": 4
 }

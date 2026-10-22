@@ -118,6 +118,14 @@ export default function AboutPage() {
         <h3>{publicationRules.title}</h3>
         <p>{publicationRules.edition}</p>
         <p>
+          つくば市選挙区・土浦市選挙区を対象とする改定案です。所定の承認及び必要な同意手続が完了した日から適用します。
+        </p>
+        <p>
+          政策アンケート8問、人となりに関する質問6問、Podcastへの出演、政策一致度の数値照合への参加は、それぞれ選択できます。
+          一部の質問への回答も受け付け、全14問への回答やPodcast出演を他の確認済み情報の掲載条件とはしません。
+          数値照合には、回答掲載とは別に本人の明示的な同意と所定の算出条件が必要です。
+        </p>
+        <p>
           PDF・A4・{publicationRules.pages}ページ（
           {Math.ceil(publicationRules.bytes / 1024)} KB）
         </p>

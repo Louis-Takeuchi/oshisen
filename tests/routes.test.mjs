@@ -17,10 +17,17 @@ async function render(path) {
   );
 }
 function assertNoCandidateFixturesOrScores(html, pathname) {
-  const content = html
+  let content = html
     .replace(/<script\b[^>]*>[\s\S]*?<\/script>/g, "")
     .replace(/<style\b[^>]*>[\s\S]*?<\/style>/g, "")
     .replace(/<[^>]+>/g, " ");
+  // These policy pages explain why excluded candidates must never receive 0%.
+  if (pathname === "/neutrality" || pathname === "/method") {
+    content = content.replace(
+      /0％(?=その他の評価値を付与しません|や中立に置き換えません)/gu,
+      "",
+    );
+  }
   assert.doesNotMatch(
     content,
     /山田\s*太郎|佐藤\s*美咲|高橋\s*健|田中\s*彩/,
