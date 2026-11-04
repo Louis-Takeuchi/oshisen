@@ -44,7 +44,7 @@ function inspectSource() {
   const blocks = source.trim().split(/\r?\n\s*\r?\n/u);
   assert.match(blocks[0], /^# .+/u, "Document title is missing.");
   const edition = blocks[1];
-  const date = edition.match(/(\d{4})年(\d{1,2})月(\d{1,2})日$/u);
+  const date = edition.match(/(\d{4})年(\d{1,2})月(\d{1,2})日(?:作成)?$/u);
   assert.ok(date, "The edition must end with the document date.");
   const firstArticle = blocks.findIndex((block) => block.startsWith("## 第"));
   assert.ok(
@@ -134,6 +134,7 @@ const inputs = [
   "document.json",
   "fonts/NotoSansJP.ttf",
   "fonts/NotoSerifJP.ttf",
+  ...(config.sourcePdf ? [config.sourcePdf] : []),
 ];
 const fingerprint = createHash("sha256");
 for (const name of inputs) {
@@ -144,30 +145,35 @@ const inputSha256 = fingerprint.digest("hex");
 
 function verifyPdf(pdf) {
   const info = run("pdfinfo", [pdf]);
-  assert.match(
-    info,
-    /Page size:\s+595\.\d+ x 841\.\d+ pts \(A4\)/u,
-    "Use A4 portrait.",
-  );
+  // Supplied PDFs retain their original paper size and pagination.
+  if (!config.sourcePdf) {
+    assert.match(
+      info,
+      /Page size:\s+595\.\d+ x 841\.\d+ pts \(A4\)/u,
+      "Use A4 portrait.",
+    );
+  }
   assert.match(info, /Tagged:\s+yes/u, "Keep the PDF text accessible.");
   const pages = Number(info.match(/^Pages:\s+(\d+)/mu)?.[1]);
   assert.ok(pages > 0);
   const text = run("pdftotext", ["-layout", "-enc", "UTF-8", pdf, "-"]);
   const footer = /オシセン\s*2026\s*県議選版\s*\|\s*A\s*\|\s*(\d+)/gu;
-  assert.deepEqual(
-    [...text.matchAll(footer)].map((match) => Number(match[1])),
-    Array.from({ length: pages }, (_, index) => index + 1),
-    "Page numbering is incomplete.",
-  );
+  if (!config.sourcePdf) {
+    assert.deepEqual(
+      [...text.matchAll(footer)].map((match) => Number(match[1])),
+      Array.from({ length: pages }, (_, index) => index + 1),
+      "Page numbering is incomplete.",
+    );
+  }
   // Markdown's list-marker dot is syntax; the supplied PDF uses plain numbers.
+  const body = source.replace(/^#{1,2} /gmu, "").replace(/^> /gmu, "");
+  // A supplied PDF may contain literal Markdown punctuation. Preserve it.
   const expected = normalize(
-    source
-      .replace(/^#{1,2} /gmu, "")
-      .replace(/^> /gmu, "")
-      .replace(/\*\*/gu, "")
-      .replace(/^(\d+)\. /gmu, "$1 "),
+    config.sourcePdf
+      ? body
+      : body.replace(/\*\*/gu, "").replace(/^(\d+)\. /gmu, "$1 "),
   );
-  const actual = normalize(text.replace(footer, ""));
+  const actual = normalize(config.sourcePdf ? text : text.replace(footer, ""));
   if (expected !== actual) {
     let at = 0;
     while (
@@ -207,6 +213,13 @@ async function check() {
     sha256(await readFile(outputPath)),
     "PDF changed. Run npm run documents:build.",
   );
+  if (config.sourcePdf) {
+    assert.equal(
+      metadata.pdfSha256,
+      sha256(await readFile(path.join(sourceDir, config.sourcePdf))),
+      "The distributed PDF must match the supplied PDF byte for byte.",
+    );
+  }
   for (const [key, value] of Object.entries(document))
     assert.equal(metadata[key], value);
   assert.equal(metadata.href, `/documents/${config.filename}`);
@@ -218,24 +231,28 @@ async function check() {
 if (command === "check") {
   await check();
 } else {
-  assert.match(
-    run("typst", ["--version"]),
-    new RegExp(`^typst ${config.typstVersion.replaceAll(".", "\\.")}\\b`),
-    `Use Typst ${config.typstVersion} for reproducible layout.`,
-  );
   await mkdir(tempDir, { recursive: true });
   const tempPdf = path.join(tempDir, config.filename);
-  run("typst", [
-    "compile",
-    "--root",
-    sourceDir,
-    "--font-path",
-    path.join(sourceDir, "fonts"),
-    "--ignore-system-fonts",
-    "--ignore-embedded-fonts",
-    path.join(sourceDir, "layout.typ"),
-    tempPdf,
-  ]);
+  if (config.sourcePdf) {
+    await copyFile(path.join(sourceDir, config.sourcePdf), tempPdf);
+  } else {
+    assert.match(
+      run("typst", ["--version"]),
+      new RegExp(`^typst ${config.typstVersion.replaceAll(".", "\\.")}\\b`),
+      `Use Typst ${config.typstVersion} for reproducible layout.`,
+    );
+    run("typst", [
+      "compile",
+      "--root",
+      sourceDir,
+      "--font-path",
+      path.join(sourceDir, "fonts"),
+      "--ignore-system-fonts",
+      "--ignore-embedded-fonts",
+      path.join(sourceDir, "layout.typ"),
+      tempPdf,
+    ]);
+  }
   const { pages, characters } = verifyPdf(tempPdf);
   const pdf = await readFile(tempPdf);
   // Only replace the distributed document after all text and font checks pass.

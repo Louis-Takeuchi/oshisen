@@ -107,6 +107,11 @@ export default function SourcesPage() {
             </Link>
           </li>
           <li>
+            <Link href="/neutrality#outreach" className="text-link">
+              ご案内の順序・回答期間について →
+            </Link>
+          </li>
+          <li>
             <Link href="/about#contact" className="text-link">
               お問い合わせ →
             </Link>

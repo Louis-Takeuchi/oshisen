@@ -36,7 +36,7 @@ export const teamMembers: readonly TeamMember[] = [
   {
     id: "oya",
     name: "Ryo",
-    fullName: "大屋涼",
+    fullName: "大屋諒",
     role: "代表",
     headline: "企画から、取材の現場へ。",
     responsibilities: [

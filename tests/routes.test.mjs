@@ -386,7 +386,7 @@ test("operator profiles and self-reported Q&A render on Sites without client-sid
   for (const text of [
     "Ryo",
     "Louis",
-    "大屋涼",
+    "大屋諒",
     "竹内琉瑛",
     "クレイジーネゴシエーター",
     "政策提言立案",

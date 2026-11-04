@@ -24,7 +24,7 @@ test("the two supplied portraits belong to the correct named operators and roles
       {
         id: "oya",
         name: "Ryo",
-        fullName: "大屋涼",
+        fullName: "大屋諒",
         role: "代表",
         src: "/team/oya.jpg",
         responsibilities: ["企画", "取材", "営業"],

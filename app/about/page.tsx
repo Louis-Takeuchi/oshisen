@@ -12,7 +12,7 @@ import styles from "./about.module.css";
 export const metadata = pageMetadata("/about", {
   title: "オシセンとは｜2026年茨城県議選での実証プロジェクト",
   description:
-    "オシセンが目指すこと、代表のRyo（大屋涼）と共同代表のLouis（竹内琉瑛）、2026年茨城県議選・つくば市選挙区・土浦市選挙区で準備する実証プロジェクトを紹介します。",
+    "オシセンが目指すこと、代表のRyo（大屋諒）と共同代表のLouis（竹内琉瑛）、2026年茨城県議選・つくば市選挙区・土浦市選挙区で準備する実証プロジェクトを紹介します。",
   index: true,
 });
 
@@ -115,10 +115,20 @@ export default function AboutPage() {
         <p>
           取材への参加、コンテンツの利用、公開前の確認、訂正・異議申立ての条件を、掲載規約にまとめています。
         </p>
+        <p>
+          ご案内は、メール・電話・X（旧Twitter）などの公開連絡先を確認できた方から順次お送りしています。
+          連絡先の公開状況や確認時期によって、ご案内の時期が異なる場合があります。現職・新人や党派による優先順位は設けません。
+          まだ案内が届いていない対象の方は、運営窓口までご連絡ください。
+        </p>
+        <p>
+          <Link href="/neutrality#outreach" className="text-link">
+            ご案内の順序・回答期間について <span aria-hidden="true">→</span>
+          </Link>
+        </p>
         <h3>{publicationRules.title}</h3>
         <p>{publicationRules.edition}</p>
         <p>
-          つくば市選挙区・土浦市選挙区を対象とする改定案です。所定の承認及び必要な同意手続が完了した日から適用します。
+          つくば市選挙区・土浦市選挙区を対象とする統一改訂案です。適用開始日と必要な手続は第28条、旧版で成立した同意の扱いは第27条をご確認ください。
         </p>
         <p>
           政策アンケート8問、人となりに関する質問6問、Podcastへの出演、政策一致度の数値照合への参加は、それぞれ選択できます。
@@ -126,7 +136,7 @@ export default function AboutPage() {
           数値照合には、回答掲載とは別に本人の明示的な同意と所定の算出条件が必要です。
         </p>
         <p>
-          PDF・A4・{publicationRules.pages}ページ（
+          PDF・{publicationRules.pages}ページ（
           {Math.ceil(publicationRules.bytes / 1024)} KB）
         </p>
         <p>

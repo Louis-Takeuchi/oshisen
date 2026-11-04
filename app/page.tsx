@@ -132,12 +132,19 @@ export default function Home() {
           <br />
           利用者が自分で投票について考えるための材料として、政策の問いや情報の見方を紹介しています。
         </p>
+        <p>
+          取材・回答のご案内は、公開連絡先を確認できた方から順次お送りしています。
+          連絡先の確認時期により、ご案内の時期が異なる場合があります。
+        </p>
         <div>
           <Link href="/method">
             回答の比較方法 <span aria-hidden="true">↗</span>
           </Link>
           <Link href="/neutrality">
             中立性ポリシー <span aria-hidden="true">↗</span>
+          </Link>
+          <Link href="/neutrality#outreach">
+            ご案内の順序・回答期間 <span aria-hidden="true">↗</span>
           </Link>
           <Link href="/sources">
             情報源・掲載状況 <span aria-hidden="true">↗</span>

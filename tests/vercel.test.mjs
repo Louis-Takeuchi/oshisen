@@ -209,6 +209,34 @@ test("full brand logo, favicon, home screen icons, manifest and social card are 
   );
 });
 
+test("publication rules links serve the supplied PDF with matching edition and size", async () => {
+  const rules = JSON.parse(
+    await readFile(new URL("../lib/publication-rules.json", import.meta.url), "utf8"),
+  );
+  const config = JSON.parse(
+    await readFile(new URL("../documents/publication-rules/document.json", import.meta.url), "utf8"),
+  );
+  const response = await fetch(`${origin}${rules.href}`);
+  assert.equal(response.status, 200);
+  assert.match(response.headers.get("content-type"), /application\/pdf/);
+  const pdf = Buffer.from(await response.arrayBuffer());
+  assert.equal(pdf.length, rules.bytes);
+  assert.deepEqual(
+    pdf,
+    await readFile(new URL(`../documents/publication-rules/${config.sourcePdf}`, import.meta.url)),
+    "the public download must preserve the supplied PDF",
+  );
+  for (const path of ["/", "/about", "/method", "/neutrality"]) {
+    const html = await (await fetch(`${origin}${path}`)).text();
+    assert.ok(html.includes(`href="${rules.href}"`), path);
+    if (path !== "/") assert.ok(html.includes(rules.edition), path);
+    if (path === "/about") {
+      assert.ok(html.includes(`${Math.ceil(rules.bytes / 1024)}`));
+      assert.doesNotMatch(html, /PDF・A4/);
+    }
+  }
+});
+
 test("client navigation receives React payloads and loadable JavaScript", async () => {
   for (const path of [
     "/diagnosis",
@@ -323,7 +351,7 @@ test("operator profiles, self-reported answers and the supplied portraits are se
   for (const text of [
     "Ryo",
     "Louis",
-    "大屋涼",
+    "大屋諒",
     "竹内琉瑛",
     "クレイジーネゴシエーター",
     "見習い科学哲学者",
@@ -352,7 +380,7 @@ test("operator profiles, self-reported answers and the supplied portraits are se
   for (const path of ["/privacy", "/method", "/sources"]) {
     const page = await (await fetch(`${origin}${path}`)).text();
     if (path === "/privacy") {
-      assert.ok(page.includes("大屋涼"), path);
+      assert.ok(page.includes("大屋諒"), path);
       assert.ok(page.includes("竹内琉瑛"), path);
     }
     assert.ok(page.includes('href="/about#team"'), path);
