@@ -1,0 +1,62 @@
+.switch {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  margin-block: 4px 18px;
+}
+
+.switchLabel {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.options {
+  display: inline-flex;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  background: white;
+  overflow: hidden;
+}
+
+.options button {
+  min-height: 44px;
+  min-width: 72px;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--muted);
+  border-radius: 0;
+}
+
+.options button + button {
+  border-left: 1px solid var(--line);
+}
+
+.options button.active {
+  background: var(--blue);
+  color: white;
+}
+
+.options button:not(.active):hover {
+  background: var(--yellow-soft);
+  color: var(--ink);
+}
+
+@media (max-width: 390px) {
+  .options button {
+    min-width: 0;
+    flex: 1;
+    padding-inline: 10px;
+  }
+  .options {
+    width: 100%;
+    display: flex;
+  }
+  .switch {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 6px;
+  }
+}

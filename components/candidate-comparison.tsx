@@ -1,96 +1,179 @@
 "use client";
 import Link from "next/link";
-import { CandidateOrderNote } from "./candidate-order-note";
-import { KikumaruLoading } from "./kikumaru";
-import { questions } from "../lib/data";
-import { orderedCandidates as candidates } from "../lib/candidate-order";
-import { useConsideration } from "./use-consideration";
-import { useDiagnosis } from "./session";
-import { CandidateActions } from "./candidate-actions";
-import { PolicyAnswerComparison } from "./policy-answer-comparison";
-import { QuestionHelp } from "./question-help";
+import { useState } from "react";
+import {
+  candidateAnswerStateLabel,
+  candidatesInDistrict,
+  getCandidate2026,
+  getCandidatePolicyAnswer,
+  hasPublishedCandidates,
+} from "../lib/candidates2026.ts";
+import {
+  districtLabels,
+  districts,
+  questionTagLabel,
+  questionsForDistrict,
+  scaleLabels,
+  type District,
+} from "../lib/election2026.ts";
+import { useSavedDistrictDefault } from "./question-session";
+import { ScaleSevenDots } from "./scale-seven";
+import { truncateReason } from "./question-candidate-answers";
+import styles from "./candidates2026.module.css";
+
+/**
+ * 2人を比べる（P3-4）。同じ選挙区から2人を選び、8問を上から順に左右に並べる。
+ * 初期表示は空欄（届出番号1番・2番を自動で選ばない）。
+ */
 export function CandidateComparison() {
-  const { compareIds, ready, priorityIds } = useConsideration();
-  const { state } = useDiagnosis();
-  const selected = [...candidates]
-    .filter((c) => compareIds.includes(c.id))
-    .slice(0, 2);
+  const defaultDistrict = useSavedDistrictDefault();
+  const [selected, setSelected] = useState<District | null>(null);
+  const district = selected ?? defaultDistrict;
+  const [leftId, setLeftId] = useState("");
+  const [rightId, setRightId] = useState("");
+  const list = candidatesInDistrict(district);
+  const left = leftId ? getCandidate2026(leftId) : undefined;
+  const right = rightId ? getCandidate2026(rightId) : undefined;
+  const pair = [left, right].filter(
+    (candidate): candidate is NonNullable<typeof candidate> =>
+      Boolean(candidate),
+  );
+  const questions = questionsForDistrict(district);
+  function changeDistrict(next: District) {
+    setSelected(next);
+    setLeftId("");
+    setRightId("");
+  }
   return (
     <main id="main" className="container page-main">
       <p className="eyebrow">政策への回答</p>
-      <h1>候補者の回答比較</h1>
-      <p className="lead">選択肢だけでなく、理由や条件、出典まで。</p>
-      {!ready ? (
-        <KikumaruLoading message="選択を確認しています。" />
+      <h1>2人の回答を比べる</h1>
+      <p className="lead">
+        同じ選挙区から2人を選ぶと、8問を上から順に左右に並べます。比べるのは1問ずつです。
+      </p>
+      {!hasPublishedCandidates ? (
+        <div className="empty-notice">
+          <h2>候補者回答の掲載準備</h2>
+          <p>
+            候補者の回答は12月4日（告示日）以降、立候補届出順に掲載します。そろった選挙区から、ここで2人ずつ見比べられます。
+          </p>
+          <Link href="/diagnosis" className="text-link">
+            先に自分の回答を試す →
+          </Link>
+        </div>
       ) : (
         <>
-          {selected.length < 2 && (
-            <div className="empty-notice">
-              <h2>
-                {candidates.length
-                  ? "比較する候補者の選択"
-                  : "候補者回答の掲載準備"}
-              </h2>
-              <p>回答がそろったら、同じ質問への本人回答を並べます。</p>
-              <Link href="/candidates" className="text-link">
-                候補者を見る →
-              </Link>
-            </div>
-          )}
-          <div className="comparison-selection">
-            {selected.map((c) => (
-              <div key={c.id}>
-                <h2>{c.name}</h2>
-                <CandidateActions candidate={c} />
-              </div>
+          <div
+            className={styles.districtTabs}
+            role="group"
+            aria-label="選挙区の切り替え"
+          >
+            {districts.map((value) => (
+              <button
+                key={value}
+                type="button"
+                aria-pressed={district === value}
+                className={district === value ? styles.activeTab : undefined}
+                onClick={() => changeDistrict(value)}
+              >
+                {districtLabels[value]}
+              </button>
             ))}
           </div>
-          {selected.length === 2 && (
-            <>
-              {priorityIds.length > 0 && (
-                <nav
-                  className="exploration-links"
-                  aria-label="知りたいテーマへ"
+          <div className={styles.compareSelects}>
+            {(
+              [
+                ["1人目", leftId, setLeftId, rightId],
+                ["2人目", rightId, setRightId, leftId],
+              ] as const
+            ).map(([label, value, setValue, otherId]) => (
+              <label key={label}>
+                {label}
+                <select
+                  value={value}
+                  onChange={(event) => setValue(event.target.value)}
                 >
-                  {questions
-                    .filter((q) => priorityIds.includes(q.id))
-                    .map((q) => (
-                      <a key={q.id} href={`#compare-${q.id}`}>
-                        {q.theme} ↓
-                      </a>
-                    ))}
-                </nav>
-              )}
-              {questions.map((q) => (
-                <section
-                  className="answer-review"
-                  key={q.id}
-                  id={`compare-${q.id}`}
-                >
-                  <p className="eyebrow">{q.theme}</p>
-                  <h2>{q.text}</h2>
-                  <QuestionHelp question={q} />
-                  <div className="comparison-columns">
-                    {selected.map((c) => (
-                      <PolicyAnswerComparison
-                        key={c.id}
-                        question={q}
-                        candidate={c}
-                        userRecord={state.answers[q.id]}
-                      />
-                    ))}
-                  </div>
-                </section>
-              ))}
-            </>
+                  <option value="">選んでください（届出順）</option>
+                  {list.map((candidate) => (
+                    <option
+                      key={candidate.id}
+                      value={candidate.id}
+                      disabled={candidate.id === otherId}
+                    >
+                      {candidate.filingOrder}. {candidate.name}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            ))}
+          </div>
+          {pair.length === 2 ? (
+            questions.map((question) => (
+              <section
+                className="answer-review"
+                key={question.id}
+                id={`compare-${question.id}`}
+              >
+                <p className="eyebrow">{questionTagLabel(question)}</p>
+                <h2>{question.text}</h2>
+                <div className={styles.compareColumns}>
+                  {pair.map((candidate) => {
+                    const answer = getCandidatePolicyAnswer(
+                      candidate.id,
+                      question.id,
+                    );
+                    return (
+                      <div key={candidate.id} className={styles.compareCell}>
+                        <p className={styles.compareName}>
+                          {candidate.filingOrder}. {candidate.name}
+                        </p>
+                        {answer && answer.value !== null ? (
+                          <>
+                            <div className={styles.policyPosition}>
+                              <ScaleSevenDots
+                                value={answer.value}
+                                candidateName={candidate.name}
+                              />
+                              <span className={styles.policyPositionLabel}>
+                                {scaleLabels[answer.value]}（{answer.value}）
+                              </span>
+                            </div>
+                            {answer.reason && (
+                              <p className="caption">
+                                {truncateReason(answer.reason)}
+                              </p>
+                            )}
+                          </>
+                        ) : (
+                          <p className={styles.policyNonAnswer}>
+                            {candidateAnswerStateLabel(answer)}
+                          </p>
+                        )}
+                        <Link
+                          href={`/candidates/${candidate.id}#policy-${question.id}`}
+                          className={styles.compareLink}
+                        >
+                          全文を読む →
+                        </Link>
+                      </div>
+                    );
+                  })}
+                </div>
+              </section>
+            ))
+          ) : (
+            <div className="empty-notice">
+              <p>
+                上の2つの欄から、同じ選挙区の候補者を2人選んでください。届出順に並んでいます。
+              </p>
+            </div>
           )}
         </>
       )}
       <div className="exploration-links">
-        <Link href="/stories">経験や判断の理由を知る →</Link>
-        <Link href="/issues">政策のテーマを見る →</Link>
+        <Link href="/candidates">候補者一覧へ →</Link>
+        <Link href="/talk">インタビュー動画へ →</Link>
       </div>
-      <CandidateOrderNote ids={selected.map((candidate) => candidate.id)} />
     </main>
   );
 }

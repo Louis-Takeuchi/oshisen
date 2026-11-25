@@ -56,11 +56,21 @@ export default function NewsPage() {
                     <figcaption>{item.image.caption}</figcaption>
                   </figure>
                 )}
-                {item.link && (
-                  <Link href={item.link.href} className={styles.moreLink}>
-                    {item.link.label} <span aria-hidden="true">→</span>
-                  </Link>
-                )}
+                {item.link &&
+                  (item.link.href.startsWith("http") ? (
+                    <a
+                      href={item.link.href}
+                      className={styles.moreLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {item.link.label} <span aria-hidden="true">↗</span>
+                    </a>
+                  ) : (
+                    <Link href={item.link.href} className={styles.moreLink}>
+                      {item.link.label} <span aria-hidden="true">→</span>
+                    </Link>
+                  ))}
                 {item.author && (
                   <footer className={styles.byline}>
                     記事執筆：{item.author}

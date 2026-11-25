@@ -109,7 +109,9 @@ test("all application routes render on the Vercel Next.js runtime", async () => 
     "/compare",
     "/saved",
     "/issues",
-    "/issues?theme=education",
+    "/talk",
+    "/q/p01",
+    "/q/u02",
     "/interests",
     "/stories",
     "/research",
@@ -119,6 +121,8 @@ test("all application routes render on the Vercel Next.js runtime", async () => 
     "/sources",
     "/neutrality",
     "/privacy",
+    "/tsuchiura/elections",
+    "/ibaraki-2026/tsuchiura",
   ]) {
     const response = await fetch(`${origin}${path}`, {
       headers: { "User-Agent": "Twitterbot" },
@@ -151,9 +155,18 @@ test("all application routes render on the Vercel Next.js runtime", async () => 
       path,
     );
     assert.match(html, /name="theme-color" content="#fffdf7"/, path);
-    assert.ok(html.includes("https://www.oshisen.com/og.png?v=logo-2"), path);
-    assert.match(html, /property="og:image:width" content="1733"/, path);
-    assert.match(html, /property="og:image:height" content="907"/, path);
+    if (path.startsWith("/q/")) {
+      assert.ok(
+        html.includes(
+          `https://www.oshisen.com/share/q-${path.slice(3)}.png?v=1`,
+        ),
+        path,
+      );
+    } else {
+      assert.ok(html.includes("https://www.oshisen.com/og.png?v=logo-2"), path);
+      assert.match(html, /property="og:image:width" content="1733"/, path);
+      assert.match(html, /property="og:image:height" content="907"/, path);
+    }
     assert.match(html, /src="\/brand-logo\.png"/, path);
     assert.doesNotMatch(html, /vinext|Starter Project|codex-preview/, path);
     assertNoCandidateFixturesOrScores(html, path);
@@ -244,7 +257,9 @@ test("client navigation receives React payloads and loadable JavaScript", async 
     "/results",
     "/compare",
     "/saved",
-    "/issues?theme=healthcare",
+    "/issues",
+    "/q/p01",
+    "/talk",
     "/candidates",
     "/interests",
     "/stories",
@@ -274,22 +289,23 @@ test("client navigation receives React payloads and loadable JavaScript", async 
   }
 });
 
-test("draft issues and empty candidate registry survive production rendering", async () => {
+test("sent questions and empty candidate registry survive production rendering", async () => {
   assert.equal(project.electionYear, 2026);
   assert.deepEqual(project.districts, ["つくば市選挙区", "土浦市選挙区"]);
   assert.equal(candidateRegistry.length, 0);
-  const issue = await (await fetch(`${origin}/issues?theme=healthcare`)).text();
-  assert.match(issue, /地域医療/);
-  assert.match(issue, /確認中の質問案/);
-  assert.match(issue, /本人回答の掲載準備/);
-  assert.match(issue, /href="\/policy-register"/);
-  assert.doesNotMatch(issue, /サンプル回答|href="\/candidates\//);
-  const invalid = await (await fetch(`${origin}/issues?theme=unknown`)).text();
-  assert.match(invalid, /指定されたテーマが見つからない/);
-  const duplicate = await (
-    await fetch(`${origin}/issues?theme=education&theme=healthcare`)
-  ).text();
-  assert.match(duplicate, /指定されたテーマが見つからない/);
+  const issues = await (await fetch(`${origin}/issues`)).text();
+  assert.match(issues, /候補者送付版（2026年10月30日）/);
+  assert.ok(issues.includes('href="/q/p01"'));
+  assert.ok(issues.includes('href="/q/u02"'));
+  assert.doesNotMatch(issues, /確認中の質問案|指定されたテーマが見つからない/);
+  const question = await (await fetch(`${origin}/q/p01`)).text();
+  assert.match(question, /路線バス/);
+  assert.match(question, /候補者が答えた原文を見る/);
+  assert.match(
+    question,
+    /候補者の回答は12月4日（告示日）以降、届出順にここに並びます/,
+  );
+  assert.doesNotMatch(question, /サンプル回答|href="\/candidates\//);
   const candidates = await (await fetch(`${origin}/candidates`)).text();
   assert.match(candidates, /候補者情報の掲載準備/);
   assertNoCandidateFixturesOrScores(candidates, "/candidates");
@@ -297,13 +313,15 @@ test("draft issues and empty candidate registry survive production rendering", a
   const home = await (await fetch(origin)).text();
   assert.match(home, /つくば市選挙区/);
   assert.ok(home.includes(projectLabel));
-  assert.match(home, /候補者情報は未掲載/);
-  assert.match(home, /Podcast取材はこれから/);
+  assert.match(home, /インタビュー収録を進めています/);
+  assert.match(home, /12月4日（告示日）以降、立候補届出順に公開します/);
+  assert.doesNotMatch(home, /Podcast/);
   for (const href of [
     "/compare",
     "/saved",
     "/issues",
     "/stories",
+    "/talk",
     "/interests",
     "/research",
     "/policy-register",
@@ -311,20 +329,26 @@ test("draft issues and empty candidate registry survive production rendering", a
     assert.ok(home.includes(`href="${href}"`), href);
 });
 
-test("new research entrances preserve the draft and pre-interview boundaries", async () => {
+test("new research entrances preserve the sent-version and pre-publication boundaries", async () => {
   const register = await (await fetch(`${origin}/policy-register`)).text();
-  assert.match(register, /まだ草案/);
-  assert.match(register, /question-ledger-2026-09-18-v1/);
-  assert.match(register, /保留/);
-  assert.match(register, /id="P01"/);
-  assert.match(register, /id="P08"/);
+  assert.match(register, /候補者送付版（2026年10月30日）/);
+  assert.match(register, /一字一句変更しません/);
+  for (const id of ["P01", "P06", "T01", "T02", "U01", "U02"]) {
+    assert.ok(register.includes(`id="${id}"`), id);
+  }
+  assert.doesNotMatch(register, /question-ledger-2026-09-18-v1/);
   const stories = await (await fetch(`${origin}/stories`)).text();
   assert.match(stories, /取材・掲載の準備状況/);
-  assert.match(stories, /ヒアリングはまだ実施していません/);
+  assert.match(stories, /インタビューの収録を進めています/);
+  assert.match(stories, /仮の発言は掲載しません/);
+  assert.match(stories, /共通11問/);
   for (let index = 1; index <= 6; index++) {
     assert.ok(stories.includes(`id="H0${index}"`));
   }
   assert.doesNotMatch(stories, /<iframe/);
+  const talk = await (await fetch(`${origin}/talk`)).text();
+  assert.match(talk, /オシセン！トーク/);
+  assert.doesNotMatch(talk, /<iframe/);
 });
 
 test("former demo candidates, unknown candidates and missing pages return real 404s", async () => {
@@ -404,6 +428,7 @@ test("official links open safely and contact details remain usable without email
     for (const href of [
       "https://www.instagram.com/oshisen.official/",
       "https://x.com/OshisenOfficial",
+      "https://www.youtube.com/@%E3%82%AA%E3%82%B7%E3%82%BB%E3%83%B3%E5%85%AC%E5%BC%8F%E3%83%81%E3%83%A3%E3%83%B3%E3%83%8D%E3%83%AB",
     ]) {
       const links = anchors.filter((tag) => tag.includes(`href="${href}"`));
       assert.ok(links.length > 0, `${path}: ${href}`);

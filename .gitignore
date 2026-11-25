@@ -44,3 +44,8 @@ yarn-error.log*
 # Publication-rule PDF review files (the distributed PDF is tracked in public/)
 /tmp/pdfs/publication-rules/
 /output/pdf/oshisen-candidate-publication-rules-2026.pdf
+
+# 掲載データ入力シートのCSV書き出し（候補者の実データ・下書き解説を含むため、
+# 公開済みの questions.csv 以外はコミットしない。取り込みは scripts/import-sheet-data.mjs）
+/data/sheet/*.csv
+!/data/sheet/questions.csv

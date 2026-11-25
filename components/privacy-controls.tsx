@@ -6,7 +6,7 @@ import {
   getAnalyticsConsent,
   setAnalyticsConsent,
 } from "../lib/analytics";
-import { clearDiagnosis } from "./session";
+import { clearQuestionSession as clearDiagnosis } from "./question-session";
 import { useConsent, notifySettingsChange } from "./use-local-settings";
 import { useConsideration } from "./use-consideration";
 export function PrivacyControls() {

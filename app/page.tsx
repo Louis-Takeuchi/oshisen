@@ -36,7 +36,19 @@ export default function Home() {
               投票の流れや、政策を読むときのポイントを紹介します。
             </p>
             <span className={styles.menuArrow} aria-hidden="true">
-              ↗
+              <svg
+                viewBox="0 0 24 24"
+                width="15"
+                height="15"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.6"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M7 17 17 7" />
+                <path d="M8 7h9v9" />
+              </svg>
             </span>
           </Link>
           <Link href="/tsukuba/elections">
@@ -46,7 +58,41 @@ export default function Home() {
               市長選・市議選・県議選の違いと、日程・投票所・候補者情報を確認できる公式窓口へ。
             </p>
             <span className={styles.menuArrow} aria-hidden="true">
-              ↗
+              <svg
+                viewBox="0 0 24 24"
+                width="15"
+                height="15"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.6"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M7 17 17 7" />
+                <path d="M8 7h9v9" />
+              </svg>
+            </span>
+          </Link>
+          <Link href="/tsuchiura/elections">
+            <span className={styles.menuNumber}>地域の選挙を調べる</span>
+            <h3>土浦市の選挙情報ガイド</h3>
+            <p>
+              2026年県議選の日程と、投票所・期日前投票・候補者情報を確認できる公式窓口へ。
+            </p>
+            <span className={styles.menuArrow} aria-hidden="true">
+              <svg
+                viewBox="0 0 24 24"
+                width="15"
+                height="15"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.6"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M7 17 17 7" />
+                <path d="M8 7h9v9" />
+              </svg>
             </span>
           </Link>
         </div>
@@ -61,25 +107,61 @@ export default function Home() {
           <Link href="/diagnosis">
             <span className={styles.menuNumber}>01</span>
             <h3>政策の質問</h3>
-            <p>8つのテーマへの回答と見直し</p>
+            <p>共通6問＋選挙区2問（計8問）への回答と見直し</p>
             <span className={styles.menuArrow} aria-hidden="true">
-              ↗
+              <svg
+                viewBox="0 0 24 24"
+                width="15"
+                height="15"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.6"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M7 17 17 7" />
+                <path d="M8 7h9v9" />
+              </svg>
             </span>
           </Link>
-          <Link href="/stories">
+          <Link href="/talk">
             <span className={styles.menuNumber}>02</span>
-            <h3>インタビュー項目</h3>
-            <p>経験や判断の理由についての共通6問</p>
+            <h3>インタビュー動画</h3>
+            <p>全員に同じ6つの質問。「オシセン！トーク」</p>
             <span className={styles.menuArrow} aria-hidden="true">
-              ↗
+              <svg
+                viewBox="0 0 24 24"
+                width="15"
+                height="15"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.6"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M7 17 17 7" />
+                <path d="M8 7h9v9" />
+              </svg>
             </span>
           </Link>
           <Link href="/issues">
             <span className={styles.menuNumber}>03</span>
-            <h3>政策テーマ</h3>
-            <p>質問の内容・用語・主な論点</p>
+            <h3>質問の一覧</h3>
+            <p>共通6問＋選挙区2問を1問ずつ見る</p>
             <span className={styles.menuArrow} aria-hidden="true">
-              ↗
+              <svg
+                viewBox="0 0 24 24"
+                width="15"
+                height="15"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.6"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M7 17 17 7" />
+                <path d="M8 7h9v9" />
+              </svg>
             </span>
           </Link>
         </div>
@@ -93,9 +175,7 @@ export default function Home() {
           <h2 id="status-title">公開状況</h2>
           <p>{projectLabel}</p>
           <p>
-            つくば市選挙区・土浦市選挙区の両地域での実証に向けて準備中です。
-            <br />
-            候補者情報は未掲載、Podcast取材はこれからです。
+            候補者の皆さんへのインタビュー収録を進めています。候補者の回答と動画は、12月4日（告示日）以降、立候補届出順に公開します。
           </p>
           <Link href="/about#project" className={styles.moreLink}>
             つくば市・土浦市での取り組みの詳細 <span aria-hidden="true">→</span>
@@ -106,21 +186,21 @@ export default function Home() {
             <dt>政策の質問</dt>
             <dd>
               <strong>8問</strong>
-              <span>草案を公開中</span>
+              <span>候補者と同じ質問</span>
             </dd>
           </div>
           <div>
             <dt>候補者情報</dt>
             <dd>
               <strong>0件</strong>
-              <span>掲載準備中</span>
+              <span>12月4日から掲載</span>
             </dd>
           </div>
           <div>
-            <dt>Podcast取材</dt>
+            <dt>インタビュー動画</dt>
             <dd>
-              <strong>準備中</strong>
-              <span>取材前</span>
+              <strong>収録中</strong>
+              <span>12月4日から公開</span>
             </dd>
           </div>
         </dl>

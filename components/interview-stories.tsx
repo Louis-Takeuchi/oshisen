@@ -1,8 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { orderedCandidates } from "../lib/candidate-order";
-import { CandidateOrderNote } from "./candidate-order-note";
+import { candidateIds2026 } from "../lib/candidates2026";
 import { useState } from "react";
 import { interviewGuide, type PublicInterviewBlock } from "../lib/interviews";
 import { SourceBlock } from "./interview-source-block";
@@ -19,7 +18,7 @@ export function InterviewStories({
   compact?: boolean;
 }) {
   const [selectedSubject, setSelectedSubject] = useState("");
-  const candidateIds = orderedCandidates.map((candidate) => candidate.id);
+  const candidateIds = [...candidateIds2026];
   const subjectRank = (id: string) => {
     const index = candidateIds.indexOf(id);
     return index < 0 ? candidateIds.length : index;
@@ -110,7 +109,9 @@ export function InterviewStories({
       {blocks.length > 0 && !subjectId && (
         <>
           {subjects.some(([id]) => candidateIds.includes(id)) && (
-            <CandidateOrderNote ids={subjects.map(([id]) => id)} />
+            <p className={styles.note}>
+              候補者は選挙区ごとの立候補届出順に表示しています。
+            </p>
           )}
           {subjects.some(([id]) => !candidateIds.includes(id)) && (
             <p className={styles.note}>

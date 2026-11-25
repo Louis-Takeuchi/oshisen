@@ -1,61 +1,47 @@
 "use client";
 import { useState } from "react";
-import type { Candidate } from "../lib/data";
+import type { Candidate2026 } from "../lib/candidates2026.ts";
 import { trackEvent } from "../lib/analytics";
 import { useConsideration } from "./use-consideration";
-import styles from "./consideration.module.css";
+import styles from "./candidates2026.module.css";
+import considerationStyles from "./consideration.module.css";
 
-export function CandidateActions({ candidate }: { candidate: Candidate }) {
-  const { ready, savedIds, compareIds, toggleSaved, toggleCompare } =
-    useConsideration();
+/** 「気になる」ボタン（/saved に保存。保存先はこのブラウザ内だけ）。 */
+export function CandidateSaveButton({
+  candidate,
+}: {
+  candidate: Candidate2026;
+}) {
+  const { ready, savedIds, toggleSaved } = useConsideration();
   const [message, setMessage] = useState("");
   const saved = savedIds.includes(candidate.id);
-  const comparing = compareIds.includes(candidate.id);
   return (
-    <div className={styles.actions}>
-      <div className={styles.actionButtons}>
-        <button
-          type="button"
-          aria-pressed={saved}
-          disabled={!ready}
-          aria-label={`${candidate.name}を${saved ? "気になる候補から外す" : "気になる候補に追加"}`}
-          onClick={() => {
-            const result = toggleSaved(candidate.id);
-            setMessage(result.message);
-            if (result.ok)
-              trackEvent(saved ? "candidate_unsave" : "candidate_save", {
-                candidateId: candidate.id,
-              });
-          }}
+    <>
+      <button
+        type="button"
+        aria-pressed={saved}
+        disabled={!ready}
+        className={saved ? styles.savedActive : undefined}
+        aria-label={`${candidate.name}を${saved ? "気になる候補から外す" : "気になる候補に保存"}`}
+        onClick={() => {
+          const result = toggleSaved(candidate.id);
+          setMessage(result.message);
+          if (result.ok)
+            trackEvent(saved ? "candidate_unsave" : "candidate_save", {
+              candidateId: candidate.id,
+            });
+        }}
+      >
+        {saved ? "✓ 気になる" : "＋ 気になる"}
+      </button>
+      {message && (
+        <span
+          className={considerationStyles.actionMessage}
+          role="status"
         >
-          {saved ? "✓ 気になる候補に保存済み" : "＋ 気になる候補に追加"}
-        </button>
-        <button
-          type="button"
-          aria-pressed={comparing}
-          disabled={!ready}
-          aria-label={`${candidate.name}を${comparing ? "比較から外す" : "比較に追加"}`}
-          onClick={() => {
-            const result = toggleCompare(candidate.id);
-            setMessage(result.message);
-            if (result.ok)
-              trackEvent(
-                comparing
-                  ? "candidate_compare_remove"
-                  : "candidate_compare_add",
-                { candidateId: candidate.id },
-              );
-          }}
-        >
-          {comparing ? "✓ 比較する候補" : "＋ 比較に追加"}
-        </button>
-      </div>
-      <p className={styles.saveNote}>
-        あとで読み返すために、このブラウザ内に保存します。
-      </p>
-      <p className={styles.actionMessage} role="status">
-        {message}
-      </p>
-    </div>
+          {message}
+        </span>
+      )}
+    </>
   );
 }

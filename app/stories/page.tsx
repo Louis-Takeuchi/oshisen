@@ -2,16 +2,15 @@ import { pageMetadata } from "../../lib/seo";
 import Link from "next/link";
 import {
   flashChallengeSeconds,
-  flashQuestionGroups,
   getPublicInterviewBlocks,
 } from "../../lib/interviews";
 import { publishedInterviewDocument } from "../../lib/published-interviews";
 import { InterviewStories } from "../../components/interview-stories";
 
 export const metadata = pageMetadata("/stories", {
-  title: "本人インタビュー・Podcastと共通質問",
+  title: "本人インタビュー動画と共通質問",
   description:
-    "学生時代や政治へのきっかけなど、人となりを聞くオシセンの共通インタビュー6問と、1分間フラッシュの共通20問を紹介します。2026年茨城県議選に向けて取材・Podcast掲載を準備中です。",
+    "学生時代や政治へのきっかけなど、人となりを聞くオシセンの共通インタビュー6問と、1分間フラッシュの共通11問を紹介します。2026年茨城県議選に向けて動画インタビューの収録を進めています。",
   index: true,
 });
 export default function StoriesPage() {
@@ -31,7 +30,7 @@ export default function StoriesPage() {
           </p>
         ) : (
           <p>
-            2026年茨城県議選のつくば市選挙区・土浦市選挙区を対象に準備しています。ヒアリングはまだ実施していません。候補者情報や、仮の発言は掲載していません。
+            2026年茨城県議選のつくば市選挙区・土浦市選挙区の候補者の皆さんに、インタビューの収録を進めています。動画は12月4日（告示日）以降、立候補届出順に公開します。仮の発言は掲載しません。
           </p>
         )}
         <p>
@@ -46,37 +45,21 @@ export default function StoriesPage() {
       </section>
       <InterviewStories blocks={blocks} />
       <section className="document-section">
-        <h2>オシセン！1分間フラッシュ（共通20問）</h2>
+        <h2>オシセン！1分間フラッシュ（共通11問）</h2>
         <p>
           共通6問の対談のあとに、{flashChallengeSeconds}
-          秒間で何問答えられるかに挑戦する一問一答を行います。全候補者に下記の20問を同じ順番・同じ制限時間で出題し、答えにくい質問は「パス」と言って次へ進めます。
+          秒間で何問答えられるかに挑戦する一問一答を行います。全候補者に共通の11問を同じ順番・同じ制限時間で出題し、答えにくい質問は「パス」と言って次へ進めます。
         </p>
         <p>
           到達しなかった質問やパスの数を、候補者の能力・人物の評価には用いません。公開する動画では、挑戦の{flashChallengeSeconds}
           秒間を原則一続きで見せ、質問や回答を編集で付け足したり、順番を入れ替えたりしません。
         </p>
-        {(() => {
-          let questionNumber = 0;
-          return flashQuestionGroups.map((group) => {
-            const start = questionNumber + 1;
-            questionNumber += group.questions.length;
-            return (
-              <div key={group.category}>
-                <h3>{group.category}</h3>
-                <ol start={start}>
-                  {group.questions.map((question) => (
-                    <li key={question}>{question}</li>
-                  ))}
-                </ol>
-              </div>
-            );
-          });
-        })()}
+        <p>共通11問の一覧は、動画の公開に合わせて掲載します。</p>
       </section>
       <section className="document-section">
         <h2>インタビューの掲載形式</h2>
         <p>
-          本人が語った経験、選択・行動、理由、条件を分けて示します。要約から本人の言葉、その前後の文脈、Podcastの全編へ進める形で掲載します。
+          本人が語った経験、選択・行動、理由、条件を分けて示します。要約から本人の言葉、その前後の文脈、動画の全編へ進める形で掲載します。
         </p>
         <p>
           聞けなかったことや、回答で触れられなかったことは、そのまま示します。本人の説明と、運営による要約も分けます。

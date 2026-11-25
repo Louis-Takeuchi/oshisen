@@ -12,6 +12,7 @@ import {
   setVisitorAnalyticsEnabled,
   subscribeVisitorAnalytics,
   visitorAnalyticsPath,
+  visitorAnalyticsSearch,
   VISITOR_PREFERENCE_KEY,
 } from "../lib/visitor-analytics.ts";
 import { eraseAnalytics } from "../lib/analytics.ts";
@@ -104,6 +105,39 @@ test("every event loses queries, hash, candidate IDs and extra fields before sen
       assert.equal(beforeSendVisitorAnalytics(pageview(url)), null);
     }
     assert.equal(beforeSendVisitorAnalytics({ type: "event", url: "https://www.oshisen.com/" }), null);
+  });
+});
+
+test("only the five UTM keys survive, with answers, levels and unsafe values dropped", () => {
+  withBrowser(() => {
+    // SNS流入の集計用（P2-6）：utm_source / utm_campaign などは残す。
+    assert.deepEqual(
+      beforeSendVisitorAnalytics(
+        pageview(
+          "https://www.oshisen.com/q/p01?utm_source=instagram&utm_medium=social&utm_campaign=%E8%B7%AF%E7%B7%9A%E3%83%90%E3%82%B9&level=easy&answer=4",
+        ),
+      ),
+      {
+        type: "pageview",
+        url: "https://www.oshisen.com/q/[id]?utm_source=instagram&utm_medium=social&utm_campaign=%E8%B7%AF%E7%B7%9A%E3%83%90%E3%82%B9",
+      },
+    );
+    assert.deepEqual(
+      visitorAnalyticsSearch("?utm_source=instagram&theme=P01&token=secret"),
+      "?utm_source=instagram",
+    );
+    // 怪しい値（URL・メールアドレス風・長すぎる値）は落とす。
+    assert.equal(visitorAnalyticsSearch("?utm_source=https://evil.test/x"), "");
+    assert.equal(
+      visitorAnalyticsSearch("?utm_campaign=someone@example.com"),
+      "",
+    );
+    assert.equal(
+      visitorAnalyticsSearch(`?utm_term=${"a".repeat(65)}`),
+      "",
+    );
+    assert.equal(visitorAnalyticsSearch("?utm_content=a%20b"), "");
+    assert.equal(visitorAnalyticsSearch(""), "");
   });
 });
 

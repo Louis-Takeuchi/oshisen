@@ -1,7 +1,11 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
-import { questions, type Candidate } from "../lib/data";
+import {
+  questionPath,
+  questionTagLabel,
+  sentQuestions,
+} from "../lib/election2026.ts";
 import { useConsideration } from "./use-consideration";
 import styles from "./consideration.module.css";
 export function PriorityThemePicker() {
@@ -13,16 +17,16 @@ export function PriorityThemePicker() {
       aria-labelledby="priority-heading"
     >
       <p className="eyebrow">N / 知りたいことから。</p>
-      <h2 id="priority-heading">関心のあるテーマ</h2>
+      <h2 id="priority-heading">関心のある質問</h2>
       <p>
-        任意で3つまで選べます。気になる情報に進みやすいよう、選んだテーマへの案内に使っています。
+        任意で3つまで選べます。気になる情報に進みやすいよう、選んだ質問への案内に使っています。
       </p>
       <fieldset>
         <legend>
-          知りたいテーマ <span>{priorityIds.length} / 3</span>
+          知りたい質問 <span>{priorityIds.length} / 3</span>
         </legend>
         <div className={styles.themeChoices}>
-          {questions.map((question) => (
+          {sentQuestions.map((question) => (
             <label key={question.id}>
               <input
                 type="checkbox"
@@ -30,13 +34,13 @@ export function PriorityThemePicker() {
                 disabled={!ready}
                 onChange={() => setMessage(togglePriority(question.id).message)}
               />
-              {question.theme}
+              {questionTagLabel(question)}
             </label>
           ))}
         </div>
       </fieldset>
       <p className="caption">
-        テーマの選択はこのタブ内に保存されます。選ばなくても利用できます。
+        選択はこのタブ内に保存されます。選ばなくても利用できます。
       </p>
       <p className={styles.actionMessage} role="status">
         {message}
@@ -45,27 +49,31 @@ export function PriorityThemePicker() {
   );
 }
 export function PriorityThemeSummary({
-  candidate,
+  candidateId,
   onNavigate,
 }: {
-  candidate: Candidate;
+  candidateId?: string;
   onNavigate?: () => void;
 }) {
   const { priorityIds, ready } = useConsideration();
   if (!ready || !priorityIds.length) return null;
   return (
     <div className={styles.prioritySummary}>
-      <p>知りたいテーマへ</p>
+      <p>知りたい質問へ</p>
       <ul>
-        {questions
-          .filter((q) => priorityIds.includes(q.id))
-          .map((q) => (
-            <li key={q.id}>
+        {sentQuestions
+          .filter((question) => priorityIds.includes(question.id))
+          .map((question) => (
+            <li key={question.id}>
               <Link
-                href={`/candidates/${candidate.id}#policy-${q.id}`}
+                href={
+                  candidateId
+                    ? `/candidates/${candidateId}#policy-${question.id}`
+                    : questionPath(question)
+                }
                 onClick={onNavigate}
               >
-                {q.theme} →
+                {question.themeLabel} →
               </Link>
             </li>
           ))}

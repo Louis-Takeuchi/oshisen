@@ -10,7 +10,7 @@ const steps = [
     title: "政策の比較",
     description:
       "政策の質問に答え、候補者の回答と一問ずつ比較します。賛否だけでなく、理由や条件も確認できます。",
-    note: "8問の草案を体験できます。候補者の本人回答は掲載準備中です。",
+    note: "候補者と同じ共通6問＋選挙区2問（計8問）に答えられます。候補者の回答は12月4日（告示日）から並びます。",
     href: "/diagnosis",
     link: "政策の質問へ",
   },
@@ -18,15 +18,15 @@ const steps = [
     title: "本人の話",
     description:
       "共通のインタビューで、本人の経験や判断の理由を紹介します。政策を考える背景を知ることができます。",
-    note: "共通インタビュー6問を公開中です。Podcast取材はこれからです。",
+    note: "共通インタビュー6問を公開中です。動画インタビューの収録を進めています。",
     href: "/stories",
     link: "インタビュー項目へ",
   },
   {
     title: "出典の確認",
     description:
-      "要約から文字起こしやPodcastの原音へ進み、発言の前後を確認できます。",
-    note: "原音・原文と発言趣旨を確認し、出典とともに掲載する予定です。",
+      "要約から文字起こしや動画の全編へ進み、発言の前後を確認できます。",
+    note: "原文・動画と発言趣旨を確認し、出典とともに掲載する予定です。",
     href: "/sources",
     link: "情報源・掲載状況へ",
   },
@@ -36,10 +36,10 @@ function PolicyDiagram() {
   return (
     <div className={styles.policyDiagram}>
       <div className={`${styles.topicRow} ${styles.node}`}>
-        <span>交通</span>
-        <span>教育</span>
+        <span>路線バス</span>
+        <span>TX延伸</span>
         <span>医療</span>
-        <span>ほか5テーマ</span>
+        <span>ほか5問</span>
       </div>
       <div className={`${styles.question} ${styles.node}`}>
         <span className={styles.nodeLabel}>政策について</span>
@@ -50,12 +50,12 @@ function PolicyDiagram() {
         <div className={`${styles.answer} ${styles.node}`}>
           <span className={styles.personIcon} aria-hidden="true" />
           <strong>あなたの回答</strong>
-          <span>賛否・判断保留</span>
+          <span>7段階・保留もできる</span>
         </div>
         <div className={`${styles.answer} ${styles.node}`}>
           <span className={styles.personIcon} aria-hidden="true" />
           <strong>候補者の回答</strong>
-          <span>理由・条件も掲載予定</span>
+          <span>7段階＋理由を掲載</span>
         </div>
       </div>
       <div className={`${styles.result} ${styles.node}`}>一問ずつ比較</div>
@@ -82,7 +82,7 @@ function InterviewDiagram() {
             ),
           )}
         </div>
-        <span className={styles.recordingNote}>Podcast取材・掲載準備中</span>
+        <span className={styles.recordingNote}>動画インタビュー・収録中</span>
       </div>
       <div className={styles.interviewTopics}>
         <div className={styles.node}>
@@ -137,7 +137,7 @@ function SourceDiagram() {
       <div className={`${styles.sourceDocument} ${styles.node}`}>
         <span className={styles.documentNumber}>03</span>
         <div>
-          <strong>Podcastの原音</strong>
+          <strong>動画の全編</strong>
           <span>本人の声・全編</span>
         </div>
         <span className={styles.audioIcon} aria-hidden="true">

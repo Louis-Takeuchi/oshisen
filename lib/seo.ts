@@ -32,10 +32,13 @@ export const publicPagePaths = [
   "/privacy",
   "/issues",
   "/stories",
+  "/talk",
   "/policy-register",
   "/guides/high-school-election",
   "/tsukuba/elections",
+  "/tsuchiura/elections",
   "/ibaraki-2026/tsukuba",
+  "/ibaraki-2026/tsuchiura",
 ] as const;
 
 export function pageMetadata(

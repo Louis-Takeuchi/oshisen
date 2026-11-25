@@ -1,0 +1,27 @@
+.block {
+  display: grid;
+  gap: 6px;
+}
+
+/* 「やさしい」のときは本文を一段大きく、行間を広く。 */
+.easyText {
+  font-size: 1.12em;
+  line-height: 2.1;
+}
+
+.plainText {
+  font-weight: 750;
+  line-height: 1.9;
+}
+
+.originalDetails summary {
+  color: var(--blue);
+  font-weight: 650;
+  font-size: 12px;
+}
+
+.originalText {
+  background: var(--blue-soft);
+  border-radius: 12px;
+  color: var(--ink);
+}

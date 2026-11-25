@@ -1,0 +1,70 @@
+.districtHeading {
+  font-size: 26px;
+  line-height: 1.7;
+}
+
+.districtLead {
+  margin-top: 12px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.districtButtons {
+  display: grid;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.districtButton {
+  display: grid;
+  gap: 2px;
+  text-align: left;
+  min-height: 64px;
+  padding: 14px 20px;
+  border: 2px solid var(--line);
+  border-radius: 16px;
+  background: white;
+  transition:
+    border-color 0.15s,
+    background 0.15s;
+}
+
+.districtButton:hover {
+  border-color: var(--blue);
+  background: var(--blue-soft);
+}
+
+.districtButton strong {
+  font-size: 17px;
+  color: var(--ink);
+}
+
+.districtButton span {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.sameQuestionNote {
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.changeDistrict {
+  display: block;
+  margin: 14px 0 0 auto;
+  min-height: 44px;
+  font-size: 12px;
+  color: var(--muted);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.quizFooterNote {
+  margin-top: 24px;
+}
+
+.singleAnswerHeading {
+  margin-top: 30px;
+  font-size: 22px;
+}

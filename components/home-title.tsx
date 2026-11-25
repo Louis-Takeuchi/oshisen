@@ -93,14 +93,14 @@ export function HomeTitle() {
         </div>
 
         <div className={styles.actions}>
-          <Link href="#discover" className={styles.startButton}>
-            サービス紹介
+          <Link href="/diagnosis" className={styles.startButton}>
+            質問に答える
             <span className={styles.buttonArrow} aria-hidden="true">
               ↗
             </span>
           </Link>
-          <Link href="/diagnosis" className={styles.discoverLink}>
-            政策の質問へ <span aria-hidden="true">→</span>
+          <Link href="#discover" className={styles.discoverLink}>
+            オシセンとは <span aria-hidden="true">→</span>
           </Link>
         </div>
       </div>

@@ -1,0 +1,10 @@
+.banner {
+  margin: 0;
+  padding: 12px 20px;
+  background: var(--yellow-soft);
+  border-bottom: 1px solid #d9c56c;
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+}

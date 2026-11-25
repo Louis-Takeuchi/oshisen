@@ -4,8 +4,8 @@ import { BrandLogo } from "./brand-logo";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useConsideration } from "./use-consideration";
-import { ConsiderationBar } from "./consideration-bar";
 import { OfficialContacts } from "./official-contacts";
+import { ArchiveBanner } from "./archive-banner";
 import { projectLabel } from "../lib/project";
 import publicationRules from "../lib/publication-rules.json";
 import titleStyles from "./home-title.module.css";
@@ -68,19 +68,13 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
                     pathname.startsWith("/candidates") ? "page" : undefined
                   }
                 >
-                  候補者を見る
+                  候補者
                 </Link>
                 <Link
-                  href="/stories"
-                  aria-current={pathname === "/stories" ? "page" : undefined}
+                  href="/talk"
+                  aria-current={pathname === "/talk" ? "page" : undefined}
                 >
-                  本人の話
-                </Link>
-                <Link
-                  href="/interests"
-                  aria-current={pathname === "/interests" ? "page" : undefined}
-                >
-                  知りたいこと
+                  インタビュー動画
                 </Link>
                 <Link
                   href="/saved"
@@ -90,13 +84,13 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
                   <span className="saved-count">{savedIds.length}</span>
                 </Link>
                 <Link
-                  href="/method"
-                  aria-current={pathname === "/method" ? "page" : undefined}
+                  href="/about"
+                  aria-current={pathname === "/about" ? "page" : undefined}
                 >
-                  仕組み
+                  オシセンについて
                 </Link>
                 <Link href="/diagnosis" className="button primary small">
-                  政策の質問 →
+                  質問に答える →
                 </Link>
               </nav>
               <div className="mobile-navigation">
@@ -105,7 +99,7 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
                   href="/diagnosis"
                   onClick={closeMenu}
                 >
-                  政策の質問 →
+                  質問に答える →
                 </Link>
                 <button
                   ref={menuButton}
@@ -132,67 +126,77 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
             className="mobile-menu"
             aria-label="モバイルナビゲーション"
           >
-            <Link
-              onClick={closeMenu}
-              href="/news"
-              aria-current={pathname === "/news" ? "page" : undefined}
-            >
-              News・お知らせ →
-            </Link>
-            <Link onClick={closeMenu} href="/guides/high-school-election">
-              高校生のための選挙ガイド →
-            </Link>
-            <Link onClick={closeMenu} href="/tsukuba/elections">
-              つくば市の選挙情報 →
-            </Link>
-            <Link onClick={closeMenu} href="/about#project">
-              つくば市・土浦市での取り組み →
-            </Link>
-            <Link onClick={closeMenu} href="/ibaraki-2026/tsukuba">
-              2026年茨城県議選・つくば市選挙区 →
-            </Link>
-            <Link onClick={closeMenu} href="/candidates">
-              候補者を見る →
-            </Link>
-            <Link onClick={closeMenu} href="/issues">
-              争点から見る →
-            </Link>
-            <Link onClick={closeMenu} href="/stories">
-              本人の話から見る →
-            </Link>
-            <Link onClick={closeMenu} href="/interests">
-              知りたいことから見る →
-            </Link>
-            <Link onClick={closeMenu} href="/compare">
-              2人の政策を比較する →
-            </Link>
-            <Link onClick={closeMenu} href="/saved">
-              気になる候補 {savedIds.length}人 →
-            </Link>
-            <Link onClick={closeMenu} href="/method">
-              回答と情報の見方 →
-            </Link>
-            <Link onClick={closeMenu} href="/research">
-              研究の準備 →
-            </Link>
-            <Link onClick={closeMenu} href="/about">
-              オシセンについて →
-            </Link>
-            <Link onClick={closeMenu} href="/about#team">
-              運営メンバー →
-            </Link>
-            <Link onClick={closeMenu} href="/about#contact">
-              公式SNS・お問い合わせ →
-            </Link>
-            <Link onClick={closeMenu} href="/sources">
-              情報源・掲載状況 →
-            </Link>
-            <Link onClick={closeMenu} href="/neutrality">
-              中立性ポリシー →
-            </Link>
+            <div className="mobile-menu-primary">
+              <Link onClick={closeMenu} href="/diagnosis">
+                質問に答える →
+              </Link>
+              <Link onClick={closeMenu} href="/candidates">
+                候補者 →
+              </Link>
+              <Link onClick={closeMenu} href="/talk">
+                インタビュー動画 →
+              </Link>
+              <Link onClick={closeMenu} href="/about">
+                オシセンについて →
+              </Link>
+            </div>
+            <div className="mobile-menu-secondary">
+              <Link onClick={closeMenu} href="/news">
+                News・お知らせ →
+              </Link>
+              <Link onClick={closeMenu} href="/issues">
+                政策の質問一覧 →
+              </Link>
+              <Link onClick={closeMenu} href="/results">
+                自分の回答を見返す →
+              </Link>
+              <Link onClick={closeMenu} href="/compare">
+                2人の回答を比べる →
+              </Link>
+              <Link onClick={closeMenu} href="/saved">
+                気になる候補 {savedIds.length}人 →
+              </Link>
+              <Link onClick={closeMenu} href="/guides/high-school-election">
+                高校生のための選挙ガイド →
+              </Link>
+              <Link onClick={closeMenu} href="/tsukuba/elections">
+                つくば市の選挙情報 →
+              </Link>
+              <Link onClick={closeMenu} href="/tsuchiura/elections">
+                土浦市の選挙情報 →
+              </Link>
+              <Link onClick={closeMenu} href="/ibaraki-2026/tsukuba">
+                県議選・つくば市選挙区 →
+              </Link>
+              <Link onClick={closeMenu} href="/ibaraki-2026/tsuchiura">
+                県議選・土浦市選挙区 →
+              </Link>
+              <Link onClick={closeMenu} href="/stories">
+                インタビューの質問項目 →
+              </Link>
+              <Link onClick={closeMenu} href="/method">
+                回答と情報の見方 →
+              </Link>
+              <Link onClick={closeMenu} href="/research">
+                研究の準備 →
+              </Link>
+              <Link onClick={closeMenu} href="/about#team">
+                運営メンバー →
+              </Link>
+              <Link onClick={closeMenu} href="/about#contact">
+                公式SNS・お問い合わせ →
+              </Link>
+              <Link onClick={closeMenu} href="/sources">
+                情報源・掲載状況 →
+              </Link>
+              <Link onClick={closeMenu} href="/neutrality">
+                中立性ポリシー →
+              </Link>
+            </div>
           </nav>
         )}
       </header>
+      <ArchiveBanner />
       {children}
       {!compact && (
         <footer className="site-footer">
@@ -215,19 +219,25 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
               </div>
               <nav aria-label="フッターナビゲーション">
                 <Link href="/news">News・お知らせ</Link>
+                <Link href="/diagnosis">質問に答える</Link>
+                <Link href="/issues">政策の質問一覧</Link>
+                <Link href="/candidates">候補者</Link>
+                <Link href="/talk">インタビュー動画</Link>
+                <Link href="/compare">2人の回答を比べる</Link>
+                <Link href="/saved">気になる候補</Link>
                 <Link href="/guides/high-school-election">
                   高校生のための選挙ガイド
                 </Link>
-                <Link href="/about#project">つくば市・土浦市での取り組み</Link>
                 <Link href="/tsukuba/elections">つくば市の選挙情報</Link>
+                <Link href="/tsuchiura/elections">土浦市の選挙情報</Link>
                 <Link href="/ibaraki-2026/tsukuba">
                   2026年茨城県議選・つくば市選挙区
                 </Link>
-                <Link href="/issues">争点から見る</Link>
-                <Link href="/stories">本人の話から見る</Link>
-                <Link href="/interests">知りたいことから見る</Link>
-                <Link href="/compare">候補者を比較する</Link>
-                <Link href="/saved">気になる候補</Link>
+                <Link href="/ibaraki-2026/tsuchiura">
+                  2026年茨城県議選・土浦市選挙区
+                </Link>
+                <Link href="/about#project">つくば市・土浦市での取り組み</Link>
+                <Link href="/stories">インタビューの質問項目</Link>
                 <Link href="/about">オシセンについて</Link>
                 <Link href="/about#team">運営メンバー</Link>
                 <Link href="/about#contact">お問い合わせ</Link>
@@ -252,7 +262,6 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
           </div>
         </footer>
       )}
-      {!compact && pathname !== "/compare" && <ConsiderationBar />}
     </>
   );
 }

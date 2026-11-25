@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { Breadcrumbs } from "../../../components/breadcrumbs";
-import { electionHubPath } from "../../../lib/issue-content";
+import { electionHubPaths } from "../../../components/election-hub";
+
+const electionHubPath = electionHubPaths.tsukuba;
 import { project, projectDistrictLabel } from "../../../lib/project";
 import { pageMetadata } from "../../../lib/seo";
 import { teamMembers } from "../../../lib/team";
@@ -189,13 +191,13 @@ export default function HighSchoolElectionPage() {
           オシセンは、{project.electionYear}年の{project.electionName}・
           {projectDistrictLabel}
           を対象に、政策への回答と本人へのインタビューを伝える準備を進めています。
-          現在公開しているのは、政策の設問案や情報の見方、掲載方針です。
-          候補者情報・本人回答は未掲載で、Podcast取材も準備中です。
+          現在公開しているのは、候補者に送った政策の質問や情報の見方、掲載方針です。
+          候補者の回答とインタビュー動画は、12月4日（告示日）以降、立候補届出順に公開します。
         </p>
         <p>
-          いまは、<Link href="/issues">政策の8つのテーマと設問案</Link>
+          いまは、<Link href="/issues">政策の質問（共通6問＋選挙区2問）</Link>
           を、自分が何を知りたいか整理するきっかけとして読めます。
-          設問は検討中の草案で、制度や出典は確認中です。
+          候補者にも同じ質問をしています。
           利用者が自分で投票について考えられるよう、政策の問いと情報の見方を紹介しています。
         </p>
         <p>
@@ -211,8 +213,14 @@ export default function HighSchoolElectionPage() {
           <Link href="/tsukuba/elections">
             つくば市の選挙・投票情報を調べる →
           </Link>
+          <Link href="/tsuchiura/elections">
+            土浦市の選挙・投票情報を調べる →
+          </Link>
           <Link href={electionHubPath}>
             2026年 茨城県議選・つくば市選挙区のプロジェクト →
+          </Link>
+          <Link href={electionHubPaths.tsuchiura}>
+            2026年 茨城県議選・土浦市選挙区のプロジェクト →
           </Link>
         </div>
       </section>

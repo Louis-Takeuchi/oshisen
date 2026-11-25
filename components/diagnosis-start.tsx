@@ -2,15 +2,18 @@
 import Link from "next/link";
 import { KikumaruNote } from "./kikumaru";
 import { useRouter } from "next/navigation";
-import { questions } from "../lib/data";
 import { trackEvent } from "../lib/analytics";
-import { emptyDiagnosis, useDiagnosis } from "./session";
+import {
+  emptyQuestionSession,
+  useQuestionSession,
+} from "./question-session";
+
 export function DiagnosisStart() {
-  const { state, ready, save } = useDiagnosis();
+  const { state, ready, save } = useQuestionSession();
   const router = useRouter();
   const hasProgress = ready && Object.keys(state.answers).length > 0;
   function start() {
-    save(emptyDiagnosis());
+    save(emptyQuestionSession());
     trackEvent("diagnosis_start");
     router.push("/questions");
   }
@@ -25,19 +28,14 @@ export function DiagnosisStart() {
           「どちらかといえば」で答えて大丈夫です。
         </p>
       </KikumaruNote>
-      {!!state.staleQuestionIds?.length && (
-        <p role="status" className="notice">
-          質問や補足が更新されたため、以前の回答の一部は照合に使っていません。
-        </p>
-      )}
       <div className="start-facts">
         <div>
           <span>質問</span>
-          <strong>{questions.length}問</strong>
+          <strong>共通6問＋選挙区2問</strong>
         </div>
         <div>
           <span>答え方</span>
-          <strong>5段階＋判断保留</strong>
+          <strong>7段階（候補者と同じ）</strong>
         </div>
         <div>
           <span>迷ったら</span>
@@ -45,9 +43,9 @@ export function DiagnosisStart() {
         </div>
       </div>
       <div className="notice">
-        <span className="outline-label">質問の操作体験</span>
+        <span className="outline-label">候補者と同じ質問</span>
         <p>
-          全8問は確認中の草案です。候補者本人の回答はまだありません。自分の回答を見返すところまで試せます。
+          候補者にも同じ質問をしています。回答は12月4日から並びます。はじめに選挙区（つくば市／土浦市）を選びます。
         </p>
       </div>
       <div className="start-actions">

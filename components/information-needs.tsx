@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
-import { questions } from "../lib/data";
+import { questionPath, sentQuestions } from "../lib/election2026.ts";
 import { PriorityThemePicker } from "./priority-themes";
 import { useConsideration } from "./use-consideration";
 const types = [
@@ -78,11 +78,11 @@ export function InformationNeeds() {
         <h2>関連する情報</h2>
         {priorityIds.length > 0 && (
           <div className="exploration-links">
-            {questions
-              .filter((q) => priorityIds.includes(q.id))
-              .map((q) => (
-                <Link href={`/issues?theme=${q.id}`} key={q.id}>
-                  {q.theme} →
+            {sentQuestions
+              .filter((question) => priorityIds.includes(question.id))
+              .map((question) => (
+                <Link href={questionPath(question)} key={question.id}>
+                  {question.themeLabel} →
                 </Link>
               ))}
           </div>

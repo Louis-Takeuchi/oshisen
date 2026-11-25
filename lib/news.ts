@@ -21,6 +21,18 @@ export interface NewsItem {
 // 公開するお知らせを日付の新しい順に追加します。
 export const newsItems: readonly NewsItem[] = [
   {
+    id: "oshisen-talk-recording",
+    // 公開日は大屋さんの確定待ち（要件定義P0-5）。確定したらこの日付だけ差し替える。
+    date: "2026-11-25",
+    category: "お知らせ",
+    title: "候補者インタビュー「オシセン！トーク」の収録を始めました",
+    body: "2026年茨城県議会議員選挙（つくば市選挙区・土浦市選挙区）に向けて、候補者の皆さんへのインタビュー「オシセン！トーク」の収録を進めています。インタビュー動画と政策の質問への回答は、12月4日（告示日）以降、立候補届出順に公開します。公開のお知らせは、Instagram・X・YouTubeでもお届けします。",
+    link: {
+      href: "https://www.youtube.com/@%E3%82%AA%E3%82%B7%E3%82%BB%E3%83%B3%E5%85%AC%E5%BC%8F%E3%83%81%E3%83%A3%E3%83%B3%E3%83%8D%E3%83%AB",
+      label: "YouTubeチャンネルを見る",
+    },
+  },
+  {
     id: "bench-mark-pitch-2026",
     date: "2026-10-14",
     category: "イベント",

@@ -36,6 +36,10 @@
   background: var(--pink-soft);
 }
 
+.socialLinks a[data-channel="youtube"] {
+  background: var(--blue-soft);
+}
+
 .socialLinks a:hover {
   text-decoration: none;
   border-color: var(--blue);
@@ -124,5 +128,23 @@
 
   .emailLink {
     font-size: 16px;
+  }
+}
+
+/* 375px幅ではカードを1列にして、ハンドル名が途中で改行しないようにする。 */
+@media (max-width: 480px) {
+  .socialLinks,
+  .compact .socialLinks {
+    flex-direction: column;
+  }
+
+  .socialLinks a,
+  .compact .socialLinks a {
+    flex: 1 1 auto;
+    width: 100%;
+  }
+
+  .handle {
+    font-size: 12px;
   }
 }

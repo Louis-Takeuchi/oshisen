@@ -1,23 +1,31 @@
 "use client";
 import Link from "next/link";
-import { CandidateOrderNote } from "./candidate-order-note";
-import { questions } from "../lib/data";
-import { orderedCandidates as candidates } from "../lib/candidate-order";
-import { policyAnswerLabel } from "../lib/policy";
+import {
+  districtNames,
+  districtQuestions,
+  questionPath,
+  questionTagLabel,
+  questionsForDistrict,
+  userAnswerLabel,
+} from "../lib/election2026.ts";
 import { KikumaruLoading } from "./kikumaru";
-import { useDiagnosis } from "./session";
-import { CandidateRow } from "./candidate-row";
+import { useQuestionSession } from "./question-session";
+import { QuestionLevelSwitch, useQuestionLevel } from "./question-level";
+import { QuestionText } from "./question-text";
+import { QuestionExplainer } from "./question-explainer";
+import { QuestionCandidateAnswers } from "./question-candidate-answers";
 import { PriorityThemePicker } from "./priority-themes";
-import { QuestionHelp } from "./question-help";
-export function Results() {
-  const { state, ready } = useDiagnosis();
+
+export function Results({ urlLevel }: { urlLevel?: string | null }) {
+  const { state, ready } = useQuestionSession();
+  const { level, setLevel } = useQuestionLevel(urlLevel);
   if (!ready)
     return (
       <main id="main" className="container page-main" aria-busy="true">
         <KikumaruLoading message="回答を読み込んでいます。" />
       </main>
     );
-  if (!state.complete)
+  if (!state.district || Object.keys(state.answers).length === 0)
     return (
       <main id="main" className="container empty-page">
         <p className="eyebrow">あなたの回答</p>
@@ -28,9 +36,16 @@ export function Results() {
         </Link>
       </main>
     );
-  const count = (status: string) =>
-    questions.filter((q) => state.answers[q.id]?.answer.status === status)
-      .length;
+  const flow = questionsForDistrict(state.district);
+  const count = (predicate: (label: string) => boolean) =>
+    flow.filter((question) => {
+      const answer = state.answers[question.id]?.answer;
+      if (!answer)
+        return predicate("unanswered");
+      return predicate(
+        answer.status === "answered" ? "answered" : answer.kind,
+      );
+    }).length;
   return (
     <main id="main" className="container results-page">
       <div className="page-topline">
@@ -40,47 +55,66 @@ export function Results() {
         </Link>
       </div>
       <h1>回答の見直し・比較</h1>
-      <p className="lead">候補者の本人回答がそろったら、質問ごとに並べます。</p>
+      <p className="lead">
+        候補者の本人回答は12月4日（告示日）以降、質問ごとに並べて見比べられます。
+      </p>
       <div className="notice">
-        <span className="outline-label">掲載準備中</span>
+        <span className="outline-label">告示後に掲載</span>
         <p>
-          自分の考えを一問ずつ確かめられるよう、選んだ回答を質問ごとに表示しています。
+          自分の考えを一問ずつ確かめられるよう、選んだ回答を質問ごとに表示しています。候補者の回答は12月4日（告示日）以降、立候補届出順に各質問の下へ並びます。
         </p>
       </div>
+      <QuestionLevelSwitch level={level} onChange={setLevel} />
       <p className="answer-counts">
-        回答 {count("answered")}問 / 判断保留 {count("undecided")}問 / スキップ{" "}
-        {count("skipped")}問
+        回答 {count((s) => s === "answered")}問 / 判断材料が足りない{" "}
+        {count((s) => s === "insufficient-info")}問 / 設問の前提に異議{" "}
+        {count((s) => s === "premise-objection")}問 / スキップ{" "}
+        {count((s) => s === "skip" || s === "unanswered")}問
       </p>
       <section aria-label="質問ごとの回答">
-        {questions.map((q) => (
-          <article key={q.id} className="answer-review">
-            <p className="eyebrow">{q.theme} / 質問案</p>
-            <h2>{q.text}</h2>
+        {flow.map((question) => (
+          <article key={question.id} className="answer-review">
+            <p className="eyebrow">{questionTagLabel(question)}</p>
+            <QuestionText question={question} level={level} as="h2" />
             <p className="your-answer">
-              あなた：{policyAnswerLabel(state.answers[q.id]?.answer)}
+              あなた：{userAnswerLabel(state.answers[question.id]?.answer)}
             </p>
-            <QuestionHelp question={q} />
-            <Link href={`/issues?theme=${q.id}`} className="inline-link">
-              このテーマを見る →
+            <QuestionExplainer questionId={question.id} level={level} />
+            <QuestionCandidateAnswers question={question} headingLevel="h3" />
+            <Link href={questionPath(question)} className="inline-link">
+              この質問のページで見る →
             </Link>
           </article>
         ))}
       </section>
-      <PriorityThemePicker />
-      {candidates.length > 0 && <CandidateOrderNote />}
-      {candidates.length ? (
-        [...candidates].map((candidate) => (
-          <CandidateRow key={candidate.id} candidate={candidate} />
-        ))
-      ) : (
-        <div className="empty-notice">
-          <h2>候補者回答の掲載準備</h2>
-          <p>同じ質問への本人回答を確認してから掲載します。</p>
-        </div>
+      {state.district === "undecided" && (
+        <section className="empty-notice" aria-label="選挙区ごとの質問">
+          <h2>選挙区ごとの2問にも答えられます</h2>
+          <p>
+            共通の6問に加えて、各選挙区には地域の2問があります。気になる選挙区の質問へどうぞ。
+          </p>
+          <div className="exploration-links">
+            {(["tsukuba", "tsuchiura"] as const).map((district) => (
+              <span key={district}>
+                {districtNames[district]}の2問：
+                {districtQuestions(district).map((question) => (
+                  <Link
+                    key={question.id}
+                    href={questionPath(question)}
+                    style={{ marginLeft: 12 }}
+                  >
+                    {question.themeLabel} →
+                  </Link>
+                ))}
+              </span>
+            ))}
+          </div>
+        </section>
       )}
+      <PriorityThemePicker />
       <div className="exploration-links">
-        <Link href="/stories">本人の言葉から知る →</Link>
-        <Link href="/interests">知りたいことを選ぶ →</Link>
+        <Link href="/candidates">候補者の一覧へ →</Link>
+        <Link href="/talk">インタビュー動画へ →</Link>
         <Link href="/method">回答の照合について →</Link>
       </div>
     </main>

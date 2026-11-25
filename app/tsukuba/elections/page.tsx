@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { Breadcrumbs } from "../../../components/breadcrumbs";
-import { electionHubPath } from "../../../lib/issue-content";
+import { electionHubPaths } from "../../../components/election-hub";
+
+const electionHubPath = electionHubPaths.tsukuba;
 import { pageMetadata } from "../../../lib/seo";
 import styles from "./guide.module.css";
 
@@ -235,15 +237,16 @@ export default function TsukubaElectionsPage() {
           </li>
         </ol>
         <p>
-          オシセンでは、2026年茨城県議選・つくば市選挙区に向けて、8つのテーマの設問案と掲載方針を公開しています。
-          候補者情報・本人回答・Podcastは取材と掲載の準備中です。
+          オシセンでは、2026年茨城県議選・つくば市選挙区に向けて、候補者に送った政策の質問（共通6問＋つくば市の2問）を公開しています。
+          候補者の回答とインタビュー動画は、12月4日（告示日）以降、立候補届出順に公開します。
           利用者が自分で投票について考えられるよう、政策の問いと情報の見方を紹介しています。
         </p>
         <div className={styles.links}>
           <Link href={electionHubPath}>
             2026年茨城県議選・つくば市選挙区の取り組み →
           </Link>
-          <Link href="/issues">政策の8テーマと設問案 →</Link>
+          <Link href="/tsuchiura/elections">土浦市の選挙ガイド →</Link>
+          <Link href="/issues">政策の質問一覧 →</Link>
           <Link href="/method">政策回答の比較方法 →</Link>
           <Link href="/sources">情報源・掲載状況 →</Link>
           <Link href="/neutrality">中立性ポリシー →</Link>

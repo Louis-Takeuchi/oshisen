@@ -8,6 +8,7 @@ export type VisitorAnalyticsStatus =
 
 const publicPaths = new Set([
   "/",
+  "/news",
   "/diagnosis",
   "/questions",
   "/results",
@@ -15,6 +16,7 @@ const publicPaths = new Set([
   "/compare",
   "/saved",
   "/issues",
+  "/talk",
   "/about",
   "/method",
   "/sources",
@@ -25,7 +27,9 @@ const publicPaths = new Set([
   "/policy-register",
   "/guides/high-school-election",
   "/tsukuba/elections",
+  "/tsuchiura/elections",
   "/ibaraki-2026/tsukuba",
+  "/ibaraki-2026/tsuchiura",
 ]);
 
 export function isVisitorAnalyticsDeployment(
@@ -35,19 +39,52 @@ export function isVisitorAnalyticsDeployment(
   return nodeEnv === "production" && vercelEnv === "production";
 }
 
-/** Never return an arbitrary path, candidate identifier, theme or query string. */
+/** Never return an arbitrary path, candidate identifier, question or query string. */
 export function visitorAnalyticsPath(pathname: string): string | null {
   const path = pathname === "/" ? "/" : pathname.replace(/\/$/, "");
   if (publicPaths.has(path)) return path;
-  // Count the page category without recording a visitor's chosen policy theme.
-  if (
-    /^\/ibaraki-2026\/tsukuba\/issues\/(transport|education|childcare|healthcare|disaster|environment|agriculture|administration)$/.test(
-      path,
-    )
-  )
-    return "/ibaraki-2026/tsukuba/issues/[theme]";
+  // Count the page category without recording a visitor's chosen policy question.
+  if (/^\/q\/(?:p0[1-6]|t0[12]|u0[12])$/.test(path)) return "/q/[id]";
   if (/^\/candidates\/[^/?#]+$/.test(path)) return "/candidates/[id]";
   return null;
+}
+
+/**
+ * SNS流入の計測（P2-6）：UTMの5項目だけを通し、それ以外のクエリは送らない。
+ * 値は投稿名など運営が付けたものに限る前提で、長すぎる値・URL・メールらしき値は落とす。
+ * 個人を特定できる情報や、利用者の回答内容は計測に含めない。
+ */
+const allowedUtmKeys = [
+  "utm_source",
+  "utm_medium",
+  "utm_campaign",
+  "utm_content",
+  "utm_term",
+] as const;
+
+export function visitorAnalyticsSearch(search: string): string {
+  let params: URLSearchParams;
+  try {
+    params = new URLSearchParams(search);
+  } catch {
+    return "";
+  }
+  const kept = new URLSearchParams();
+  for (const key of allowedUtmKeys) {
+    const value = params.get(key);
+    if (
+      typeof value === "string" &&
+      value.length > 0 &&
+      value.length <= 64 &&
+      !/[\s@]|:\/\//.test(value) &&
+      // eslint-disable-next-line no-control-regex
+      !/[\u0000-\u001f\u007f]/.test(value)
+    ) {
+      kept.set(key, value);
+    }
+  }
+  const query = kept.toString();
+  return query ? `?${query}` : "";
 }
 
 /** beforeSend cannot redact the SDK's separate referrer field. Fail closed. */
@@ -146,7 +183,11 @@ export function beforeSendVisitorAnalytics(event: {
     const path = visitorAnalyticsPath(url.pathname);
     if (!path) return null;
     // Construct a fresh object so no extra event fields can be forwarded.
-    return { type: "pageview", url: `${url.origin}${path}` };
+    // UTMの5項目だけを残して、SNS投稿ごとの流入を集計できるようにする。
+    return {
+      type: "pageview",
+      url: `${url.origin}${path}${visitorAnalyticsSearch(url.search)}`,
+    };
   } catch {
     return null;
   }

@@ -4,7 +4,7 @@ export const project = {
   electionName: "茨城県議会議員選挙",
   districts: ["つくば市選挙区", "土浦市選挙区"],
   phase: "Phase 0",
-  status: "取材・掲載準備中",
+  status: "インタビュー収録中・12月4日から公開",
 } as const;
 
 export const projectDistrictLabel = project.districts.join("・");

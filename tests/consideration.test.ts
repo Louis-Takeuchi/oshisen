@@ -75,7 +75,7 @@ test("saved candidates use local storage while comparisons and priorities stay i
   assert.equal(result.ok, true);
   assert.match(result.message, /保存しました/);
   store.toggleCompare("takahashi-ken");
-  store.togglePriority("healthcare");
+  store.togglePriority("P03");
   assert.deepEqual([...local.data.keys()], [considerationKeys.saved]);
   assert.deepEqual(
     [...session.data.keys()],
@@ -94,7 +94,7 @@ test("saved candidates use local storage while comparisons and priorities stay i
   );
   assert.deepEqual(sameTab.getSnapshot().savedIds, ["sato-misaki"]);
   assert.deepEqual(sameTab.getSnapshot().compareIds, ["takahashi-ken"]);
-  assert.deepEqual(sameTab.getSnapshot().priorityIds, ["healthcare"]);
+  assert.deepEqual(sameTab.getSnapshot().priorityIds, ["P03"]);
   assert.equal(sameTab.getSnapshot().storageAvailable, null);
 
   const newSession = memoryStorage();
@@ -123,7 +123,7 @@ test("restored selections remove unknown and duplicate identifiers and enforce c
   );
   session.data.set(
     considerationKeys.priority,
-    saved(["healthcare", "education", "transport", "childcare", "unknown"]),
+    saved(["P03", "P05", "P01", "P04", "unknown"]),
   );
   assert.deepEqual(store.getSnapshot().savedIds, [
     "sato-misaki",
@@ -134,9 +134,9 @@ test("restored selections remove unknown and duplicate identifiers and enforce c
     "tanaka-aya",
   ]);
   assert.deepEqual(store.getSnapshot().priorityIds, [
-    "transport",
-    "education",
-    "childcare",
+    "P01",
+    "P03",
+    "P04",
   ]);
   assert.deepEqual(local.writes, [], "reading does not silently rewrite data");
   assert.deepEqual(session.writes, []);
@@ -194,13 +194,13 @@ test("the third comparison and fourth priority are rejected without replacing ex
   const { session, store } = setup();
   store.toggleCompare("tanaka-aya");
   store.toggleCompare("yamada-taro");
-  store.togglePriority("healthcare");
-  store.togglePriority("agriculture");
-  store.togglePriority("administration");
+  store.togglePriority("P03");
+  store.togglePriority("T01");
+  store.togglePriority("P06");
   const snapshot = store.getSnapshot();
   const writes = [...session.writes];
   const compareResult = store.toggleCompare("sato-misaki");
-  const priorityResult = store.togglePriority("education");
+  const priorityResult = store.togglePriority("P05");
   assert.equal(compareResult.ok, false);
   assert.match(compareResult.message, /2人/);
   assert.equal(priorityResult.ok, false);
@@ -209,9 +209,9 @@ test("the third comparison and fourth priority are rejected without replacing ex
   assert.deepEqual(session.writes, writes);
   assert.deepEqual(snapshot.compareIds, ["tanaka-aya", "yamada-taro"]);
   assert.deepEqual(snapshot.priorityIds, [
-    "healthcare",
-    "agriculture",
-    "administration",
+    "P03",
+    "P06",
+    "T01",
   ]);
 
   assert.equal(store.toggleCompare("tanaka-aya").ok, true);
@@ -220,12 +220,12 @@ test("the third comparison and fourth priority are rejected without replacing ex
     "sato-misaki",
     "yamada-taro",
   ]);
-  assert.equal(store.togglePriority("healthcare").ok, true);
-  assert.equal(store.togglePriority("education").ok, true);
+  assert.equal(store.togglePriority("P03").ok, true);
+  assert.equal(store.togglePriority("P05").ok, true);
   assert.deepEqual(store.getSnapshot().priorityIds, [
-    "education",
-    "agriculture",
-    "administration",
+    "P05",
+    "P06",
+    "T01",
   ]);
 });
 
@@ -247,18 +247,18 @@ test("all candidates can be saved and toggling the last item off removes only it
 test("clear actions delete only their targeted keys and preserve diagnosis and analytics data", () => {
   const { local, session, store } = setup();
   local.data.set("unrelated.local", "keep-local");
-  session.data.set("oshisen:diagnosis:v1", '{"answers":{"transport":4}}');
+  session.data.set("oshisen:diagnosis:v1", '{"answers":{"P01":4}}');
   session.data.set("unrelated.analytics", "keep-analytics");
   store.toggleSaved("sato-misaki");
   store.toggleCompare("takahashi-ken");
-  store.togglePriority("education");
+  store.togglePriority("P05");
   assert.equal(store.clearCompare().ok, true);
   assert.deepEqual(store.getSnapshot().savedIds, ["sato-misaki"]);
-  assert.deepEqual(store.getSnapshot().priorityIds, ["education"]);
+  assert.deepEqual(store.getSnapshot().priorityIds, ["P05"]);
   assert.equal(local.data.has(considerationKeys.saved), true);
   assert.equal(session.data.has(considerationKeys.priority), true);
   assert.equal(store.clearSaved().ok, true);
-  assert.deepEqual(store.getSnapshot().priorityIds, ["education"]);
+  assert.deepEqual(store.getSnapshot().priorityIds, ["P05"]);
   assert.deepEqual(session.removals, [considerationKeys.compare]);
   store.toggleSaved("tanaka-aya");
   store.toggleCompare("yamada-taro");
@@ -270,7 +270,7 @@ test("clear actions delete only their targeted keys and preserve diagnosis and a
   assert.deepEqual(
     [...session.data],
     [
-      ["oshisen:diagnosis:v1", '{"answers":{"transport":4}}'],
+      ["oshisen:diagnosis:v1", '{"answers":{"P01":4}}'],
       ["unrelated.analytics", "keep-analytics"],
     ],
   );
@@ -292,7 +292,7 @@ test("denied reads and writes keep current selections in memory with an honest p
   for (const result of [
     store.toggleSaved("sato-misaki"),
     store.toggleCompare("tanaka-aya"),
-    store.togglePriority("education"),
+    store.togglePriority("P05"),
   ]) {
     assert.equal(result.ok, true, "the in-memory selection is accepted");
     assert.match(result.message, /保存領域を利用できない/);
@@ -302,7 +302,7 @@ test("denied reads and writes keep current selections in memory with an honest p
   const snapshot = store.getSnapshot();
   assert.deepEqual(snapshot.savedIds, ["sato-misaki"]);
   assert.deepEqual(snapshot.compareIds, ["tanaka-aya"]);
-  assert.deepEqual(snapshot.priorityIds, ["education"]);
+  assert.deepEqual(snapshot.priorityIds, ["P05"]);
   assert.equal(snapshot.storageAvailable, false);
   store.refreshSaved();
   assert.strictEqual(store.getSnapshot(), snapshot);
@@ -318,7 +318,7 @@ test("null or throwing storage providers still accept in-memory choices and trut
     const store = createConsiderationStore(provider, provider, candidateIds);
     assert.equal(store.toggleSaved("sato-misaki").ok, true);
     assert.equal(store.toggleCompare("takahashi-ken").ok, true);
-    assert.equal(store.togglePriority("transport").ok, true);
+    assert.equal(store.togglePriority("P01").ok, true);
     assert.deepEqual(store.getSnapshot().savedIds, ["sato-misaki"]);
     const result = store.clearAll();
     assert.equal(result.ok, false);
@@ -334,7 +334,7 @@ test("failed key removal clears memory but does not falsely claim persisted data
   const { local, session, store } = setup();
   store.toggleSaved("sato-misaki");
   store.toggleCompare("takahashi-ken");
-  store.togglePriority("education");
+  store.togglePriority("P05");
   local.failure.remove = session.failure.remove = true;
   const result = store.clearAll();
   assert.equal(result.ok, false);
@@ -358,7 +358,7 @@ test("refreshSaved syncs saved candidates across tabs without touching tab-local
     candidateIds,
   );
   other.toggleCompare("yamada-taro");
-  other.togglePriority("healthcare");
+  other.togglePriority("P03");
   let notifications = 0;
   other.subscribe(() => notifications++);
   store.toggleSaved("sato-misaki");
@@ -367,7 +367,7 @@ test("refreshSaved syncs saved candidates across tabs without touching tab-local
   assert.deepEqual(other.getSnapshot().savedIds, ["sato-misaki"]);
   assert.equal(notifications, 1);
   assert.deepEqual(other.getSnapshot().compareIds, ["yamada-taro"]);
-  assert.deepEqual(other.getSnapshot().priorityIds, ["healthcare"]);
+  assert.deepEqual(other.getSnapshot().priorityIds, ["P03"]);
   const unchanged = other.getSnapshot();
   other.refreshSaved();
   assert.strictEqual(other.getSnapshot(), unchanged);
@@ -418,9 +418,9 @@ test("candidate saves, comparisons and priorities cannot change the equal-weight
   store.toggleSaved("yamada-taro");
   store.toggleCompare("sato-misaki");
   store.toggleCompare("tanaka-aya");
-  store.togglePriority("education");
-  store.togglePriority("healthcare");
-  store.togglePriority("agriculture");
+  store.togglePriority("P05");
+  store.togglePriority("P03");
+  store.togglePriority("T01");
   assert.deepEqual(
     candidates.map((candidate) =>
       calculateMatch(userAnswers, demoAnswerFixtures[candidate.id]),

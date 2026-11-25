@@ -27,7 +27,12 @@ test("official channels use the exact supplied accounts without sharing paramete
     [
       "https://www.instagram.com/oshisen.official/",
       "https://x.com/OshisenOfficial",
+      "https://www.youtube.com/@%E3%82%AA%E3%82%B7%E3%82%BB%E3%83%B3%E5%85%AC%E5%BC%8F%E3%83%81%E3%83%A3%E3%83%B3%E3%83%8D%E3%83%AB",
     ],
+  );
+  assert.equal(
+    decodeURIComponent(officialSocialLinks[2].href),
+    "https://www.youtube.com/@オシセン公式チャンネル",
   );
   for (const { href } of officialSocialLinks) {
     const url = new URL(href);

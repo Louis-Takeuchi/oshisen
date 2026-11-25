@@ -36,33 +36,34 @@ test("canonical and social metadata use one configured public origin", () => {
   }
 });
 
-test("SEO routes are counted without sending the selected policy theme", () => {
-  for (const path of ["/guides/high-school-election", "/tsukuba/elections"]) {
+test("SEO routes are counted without sending the selected policy question", () => {
+  for (const path of [
+    "/guides/high-school-election",
+    "/tsukuba/elections",
+    "/tsuchiura/elections",
+  ]) {
     assert.equal(visitorAnalyticsPath(path), path);
     assert.equal(visitorAnalyticsPath(`${path}/`), path);
     assert.equal(visitorAnalyticsPath(`${path}/not-a-guide`), null);
     assert.equal(visitorAnalyticsPath(`${path}?answer=private`), null);
   }
-  assert.equal(
-    visitorAnalyticsPath("/ibaraki-2026/tsukuba"),
-    "/ibaraki-2026/tsukuba",
-  );
-  for (const theme of [
-    "transport",
-    "education",
-    "childcare",
-    "healthcare",
-    "disaster",
-    "environment",
-    "agriculture",
-    "administration",
+  for (const hub of ["/ibaraki-2026/tsukuba", "/ibaraki-2026/tsuchiura"]) {
+    assert.equal(visitorAnalyticsPath(hub), hub);
+  }
+  for (const slug of [
+    "p01",
+    "p02",
+    "p03",
+    "p04",
+    "p05",
+    "p06",
+    "t01",
+    "t02",
+    "u01",
+    "u02",
   ])
-    assert.equal(
-      visitorAnalyticsPath(`/ibaraki-2026/tsukuba/issues/${theme}`),
-      "/ibaraki-2026/tsukuba/issues/[theme]",
-    );
-  assert.equal(
-    visitorAnalyticsPath("/ibaraki-2026/tsukuba/issues/not-a-theme"),
-    null,
-  );
+    assert.equal(visitorAnalyticsPath(`/q/${slug}`), "/q/[id]");
+  assert.equal(visitorAnalyticsPath("/q/p07"), null);
+  assert.equal(visitorAnalyticsPath("/q/not-a-question"), null);
+  assert.equal(visitorAnalyticsPath("/talk"), "/talk");
 });

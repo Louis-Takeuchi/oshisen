@@ -4,18 +4,25 @@ import { get } from "node:http";
 import { test } from "node:test";
 
 const publicOrigin = "https://www.oshisen.com";
-const districtPath = "/ibaraki-2026/tsukuba";
-const guidePaths = ["/guides/high-school-election", "/tsukuba/elections"];
-const themePaths = [
-  "transport",
-  "education",
-  "childcare",
-  "healthcare",
-  "disaster",
-  "environment",
-  "agriculture",
-  "administration",
-].map((theme) => `${districtPath}/issues/${theme}`);
+const districtPaths = ["/ibaraki-2026/tsukuba", "/ibaraki-2026/tsuchiura"];
+const districtPath = districtPaths[0];
+const guidePaths = [
+  "/guides/high-school-election",
+  "/tsukuba/elections",
+  "/tsuchiura/elections",
+];
+const questionPaths = [
+  "p01",
+  "p02",
+  "p03",
+  "p04",
+  "p05",
+  "p06",
+  "t01",
+  "t02",
+  "u01",
+  "u02",
+].map((slug) => `/q/${slug}`);
 const publicPaths = [
   "/",
   "/news",
@@ -26,10 +33,11 @@ const publicPaths = [
   "/privacy",
   "/issues",
   "/stories",
+  "/talk",
   "/policy-register",
-  districtPath,
+  ...districtPaths,
   ...guidePaths,
-  ...themePaths,
+  ...questionPaths,
 ];
 const excludedPaths = [
   "/research",
@@ -230,7 +238,11 @@ export function registerSeoHttpTests({ getOrigin, startServer }) {
       assert.equal(meta(html, "og:description").length, 1, path);
       assert.deepEqual(
         meta(html, "og:image"),
-        [`${publicOrigin}/og.png?v=logo-2`],
+        [
+          path.startsWith("/q/")
+            ? `${publicOrigin}/share/q-${path.slice(3)}.png?v=1`
+            : `${publicOrigin}/og.png?v=logo-2`,
+        ],
         path,
       );
       assert.deepEqual(
@@ -247,14 +259,14 @@ export function registerSeoHttpTests({ getOrigin, startServer }) {
     }
   });
 
-  test("tracking and issue-filter URLs retain the clean canonical", async () => {
+  test("tracking and level-switch URLs retain the clean canonical", async () => {
     for (const [requestPath, canonicalPath] of [
       ["/?utm_source=search&utm_campaign=index-check", "/"],
       ["/about?utm_source=search", "/about"],
       ["/issues?theme=education&utm_source=search", "/issues"],
       ["/issues?theme=unknown", "/issues"],
       ...guidePaths.map((path) => [`${path}?utm_source=search`, path]),
-      [`${themePaths[0]}?utm_source=search`, themePaths[0]],
+      [`${questionPaths[0]}?utm_source=search&level=easy`, questionPaths[0]],
     ]) {
       const { response, html } = await fetchPage(getOrigin(), requestPath);
       assert.equal(response.status, 200, requestPath);
@@ -343,7 +355,7 @@ export function registerSeoHttpTests({ getOrigin, startServer }) {
     );
     assert.ok(aboutOrganization, "about Organization");
     assert.equal(aboutOrganization["@id"], organization["@id"]);
-    for (const path of [districtPath, ...guidePaths, ...themePaths]) {
+    for (const path of [...districtPaths, ...guidePaths]) {
       const data = structuredData(
         (await fetchPage(getOrigin(), path)).html,
         path,
@@ -371,6 +383,7 @@ export function registerSeoHttpTests({ getOrigin, startServer }) {
     const topics = [
       ["高校生", "18歳", "選挙", "投票"],
       ["つくば市", "市長", "市議会", "県議会", "投票"],
+      ["土浦市", "市長", "市議会", "県議会", "投票"],
     ];
     for (const [index, path] of guidePaths.entries()) {
       const { html } = await fetchPage(getOrigin(), path);
@@ -402,38 +415,78 @@ export function registerSeoHttpTests({ getOrigin, startServer }) {
         officialSources.length > 0,
         `${path}: readable official source links`,
       );
-      for (const target of [guidePaths[1 - index], districtPath]) {
+      assert.ok(
+        anchors.some(
+          ({ href, text }) =>
+            href &&
+            text.length > 0 &&
+            guidePaths.includes(href) &&
+            href !== path,
+        ),
+        `${path}: crawlable related guide link`,
+      );
+      assert.ok(
+        anchors.some(
+          ({ href, text }) =>
+            href && text.length > 0 && districtPaths.includes(href),
+        ),
+        `${path}: crawlable election hub link`,
+      );
+    }
+  });
+
+  test("the home page and election hubs expose crawlable entry links to the guides", async () => {
+    const { html } = await fetchPage(getOrigin(), "/");
+    const homeAnchors = links(mainContent(html, "/"));
+    for (const target of guidePaths) {
+      assert.ok(
+        homeAnchors.some(
+          ({ href, text }) => href === target && text.length > 0,
+        ),
+        `/: links to ${target} without opening a menu or running JavaScript`,
+      );
+    }
+    for (const [index, hub] of districtPaths.entries()) {
+      const page = await fetchPage(getOrigin(), hub);
+      const anchors = links(mainContent(page.html, hub));
+      const ownGuide = guidePaths[index + 1];
+      for (const target of [ownGuide, guidePaths[0]]) {
         assert.ok(
           anchors.some(({ href, text }) => href === target && text.length > 0),
-          `${path}: crawlable related guide link to ${target}`,
+          `${hub}: links to ${target}`,
         );
       }
     }
   });
 
-  test("the home page and election hub expose crawlable entry links to both guides", async () => {
-    for (const path of ["/", districtPath]) {
-      const { html } = await fetchPage(getOrigin(), path);
-      const anchors = links(mainContent(html, path));
-      for (const target of guidePaths) {
-        assert.ok(
-          anchors.some(({ href, text }) => href === target && text.length > 0),
-          `${path}: links to ${target} without opening a menu or running JavaScript`,
-        );
-      }
-    }
-  });
-
-  test("unknown election themes and candidates return noindex 404 responses", async () => {
+  test("unknown candidates 404 while legacy theme pages redirect to the question list", async () => {
     for (const path of [
-      `${districtPath}/issues/not-a-theme`,
       "/candidates/not-a-candidate",
+      "/q/not-a-question",
       "/page-does-not-exist",
     ]) {
       const { response, html } = await fetchPage(getOrigin(), path);
       assert.equal(response.status, 404, path);
       assert.ok(robotsDirectives(html, path).includes("noindex"), path);
       assert.match(html, /ページが見つかりません/, path);
+    }
+    for (const legacy of [
+      `${districtPath}/issues/transport`,
+      `${districtPath}/issues/not-a-theme`,
+      "/ibaraki-2026/tsuchiura/issues/anything",
+    ]) {
+      const response = await fetch(`${getOrigin()}${legacy}`, {
+        redirect: "manual",
+      });
+      assert.ok(
+        [301, 302, 307, 308].includes(response.status),
+        `${legacy}: ${response.status}`,
+      );
+      const location = new URL(
+        response.headers.get("location"),
+        getOrigin(),
+      );
+      assert.equal(location.pathname, "/issues", legacy);
     }
   });
 
@@ -451,7 +504,7 @@ export function registerSeoHttpTests({ getOrigin, startServer }) {
         path,
       );
     }
-    for (const path of ["/about/", `${themePaths[0]}/?utm_source=check`]) {
+    for (const path of ["/about/", `${questionPaths[0]}/?utm_source=check`]) {
       const response = await fetch(`${getOrigin()}${path}`, {
         redirect: "manual",
       });
@@ -469,9 +522,9 @@ export function registerSeoHttpTests({ getOrigin, startServer }) {
       for (const path of [
         "/",
         "/about",
-        districtPath,
+        ...districtPaths,
         ...guidePaths,
-        themePaths[0],
+        questionPaths[0],
         "/diagnosis",
       ]) {
         const { response, html } = await fetchPage(preview.origin, path);

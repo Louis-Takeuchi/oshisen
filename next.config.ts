@@ -11,6 +11,12 @@ const nextConfig: NextConfig = {
         destination: "https://www.oshisen.com/:path*",
         permanent: true,
       },
+      // 旧版（2026-09-18草案）の8テーマページは、候補者送付版の質問一覧へ集約する。
+      {
+        source: "/ibaraki-2026/:district/issues/:theme",
+        destination: "/issues",
+        permanent: false,
+      },
     ];
   },
   async headers() {

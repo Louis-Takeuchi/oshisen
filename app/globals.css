@@ -2194,3 +2194,40 @@ input[type="checkbox"] {
     gap: 1rem;
   }
 }
+
+/* メニュー：上に大きい4項目、残りは小さくまとめる（P2-3）。 */
+.mobile-menu-primary {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding: 14px 0 16px;
+}
+.mobile-menu .mobile-menu-primary a {
+  display: flex;
+  align-items: center;
+  min-height: 58px;
+  padding: 12px 14px;
+  border: 2px solid var(--ink);
+  border-bottom: 2px solid var(--ink);
+  border-radius: 16px;
+  background: var(--white);
+  box-shadow: 3px 3px 0 var(--yellow, #ffea32);
+  font-size: 15px;
+  font-weight: 800;
+}
+.mobile-menu-secondary {
+  display: flex;
+  flex-direction: column;
+}
+.mobile-menu .mobile-menu-secondary a {
+  font-size: 13px;
+  font-weight: 600;
+}
+.mobile-menu .mobile-menu-secondary a:last-child {
+  border-bottom: 0;
+}
+@media (max-width: 390px) {
+  .mobile-menu-primary {
+    grid-template-columns: 1fr;
+  }
+}
