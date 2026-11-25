@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getCandidate2026 } from "../../../lib/candidates2026";
+import { getCandidate2026, isDemoData } from "../../../lib/candidates2026";
 import { districtLabels } from "../../../lib/election2026";
 import { CandidateDetail } from "../../../components/candidate-detail";
 import { pageMetadata } from "../../../lib/seo";
@@ -13,9 +13,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!candidate) notFound();
   return pageMetadata(`/candidates/${candidate.id}`, {
     title: `${candidate.name}｜${districtLabels[candidate.district]}・2026年茨城県議選`,
-    description: `2026年茨城県議会議員選挙・${districtLabels[candidate.district]}の候補者、${candidate.name}さんの政策の回答とインタビューを、本人の回答のまま掲載しています。`,
-    index: true,
-    image: `/share/candidate-${candidate.id}.png?v=1`,
+    description: isDemoData
+      ? "機能紹介のための架空データ（デモ表示）です。実在の候補者ではありません。実際の候補者情報は12月4日（告示日）以降に掲載します。"
+      : `2026年茨城県議会議員選挙・${districtLabels[candidate.district]}の候補者、${candidate.name}さんの政策の回答とインタビューを、本人の回答のまま掲載しています。`,
+    // 架空データのデモ表示中は検索に載せず、候補者用シェア画像も使わない。
+    index: !isDemoData,
+    ...(isDemoData ? {} : { image: `/share/candidate-${candidate.id}.png?v=1` }),
   });
 }
 

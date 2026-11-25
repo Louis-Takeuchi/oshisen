@@ -1,0 +1,25 @@
+.banner {
+  margin: 0;
+  padding: 10px 20px;
+  background: var(--pink-soft);
+  border-bottom: 2px solid var(--pink);
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.9;
+  text-align: center;
+}
+
+.label {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 10px;
+  padding: 1px 10px;
+  border: 1.5px solid var(--pink);
+  border-radius: 999px;
+  background: white;
+  color: var(--pink);
+  font-size: 11px;
+  font-weight: 800;
+  white-space: nowrap;
+  vertical-align: 1px;
+}

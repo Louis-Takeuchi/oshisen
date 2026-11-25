@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { useConsideration } from "./use-consideration";
 import { OfficialContacts } from "./official-contacts";
 import { ArchiveBanner } from "./archive-banner";
+import { DemoDataBanner } from "./demo-data-banner";
 import { projectLabel } from "../lib/project";
 import publicationRules from "../lib/publication-rules.json";
 import titleStyles from "./home-title.module.css";
@@ -196,6 +197,7 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
           </nav>
         )}
       </header>
+      <DemoDataBanner />
       <ArchiveBanner />
       {children}
       {!compact && (

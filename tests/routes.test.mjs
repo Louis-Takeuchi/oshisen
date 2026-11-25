@@ -7,8 +7,11 @@ import {
   sentQuestions,
   questionPath,
 } from "../lib/election2026.ts";
-import { candidates2026 } from "../lib/candidates2026.ts";
-import { generatedDataSource } from "../lib/generated/sheet-data.ts";
+import {
+  DEMO_DATA_BANNER_TEXT,
+  candidates2026,
+  isDemoData,
+} from "../lib/candidates2026.ts";
 import { publicPagePaths } from "../lib/seo.ts";
 const { default: worker } = await import("../dist/server/index.js");
 async function render(path) {
@@ -36,9 +39,13 @@ function assertNoCandidateFixturesOrScores(html, pathname) {
   }
   assert.doesNotMatch(
     content,
-    /山田\s*太郎|佐藤\s*美咲|高橋\s*健|田中\s*彩|候補者[ＡＢＣＤABCD]/,
+    /山田\s*太郎|佐藤\s*美咲|高橋\s*健|田中\s*彩/,
     pathname,
   );
+  // デモ表示中（isDemoData）は候補者A〜Dを意図して出しているため、名前の検査は通常運用時のみ。
+  if (!isDemoData) {
+    assert.doesNotMatch(content, /候補者[ＡＢＣＤABCD]/, pathname);
+  }
   assert.doesNotMatch(
     content,
     /一致度\s*[:：]?\s*\d|\d+\s*[%％]|近い候補者が見つかり/,
@@ -49,8 +56,9 @@ function assertNoCandidateFixturesOrScores(html, pathname) {
 test("home reflects the current recording status and the 12/4 publication plan", async () => {
   assert.equal(project.electionYear, 2026);
   assert.deepEqual(project.districts, ["つくば市選挙区", "土浦市選挙区"]);
-  assert.equal(generatedDataSource, "sheet", "fixtures must never be deployed");
-  assert.equal(candidates2026.length, 0, "no candidates before 12/4");
+  if (!isDemoData) {
+    assert.equal(candidates2026.length, 0, "no real candidates before 12/4");
+  }
   const response = await render("/");
   assert.equal(response.status, 200);
   const html = await response.text();
@@ -65,7 +73,11 @@ test("home reflects the current recording status and the 12/4 publication plan",
   assert.match(html, /インタビュー収録を進めています/);
   assert.match(html, /12月4日（告示日）以降、立候補届出順に公開します/);
   assert.match(html, /候補者と同じ質問/);
-  assert.match(html, /12月4日から掲載/);
+  if (isDemoData) {
+    assert.match(html, /デモ表示中/);
+  } else {
+    assert.match(html, /12月4日から掲載/);
+  }
   assert.match(html, /インタビュー動画/);
   assert.doesNotMatch(html, /Podcast/);
   assert.match(html, /一問ずつ/);
@@ -130,11 +142,15 @@ test("question pages serve the sent wording, level switching and the 12/4 notice
     assert.match(html, /候補者が答えた原文を見る/, pathname);
     assert.match(html, /候補者にも、この文のまま聞いています（7段階＋理由400〜600字）/, pathname);
     assert.match(html, /あなたならどう答える？/, pathname);
-    assert.match(
-      html,
-      /候補者の回答は12月4日（告示日）以降、届出順にここに並びます/,
-      pathname,
-    );
+    if (isDemoData) {
+      assert.match(html, /候補者の回答（届出順）/, pathname);
+    } else {
+      assert.match(
+        html,
+        /候補者の回答は12月4日（告示日）以降、届出順にここに並びます/,
+        pathname,
+      );
+    }
     assert.ok(
       html.includes(`/share/q-${question.slug}.png`),
       `${pathname}: per-question share image`,
@@ -193,6 +209,35 @@ test("both district hubs and the questionnaire reflect the sent version", async 
     assert.ok(register.includes(question.text), question.id);
   }
   assert.doesNotMatch(register, /question-ledger-2026-09-18-v1/);
+});
+
+test("demo fixture data is unmistakably labeled, or absent in normal operation", async () => {
+  if (isDemoData) {
+    // デモ表示中：全ページ上部にバナー、架空の候補者ページは noindex。
+    for (const pathname of ["/", "/candidates", "/q/p01", "/talk", "/results"]) {
+      const html = await (await render(pathname)).text();
+      assert.ok(html.includes(DEMO_DATA_BANNER_TEXT), `${pathname}: demo banner`);
+    }
+    const candidateIds = candidates2026.map((candidate) => candidate.id);
+    assert.ok(candidateIds.length > 0);
+    for (const id of candidateIds) {
+      const html = await (await render(`/candidates/${id}`)).text();
+      assert.ok(html.includes(DEMO_DATA_BANNER_TEXT), `${id}: demo banner`);
+      assert.match(
+        html,
+        /<meta name="robots" content="noindex, follow"\s*\/?\s*>/,
+        `${id}: fictional pages stay out of search`,
+      );
+    }
+  } else {
+    for (const pathname of ["/", "/candidates", "/q/p01", "/talk"]) {
+      const html = await (await render(pathname)).text();
+      assert.ok(
+        !html.includes(DEMO_DATA_BANNER_TEXT),
+        `${pathname}: no demo banner in normal operation`,
+      );
+    }
+  }
 });
 
 test("Sites serves a crawlable robots file and a sitemap that excludes personal tools and unpublished candidates", async () => {

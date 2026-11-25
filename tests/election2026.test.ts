@@ -25,12 +25,23 @@ import {
 import { candidates2026 } from "../lib/candidates2026.ts";
 import { existsSync } from "node:fs";
 
-test("公開データはシート由来で、架空データのまま公開できない", () => {
-  // `npm run data:fixtures` のままコミット・公開しないための番人。
-  assert.equal(generatedDataSource, "sheet");
-  for (const candidate of generatedCandidates) {
-    assert.doesNotMatch(candidate.name, /候補者[A-ZＡ-Ｚ]/u);
-    assert.doesNotMatch(candidate.candidateId, /^tmp-/);
+test("公開データはシート由来か、架空と明示できるデモデータだけ", () => {
+  if (generatedDataSource === "fixtures") {
+    // デモ表示（2026-11-25：竹内の判断で一時公開中）。
+    // 架空だと一目で分かる名前・IDだけを許可し、実在候補者の混入を防ぐ。
+    // 全ページのデモバナーは routes テストで確認する。
+    assert.ok(generatedCandidates.length > 0);
+    for (const candidate of generatedCandidates) {
+      assert.match(candidate.name, /^候補者[A-Z]$/u);
+      assert.match(candidate.candidateId, /^(?:tsukuba|tsuchiura)-\d{2}$/);
+    }
+  } else {
+    // 通常運用：シート由来のみ。12/4前は候補者0件のはず。
+    assert.equal(generatedDataSource, "sheet");
+    for (const candidate of generatedCandidates) {
+      assert.doesNotMatch(candidate.name, /候補者[A-ZＡ-Ｚ]/u);
+      assert.doesNotMatch(candidate.candidateId, /^tmp-/);
+    }
   }
 });
 

@@ -2,6 +2,7 @@ import {
   generatedBackgroundAnswers,
   generatedCandidates,
   generatedCorrections,
+  generatedDataSource,
   generatedPolicyAnswers,
   generatedVideos,
   type GeneratedCandidate,
@@ -303,6 +304,16 @@ export function mainVideoFor(candidateId: string): CandidateVideo | undefined {
 
 /** 候補者情報が1人でも公開されているか（12/4以降の一斉公開後に true になる）。 */
 export const hasPublishedCandidates = candidates2026.length > 0;
+
+/**
+ * 架空データ（候補者A〜D）を表示するデモ状態か。
+ * true のあいだは全ページにデモ表示バナーを出し、候補者ページは noindex・
+ * サイトマップ除外にする（実在の候補者と誤解させない・検索に載せないため）。
+ */
+export const isDemoData = generatedDataSource === "fixtures";
+
+export const DEMO_DATA_BANNER_TEXT =
+  "機能紹介のためのデモ表示中：いま掲載している候補者A〜Dは架空のデータで、実在の候補者ではありません。実際の候補者情報・回答・動画は、12月4日（告示日）以降に立候補届出順で掲載します。";
 
 /**
  * 経験と判断の背景（H01〜H04）と最優先にすること（F01）の設問。

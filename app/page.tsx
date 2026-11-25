@@ -5,6 +5,7 @@ import { HomeTitle } from "../components/home-title";
 import { ServiceIntroduction } from "../components/service-introduction";
 import { NewsSection } from "../components/news-section";
 import { projectLabel } from "../lib/project";
+import { isDemoData } from "../lib/candidates2026";
 import styles from "./home-pop.module.css";
 
 export const metadata = pageMetadata("/", {
@@ -192,8 +193,17 @@ export default function Home() {
           <div>
             <dt>候補者情報</dt>
             <dd>
-              <strong>0件</strong>
-              <span>12月4日から掲載</span>
+              {isDemoData ? (
+                <>
+                  <strong>デモ表示中</strong>
+                  <span>架空データ・実データは12月4日から</span>
+                </>
+              ) : (
+                <>
+                  <strong>0件</strong>
+                  <span>12月4日から掲載</span>
+                </>
+              )}
             </dd>
           </div>
           <div>

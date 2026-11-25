@@ -6,6 +6,10 @@ import { readFile } from "node:fs/promises";
 import { after, before, test } from "node:test";
 import { project, projectLabel } from "../lib/project.ts";
 import { candidates as candidateRegistry } from "../lib/data.ts";
+import {
+  DEMO_DATA_BANNER_TEXT,
+  isDemoData,
+} from "../lib/candidates2026.ts";
 import { registerSeoHttpTests } from "./seo-http.test.mjs";
 
 let server;
@@ -92,6 +96,10 @@ function assertNoCandidateFixturesOrScores(html, pathname) {
     /山田\s*太郎|佐藤\s*美咲|高橋\s*健|田中\s*彩/,
     pathname,
   );
+  // デモ表示中（isDemoData）は候補者A〜Dを意図して出しているため、通常運用時のみ検査する。
+  if (!isDemoData) {
+    assert.doesNotMatch(content, /候補者[ＡＢＣＤABCD]/, pathname);
+  }
   assert.doesNotMatch(
     content,
     /一致度\s*[:：]?\s*\d|\d+\s*[%％]|近い候補者が見つかり/,
@@ -301,15 +309,25 @@ test("sent questions and empty candidate registry survive production rendering",
   const question = await (await fetch(`${origin}/q/p01`)).text();
   assert.match(question, /路線バス/);
   assert.match(question, /候補者が答えた原文を見る/);
-  assert.match(
-    question,
-    /候補者の回答は12月4日（告示日）以降、届出順にここに並びます/,
-  );
-  assert.doesNotMatch(question, /サンプル回答|href="\/candidates\//);
+  if (isDemoData) {
+    assert.match(question, /候補者の回答（届出順）/);
+    assert.ok(question.includes(DEMO_DATA_BANNER_TEXT), "demo banner on /q");
+  } else {
+    assert.match(
+      question,
+      /候補者の回答は12月4日（告示日）以降、届出順にここに並びます/,
+    );
+    assert.doesNotMatch(question, /サンプル回答|href="\/candidates\//);
+  }
   const candidates = await (await fetch(`${origin}/candidates`)).text();
-  assert.match(candidates, /候補者情報の掲載準備/);
   assertNoCandidateFixturesOrScores(candidates, "/candidates");
-  assert.doesNotMatch(candidates, /href="\/candidates\//);
+  if (isDemoData) {
+    assert.ok(candidates.includes(DEMO_DATA_BANNER_TEXT), "demo banner");
+    assert.match(candidates, /href="\/candidates\//);
+  } else {
+    assert.match(candidates, /候補者情報の掲載準備/);
+    assert.doesNotMatch(candidates, /href="\/candidates\//);
+  }
   const home = await (await fetch(origin)).text();
   assert.match(home, /つくば市選挙区/);
   assert.ok(home.includes(projectLabel));
