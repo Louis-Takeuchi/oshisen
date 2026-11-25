@@ -127,6 +127,10 @@ img {
 .skip-link:focus {
   transform: translateY(0);
 }
+/* ヘッダーと本文の包み。トップの絶対配置ヘッダーは、上部バナーの下のこの要素を基準にする。 */
+.site-body {
+  position: relative;
+}
 .eyebrow {
   font-size: 13px;
   font-weight: 650;

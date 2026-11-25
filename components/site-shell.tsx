@@ -34,6 +34,10 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
       <a className="skip-link" href="#main">
         本文へ移動
       </a>
+      <DemoDataBanner />
+      <ArchiveBanner />
+      {/* トップではヘッダーが absolute でこのラッパーの上端に貼り付くため、バナーとは重ならない。 */}
+      <div className="site-body">
       <header
         className={`site-header ${compact ? "compact-header" : ""} ${pathname === "/" ? titleStyles.homeHeader : ""}`}
       >
@@ -197,9 +201,8 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
           </nav>
         )}
       </header>
-      <DemoDataBanner />
-      <ArchiveBanner />
       {children}
+      </div>
       {!compact && (
         <footer className="site-footer">
           <div className="container">

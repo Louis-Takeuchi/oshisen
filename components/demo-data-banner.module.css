@@ -23,3 +23,15 @@
   white-space: nowrap;
   vertical-align: 1px;
 }
+
+@media (max-width: 480px) {
+  .banner {
+    padding: 8px 14px;
+    font-size: 11px;
+    line-height: 1.8;
+    text-align: left;
+  }
+  .label {
+    margin-right: 8px;
+  }
+}
